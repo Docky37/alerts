@@ -88,7 +88,7 @@ public class Person {
      *
      * @return a String - the person first name
      */
-    public String getFirstname() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -97,7 +97,7 @@ public class Person {
      *
      * @param pFirstName - the person first name
      */
-    public void setFirstname(String pFirstName) {
+    public void setFirstName(String pFirstName) {
         firstName = pFirstName;
     }
 
@@ -106,7 +106,7 @@ public class Person {
      *
      * @return a String - the person last name
      */
-    public String getLastname() {
+    public String getLastName() {
         return lastName;
     }
 
@@ -115,7 +115,7 @@ public class Person {
      *
      * @param pLastName - the person last name
      */
-    public void setLastname(String pLastName) {
+    public void setLastName(String pLastName) {
         lastName = pLastName;
     }
 
