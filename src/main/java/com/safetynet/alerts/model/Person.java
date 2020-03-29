@@ -1,11 +1,11 @@
 package com.safetynet.alerts.model;
 
 /**
- * Persons class, used to contain inhabitant data.
+ * Person class, used to contain inhabitant data.
  *
  * @author Thierry SCHREINER
  */
-public class Persons {
+public class Person {
 
 	/**
 	 * The id of the person.
@@ -52,7 +52,7 @@ public class Persons {
 	 * @param pPhone
 	 * @param pEmail
 	 */
-	public Persons(int pId, String pFirstName, String pLastName, String pAddress, String pCity, String pZip,
+	public Person(int pId, String pFirstName, String pLastName, String pAddress, String pCity, String pZip,
 			String pPhone, String pEmail) {
 		super();
 		id = pId;
@@ -206,7 +206,7 @@ public class Persons {
 	 */
 	@Override
 	public String toString() {
-		return "Persons [id= " + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
+		return "Person [id= " + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
 				+ ", city=" + city + ", zip=" + zip + ", phone=" + phone + ", email=" + email + "]";
 	}
 
