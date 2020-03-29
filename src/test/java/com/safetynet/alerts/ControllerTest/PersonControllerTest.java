@@ -46,26 +46,27 @@ public class PersonControllerTest {
 
     @Test
     public void getPerson_shouldReturnPerson() throws Exception {
-        given(personService.findByLastName(anyString()))
+        given(personService.findByLastnameAndFirstname(anyString(),anyString()))
                 .willReturn(new Person(1, "John", "Boyd", "1509 Culver St",
                         "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
 
         mockMVC.perform(MockMvcRequestBuilders
-                .get("http://localhost:8080/Person/lastName"))
+                .get("http://localhost:8080/Person/lastName/firstName"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
-                .andExpect(jsonPath("$.lastName").value("Boyd"));
+                .andExpect(jsonPath("$.lastName").value("Boyd"))
+                .andExpect(jsonPath("$.firstName").value("John"));
 
     }
 
     @Test
     public void getPerson_notFound() throws Exception {
-        given(personService.findByLastName(anyString()))
+        given(personService.findByLastnameAndFirstname(anyString(),anyString()))
                 .willThrow(new PersonNotFoundException());
 
         mockMVC.perform(MockMvcRequestBuilders
-                .get("http://localhost:8080/Person/lastName"))
+                .get("http://localhost:8080/Person/lastName/firstName"))
                 .andExpect(status().isNotFound());
 
     }

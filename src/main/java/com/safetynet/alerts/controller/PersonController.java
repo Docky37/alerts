@@ -26,10 +26,10 @@ public class PersonController {
         personService = pPersonService;
     }
 
-    // Person/{lastName}
-    @GetMapping(value = "Person/{lastName}")
-    public Person findPersonByName(@PathVariable final String lastName) {
-        return personService.findByLastName(lastName);
+    // Person/{lastName},{firstName}
+    @GetMapping(value = "Person/{lastName}/{firstName}")
+    public Person findPersonByName(@PathVariable final String lastName,@PathVariable final String firstName) {
+        return personService.findByLastnameAndFirstname(lastName,firstName);
     }
 
     @ExceptionHandler

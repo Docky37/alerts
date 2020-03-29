@@ -25,11 +25,10 @@ public class PersonService {
         return personList;
     }
 
-    public Person findByLastName(final String pName) {
+    public Person findByLastnameAndFirstname(final String pLastName,final String pFirstName) {
         for (Person person : personList) {
-            System.out.println();
-            if (person.getLastName() == pName) {
-                return person;
+            if (person.getLastName().equals(pLastName) && person.getFirstName().equals(pFirstName)) {
+               return person;
             }
         }
         return null;
