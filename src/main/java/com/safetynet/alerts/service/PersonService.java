@@ -33,4 +33,12 @@ public class PersonService {
         }
         return null;
     }
+
+    public Person save(Person pPerson) {
+        // TODO Auto-generated method stub
+        
+        personList.add(new Person(4, "Roger", "Boyd", "1509 Culver St",
+                "Culver", "97451", "841-874-6512", "tenz@email.com"));
+        return pPerson;
+    }
 }
