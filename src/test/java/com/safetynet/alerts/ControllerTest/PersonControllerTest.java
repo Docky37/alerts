@@ -16,7 +16,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -55,8 +57,8 @@ public class PersonControllerTest {
                                 "1509 Culver St", "Culver", "97451",
                                 "841-874-6512", "jaboyd@email.com"));
 
-        mockMVC.perform(MockMvcRequestBuilders
-                .get("http://localhost:8080/Person/lastName/firstName"))
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/Person/lastName/firstName"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
@@ -71,8 +73,8 @@ public class PersonControllerTest {
         given(personService.findByLastnameAndFirstname(anyString(),
                 anyString())).willThrow(new PersonNotFoundException());
 
-        mockMVC.perform(MockMvcRequestBuilders
-                .get("http://localhost:8080/Person/lastName/firstName"))
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/Person/lastName/firstName"))
                 .andExpect(status().isNotFound());
 
     }
@@ -83,8 +85,7 @@ public class PersonControllerTest {
 
         given(personService.findAll()).willReturn(personList);
 
-        mockMVC.perform(
-                MockMvcRequestBuilders.get("http://localhost:8080/Person"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/Person"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
         // .andExpect(jsonPath("$.firstName").value("John"))
@@ -99,11 +100,45 @@ public class PersonControllerTest {
                 "Culver", "97451", "841-874-6512", "tenz@email.com");
         given(personService.save(any(Person.class))).willReturn(personToAdd);
 
-        mockMVC.perform(
-                MockMvcRequestBuilders.post("http://localhost:8080/Person")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(personToAdd)))
+        mockMVC.perform(MockMvcRequestBuilders.post("/Person")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(personToAdd)))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void givenAPersonToUpdate_whenPutPerson_thenReturnIsCreated()
+            throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
+        Person personToUpdate = personList.get(2);
+        personToUpdate.setEmail("updated@email.com");
+        personToUpdate.setPhone("0123456789");
+        given(personService.updatePerson(any(Person.class)))
+                .willReturn(personToUpdate);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
+                .put("/Person/" + personToUpdate.getLastName() + "/"
+                        + personToUpdate.getFirstName())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+                .content(mapper.writeValueAsString(personToUpdate));
+
+        mockMVC.perform(builder)
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                // .andExpect(MockMvcResultMatchers.content()
+                // .string("Article created."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void givenAPersonToDelete_whenDeletePerson_thenReturnIsOk()
+            throws Exception {
+        Person personToDelete = personList.get(2);
+        mockMVC.perform(MockMvcRequestBuilders
+                .delete("/Person/" + personToDelete.getLastName() + "/"
+                        + personToDelete.getFirstName()))
+                .andExpect(status().isOk());        
     }
 
 }
