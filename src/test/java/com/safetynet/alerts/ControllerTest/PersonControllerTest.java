@@ -48,10 +48,10 @@ public class PersonControllerTest {
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
-    @Test
+    @Test // GET
     public void givenAPersonToFind_whenGetPersonByLastNameAndFirstName_thenReturnThePerson()
             throws Exception {
-        given(personService.findByLastnameAndFirstname(anyString(),
+        given(personService.findByLastNameAndFirstName(anyString(),
                 anyString()))
                         .willReturn(new Person(1, "John", "Boyd",
                                 "1509 Culver St", "Culver", "97451",
@@ -67,10 +67,10 @@ public class PersonControllerTest {
 
     }
 
-    @Test
-    public void givenAStrangerToFind_whenGetPersonByLastNameAndFirstName_thenIsNotFound()
+    @Test // GET
+    public void givenAStrangerToFind_whenGetPersonByLastNameAndFirstName_thenNotFoundException()
             throws Exception {
-        given(personService.findByLastnameAndFirstname(anyString(),
+        given(personService.findByLastNameAndFirstName(anyString(),
                 anyString())).willThrow(new PersonNotFoundException());
 
         mockMVC.perform(
@@ -79,7 +79,7 @@ public class PersonControllerTest {
 
     }
 
-    @Test
+    @Test // GET
     public void givenAllPersonToFind_whenGetPerson_thenReturnListOfAllPerson()
             throws Exception {
 
@@ -91,14 +91,14 @@ public class PersonControllerTest {
         // .andExpect(jsonPath("$.firstName").value("John"))
     }
 
-    @Test
+    @Test // POST
     public void givenAPersonToAdd_whenPostPerson_thenReturnIsCreated()
             throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
         Person personToAdd = new Person(4, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com");
-        given(personService.save(any(Person.class))).willReturn(personToAdd);
+        given(personService.addPerson(any(Person.class))).willReturn(personToAdd);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/Person")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -106,7 +106,7 @@ public class PersonControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test
+    @Test // PUT
     public void givenAPersonToUpdate_whenPutPerson_thenReturnIsCreated()
             throws Exception {
 
@@ -131,14 +131,14 @@ public class PersonControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-    @Test
+    @Test // DELETE
     public void givenAPersonToDelete_whenDeletePerson_thenReturnIsOk()
             throws Exception {
         Person personToDelete = personList.get(2);
         mockMVC.perform(MockMvcRequestBuilders
                 .delete("/Person/" + personToDelete.getLastName() + "/"
                         + personToDelete.getFirstName()))
-                .andExpect(status().isOk());        
+                .andExpect(status().isOk());
     }
 
 }

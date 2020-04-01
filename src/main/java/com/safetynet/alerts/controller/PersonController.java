@@ -37,7 +37,7 @@ public class PersonController {
     @GetMapping(value = "Person/{lastName}/{firstName}")
     public Person findPersonByName(@PathVariable final String lastName,
             @PathVariable final String firstName) {
-        return personService.findByLastnameAndFirstname(lastName, firstName);
+        return personService.findByLastNameAndFirstName(lastName, firstName);
     }
 
     @ExceptionHandler
@@ -55,7 +55,7 @@ public class PersonController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody Person pPerson) {
 
-        Person personAdded = personService.save(pPerson);
+        Person personAdded = personService.addPerson(pPerson);
 
         if (personAdded == null)
             return ResponseEntity.noContent().build();

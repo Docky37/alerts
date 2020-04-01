@@ -1,49 +1,48 @@
 package com.safetynet.alerts.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.safetynet.alerts.Repositery.PersonRepositery;
+import com.safetynet.alerts.controller.PersonNotFoundException;
 import com.safetynet.alerts.model.Person;
 
 @Service
 public class PersonService {
 
-    public static List<Person> personList = new ArrayList<>();
+    private PersonRepositery personRepositery;
 
-    static {
-        personList.add(new Person(1, "John", "Boyd", "1509 Culver St", "Culver",
-                "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(2, "Jacob", "Boyd", "1509 Culver St",
-                "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(3, "Tenley", "Boyd", "1509 Culver St",
-                "Culver", "97451", "841-874-6512", "tenz@email.com"));
+    public PersonService(PersonRepositery pPersonRepositery) {
+        personRepositery = pPersonRepositery;
     }
 
     public List<Person> findAll() {
+        List<Person> personList = personRepositery.findAll();
         return personList;
     }
 
-    public Person findByLastnameAndFirstname(final String pLastName,final String pFirstName) {
-        for (Person person : personList) {
-            if (person.getLastName().equals(pLastName) && person.getFirstName().equals(pFirstName)) {
-               return person;
-            }
+    public Person findByLastNameAndFirstName(final String pLastName,
+            final String pFirstName) {
+        Person foundPerson = personRepositery.findByLastNameAndFirstName(pLastName,pFirstName);
+        if (foundPerson == null) {
+            throw new PersonNotFoundException();
         }
-        return null;
+        return foundPerson;
     }
 
-    public Person save(Person pPerson) {
-        personList.add(new Person(4, "Roger", "Boyd", "1509 Culver St",
-                "Culver", "97451", "841-874-6512", "tenz@email.com"));
-        return pPerson;
+    public Person addPerson(Person pPerson) {
+        Person addedPerson = personRepositery.addPerson(pPerson);
+        return addedPerson;
     }
 
     public Person updatePerson(Person pPerson) {
-        Person personToUpdate = pPerson;
-        personToUpdate.setPhone("123-456-7890");
-        personToUpdate.setEmail("new@mail.com");
-        return personToUpdate;
+        Person updatedPerson = personRepositery.updatePerson(pPerson);
+        return updatedPerson;
+    }
+
+    public Boolean deletePerson(Person pPerson) {
+        Boolean isPersonDeleted = personRepositery.deletePerson(pPerson);
+        return isPersonDeleted;
     }
 }
