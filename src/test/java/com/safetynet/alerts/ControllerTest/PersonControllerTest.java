@@ -40,11 +40,11 @@ public class PersonControllerTest {
     public static List<Person> personList = new ArrayList<>();
 
     static {
-        personList.add(new Person(1, "John", "Boyd", "1509 Culver St", "Culver",
+        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St", "Culver",
                 "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(2, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new Person(2L, "Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(3, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new Person(3L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
@@ -53,7 +53,7 @@ public class PersonControllerTest {
             throws Exception {
         given(personService.findByLastNameAndFirstName(anyString(),
                 anyString()))
-                        .willReturn(new Person(1, "John", "Boyd",
+                        .willReturn(new Person(1L, "John", "Boyd",
                                 "1509 Culver St", "Culver", "97451",
                                 "841-874-6512", "jaboyd@email.com"));
 
@@ -96,7 +96,7 @@ public class PersonControllerTest {
             throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
-        Person personToAdd = new Person(4, "Roger", "Boyd", "1509 Culver St",
+        Person personToAdd = new Person(4L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com");
         given(personService.addPerson(any(Person.class))).willReturn(personToAdd);
 

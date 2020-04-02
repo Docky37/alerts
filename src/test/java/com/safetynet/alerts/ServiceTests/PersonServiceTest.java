@@ -14,10 +14,11 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import static org.mockito.Mockito.verify;
 
-import com.safetynet.alerts.Repositery.PersonRepositery;
 import com.safetynet.alerts.controller.PersonNotFoundException;
 import com.safetynet.alerts.model.Person;
+import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.PersonService;
 
 @RunWith(SpringRunner.class)
@@ -25,31 +26,31 @@ import com.safetynet.alerts.service.PersonService;
 public class PersonServiceTest {
 
     @MockBean
-    private PersonRepositery personRepositery;
+    private PersonRepository personRepository;
 
     private PersonService personService;
 
     public static List<Person> personList = new ArrayList<>();
 
     static {
-        personList.add(new Person(1, "John", "Boyd", "1509 Culver St", "Culver",
+        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St", "Culver",
                 "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(2, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new Person(2L, "Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(3, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new Person(3L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
     @Before
     public void SetUp() {
-        personService = new PersonService(personRepositery);
+        personService = new PersonService(personRepository);
     }
 
     // GET ("/Person/{lastName}/{FirstName}") >>> READ (Find a Person)
     @Test
     public void givenAPersonToFind_whenGetPersonByLastNameAndFirstName_thenReturnThePerson()
             throws Exception {
-        given(personRepositery.findByLastNameAndFirstName(anyString(),
+        given(personRepository.findByLastNameAndFirstName(anyString(),
                 anyString())).willReturn(personList.get(0));
 
         Person person = personService.findByLastNameAndFirstName("Boyd",
@@ -65,7 +66,7 @@ public class PersonServiceTest {
     public void givenAStrangerToFind_whenFindPersonByLastNameAndFirstName_thenNotFoundException()
             throws Exception {
         // GIVEN
-        given(personRepositery.findByLastNameAndFirstName(anyString(),
+        given(personRepository.findByLastNameAndFirstName(anyString(),
                 anyString())).willReturn(null);
         // WHEN
         Person person = personService.findByLastNameAndFirstName(anyString(),
@@ -79,7 +80,7 @@ public class PersonServiceTest {
     public void givenAllPersonsToFind_whenFindAll_thenReturnListOfAllPersons()
             throws Exception {
         // GIVEN
-        given(personRepositery.findAll()).willReturn(personList);
+        given(personRepository.findAll()).willReturn(personList);
         // WHEN
         List<Person> foundList = personService.findAll();
         // THEN
@@ -93,10 +94,10 @@ public class PersonServiceTest {
     public void givenAPersonToAdd_whenPostPerson_thenPersonIsCreated()
             throws Exception {
         // GIVEN
-        Person personToAdd = new Person(4, "Roger", "Boyd", "1509 Culver St",
+        Person personToAdd = new Person(4L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com");
 
-        given(personRepositery.addPerson(any(Person.class)))
+        given(personRepository.savePerson(any(Person.class)))
                 .willReturn(personToAdd);
         // WHEN
         Person addedPerson = personService.addPerson(personToAdd);
@@ -107,14 +108,14 @@ public class PersonServiceTest {
 
     }
 
-    @Test // PUT >>> UPDATE (Upd
+    @Test // PUT >>> UPDATE 
     public void givenAPersonToUpdate_whenUpdatePerson_thenReturnUpdatedPerson()
             throws Exception {
         // GIVEN
         Person personToUpdate = personList.get(2);
         personToUpdate.setEmail("updated@email.com");
         personToUpdate.setPhone("0123456789");
-        given(personRepositery.updatePerson(any(Person.class)))
+        given(personRepository.updateByLastNameAndFirstName(personToUpdate.getLastName(),personToUpdate.getFirstName()))
                 .willReturn(personToUpdate);
         // WHEN
         Person updatedPerson = personService.updatePerson(personToUpdate);
@@ -132,12 +133,10 @@ public class PersonServiceTest {
             throws Exception {
         // GIVEN
         Person personToDelete = personList.get(2);
-        given(personRepositery.deletePerson(any(Person.class)))
-                .willReturn(true);
         // WHEN
         Boolean isPersonDeleted = personService.deletePerson(personToDelete);
         // THEN
-        assertThat(isPersonDeleted).isEqualTo(true);
-    }
+        verify(personRepository).deleteByLastNameAndFirstName(personToDelete.getLastName(),personToDelete.getFirstName());
+     }
 
 }

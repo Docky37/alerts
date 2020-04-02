@@ -1,43 +1,62 @@
 package com.safetynet.alerts.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;;
+
 /**
  * Person class, used to contain inhabitant data.
  *
  * @author Thierry SCHREINER
  */
+@Entity
+@Table(name = "tests")
 public class Person {
 
     /**
      * The id of the person.
      */
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
+    private long id;
     /**
      * The first name of the person.
      */
+    @Column(name = "first_name")
     private String firstName;
     /**
      * The last name of the person.
      */
+    @Column(name = "last_name")
     private String lastName;
     /**
      * The address of the person.
      */
+    @Column(name = "address")
     private String address;
     /**
      * The city where lives the person.
      */
+    @Column(name = "city")
     private String city;
     /**
      * Zip code of the city where lives the person.
      */
+    @Column(name = "zip")
     private String zip;
     /**
      * The phone number of the person.
      */
+    @Column(name = "phone")
     private String phone;
     /**
      * 
      */
+    @Column(name = "email")
     private String email;
 
     /**
@@ -52,8 +71,9 @@ public class Person {
      * @param pPhone
      * @param pEmail
      */
-    public Person(int pId, String pFirstName, String pLastName, String pAddress,
-            String pCity, String pZip, String pPhone, String pEmail) {
+    public Person(Long pId, String pFirstName, String pLastName,
+            String pAddress, String pCity, String pZip, String pPhone,
+            String pEmail) {
         super();
         id = pId;
         firstName = pFirstName;
@@ -65,12 +85,16 @@ public class Person {
         email = pEmail;
     }
 
+    public Person() {
+        // TODO Auto-generated constructor stub
+    }
+
     /**
      * Getter of the person id.
      *
      * @return an int - the person id.
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -79,7 +103,7 @@ public class Person {
      *
      * @param pId - the person id.
      */
-    public void setId(int pId) {
+    public void setId(Long pId) {
         id = pId;
     }
 
