@@ -85,8 +85,10 @@ public class Person {
         email = pEmail;
     }
 
+    /**
+     * Empty constructor.
+     */
     public Person() {
-        // TODO Auto-generated constructor stub
     }
 
     /**

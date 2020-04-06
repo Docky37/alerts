@@ -17,6 +17,11 @@ public class PersonService {
         personRepository = pPersonRepositery;
     }
 
+    public List<Person> addListPersons(List<Person> pListPerson) {
+        List<Person> createdList = (List<Person>) personRepository.saveAll(pListPerson);
+        return createdList;
+    }
+
     public List<Person> findAll() {
         List<Person> personList = (List<Person>) personRepository.findAll();
         return personList;
@@ -33,22 +38,29 @@ public class PersonService {
     }
 
     public Person addPerson(Person pPerson) {
-        Person addedPerson = personRepository.save(pPerson);
-        return addedPerson;
+        Person foundPerson = personRepository
+                .findByLastNameAndFirstName(pPerson.getLastName(), pPerson.getFirstName());
+        if (foundPerson == null) {
+            Person addedPerson = personRepository.save(pPerson);
+            return addedPerson;
+        }else {
+            return null;
+        }
     }
 
     public Person updatePerson(Person pPerson) {
+        Person personToUpdate = pPerson;
         Person foundPerson = personRepository.findByLastNameAndFirstName(
                 pPerson.getLastName(), pPerson.getFirstName());
-        pPerson.setId(foundPerson.getId());
-        Person updatedPerson = personRepository.save(foundPerson);
+        personToUpdate.setId(foundPerson.getId());
+        Person updatedPerson = personRepository.save(personToUpdate);
         return updatedPerson;
     }
 
-    public void deleteAPerson(Person pPerson) {
-        Person foundPerson = personRepository.findByLastNameAndFirstName(
-                pPerson.getLastName(), pPerson.getFirstName());
-        pPerson.setId(foundPerson.getId());
-        personRepository.deleteById(pPerson.getId());
+    public void deleteAPerson(final String pLastName, final String pFirstName) {
+        Person foundPerson = personRepository
+                .findByLastNameAndFirstName(pLastName, pFirstName);
+        personRepository.deleteById(foundPerson.getId());
     }
+
 }

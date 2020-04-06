@@ -78,7 +78,7 @@ public class PersonRepositoryTest {
     @Test
     @Tag("TestC-FindAPerson")
     @DisplayName("Given a person to find, when search person by last name & firstname,"
-            + " then DataBase return the person.")
+            + " then DataBase returns the person.")
     public void c_givenAPersonToFind_whenFindByLastNameAndFirstName_thenReturnThePerson()
             throws Exception {
         // GIVEN

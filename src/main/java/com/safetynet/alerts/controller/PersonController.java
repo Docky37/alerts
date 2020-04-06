@@ -20,7 +20,8 @@ import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.service.PersonService;
 
 /**
- * PersonsController class.
+ * PersonsController class, used to create administrative endpoints for CRUD
+ * operations on persons data.
  *
  * @author Thierry SCHREINER
  */
@@ -33,7 +34,48 @@ public class PersonController {
         personService = pPersonService;
     }
 
-    // Person/{lastName},{firstName}
+    /**
+     * POST request to create persons in DataBase from a list.
+     * 
+     * @param pListPerson
+     * @return
+     */
+    @PostMapping(value = "Persons")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> create(@RequestBody List<Person> pListPerson) {
+
+        List<Person> listPersonAdded = personService
+                .addListPersons(pListPerson);
+
+        if (listPersonAdded == null)
+            return ResponseEntity.noContent().build();
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("Persons/")
+                .buildAndExpand(listPersonAdded.get(1).getLastName(),
+                        listPersonAdded.get(1).getFirstName())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    /**
+     * GET request to find all persons in DataBase.
+     * 
+     * @return a List of all persons in DB
+     */
+    @GetMapping(value = "Person")
+    public List<Person> findAll() {
+        return personService.findAll();
+    }
+
+    /**
+     * GET request to find one Person by lastName and firstName.
+     * 
+     * @param lastName
+     * @param firstName
+     * @return a Person
+     */
     @GetMapping(value = "Person/{lastName}/{firstName}")
     public Person findPersonByName(@PathVariable final String lastName,
             @PathVariable final String firstName) {
@@ -46,11 +88,12 @@ public class PersonController {
 
     }
 
-    @GetMapping(value = "Person")
-    public List<Person> findAll() {
-        return personService.findAll();
-    }
-
+    /**
+     * POST request to add a new person in DB.
+     * 
+     * @param pPerson - The person to add in DB
+     * @return
+     */
     @PostMapping(value = "Person")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody Person pPerson) {
@@ -69,6 +112,12 @@ public class PersonController {
         return ResponseEntity.created(location).build();
     }
 
+    /**
+     * PUT request to update a person
+     * 
+     * @param pPerson
+     * @return
+     */
     @PutMapping(value = "Person/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> update(@RequestBody Person pPerson) {
@@ -89,9 +138,12 @@ public class PersonController {
 
     @DeleteMapping(value = "Person/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> deletePerson(@PathVariable final String lastName,
+    public ResponseEntity<Void> deletePerson(
+            @PathVariable final String lastName,
             @PathVariable final String firstName) {
-                return ResponseEntity.ok().build();
-        
+
+        personService.deleteAPerson(lastName, firstName);
+        return ResponseEntity.ok().build();
+
     }
 }
