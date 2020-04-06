@@ -13,7 +13,7 @@ import javax.persistence.Table;;
  * @author Thierry SCHREINER
  */
 @Entity
-@Table(name = "tests")
+@Table(name = "persons")
 public class Person {
 
     /**
@@ -54,13 +54,13 @@ public class Person {
     @Column(name = "phone")
     private String phone;
     /**
-     * 
+     *
      */
     @Column(name = "email")
     private String email;
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param pId
      * @param pFirstName
@@ -71,9 +71,9 @@ public class Person {
      * @param pPhone
      * @param pEmail
      */
-    public Person(Long pId, String pFirstName, String pLastName,
-            String pAddress, String pCity, String pZip, String pPhone,
-            String pEmail) {
+    public Person(final Long pId, final String pFirstName,
+            final String pLastName, final String pAddress, final String pCity,
+            final String pZip, final String pPhone, final String pEmail) {
         super();
         id = pId;
         firstName = pFirstName;
@@ -105,7 +105,7 @@ public class Person {
      *
      * @param pId - the person id.
      */
-    public void setId(Long pId) {
+    public void setId(final Long pId) {
         id = pId;
     }
 
@@ -123,7 +123,7 @@ public class Person {
      *
      * @param pFirstName - the person first name
      */
-    public void setFirstName(String pFirstName) {
+    public void setFirstName(final String pFirstName) {
         firstName = pFirstName;
     }
 
@@ -141,14 +141,14 @@ public class Person {
      *
      * @param pLastName - the person last name
      */
-    public void setLastName(String pLastName) {
+    public void setLastName(final String pLastName) {
         lastName = pLastName;
     }
 
     /**
      * Getter of the person address.
      *
-     * @return
+     * @return a String
      */
     public String getAddress() {
         return address;
@@ -159,14 +159,14 @@ public class Person {
      *
      * @param pAddress
      */
-    public void setAddress(String pAddress) {
+    public void setAddress(final String pAddress) {
         address = pAddress;
     }
 
     /**
      * Getter of the person city.
      *
-     * @return
+     * @return a String
      */
     public String getCity() {
         return city;
@@ -177,14 +177,14 @@ public class Person {
      *
      * @param pCity
      */
-    public void setCity(String pCity) {
+    public void setCity(final String pCity) {
         city = pCity;
     }
 
     /**
      * Getter of the city zip code.
      *
-     * @return
+     * @return a String
      */
     public String getZip() {
         return zip;
@@ -195,14 +195,14 @@ public class Person {
      *
      * @param pZip
      */
-    public void setZip(String pZip) {
+    public void setZip(final String pZip) {
         zip = pZip;
     }
 
     /**
      * Getter of the phone number.
      *
-     * @return
+     * @return a String
      */
     public String getPhone() {
         return phone;
@@ -213,14 +213,14 @@ public class Person {
      *
      * @param pPhone
      */
-    public void setPhone(String pPhone) {
+    public void setPhone(final String pPhone) {
         phone = pPhone;
     }
 
     /**
      * Getter of the person e-mail.
      *
-     * @return
+     * @return a String
      */
     public String getEmail() {
         return email;
@@ -231,7 +231,7 @@ public class Person {
      *
      * @param pEmail
      */
-    public void setEmail(String pEmail) {
+    public void setEmail(final String pEmail) {
         email = pEmail;
     }
 

@@ -40,8 +40,8 @@ public class PersonControllerTest {
     public static List<Person> personList = new ArrayList<>();
 
     static {
-        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St", "Culver",
-                "97451", "841-874-6512", "jaboyd@email.com"));
+        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St",
+                "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
         personList.add(new Person(2L, "Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
         personList.add(new Person(3L, "Tenley", "Boyd", "1509 Culver St",
@@ -98,7 +98,8 @@ public class PersonControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         Person personToAdd = new Person(4L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com");
-        given(personService.addPerson(any(Person.class))).willReturn(personToAdd);
+        given(personService.addPerson(any(Person.class)))
+                .willReturn(personToAdd);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/Person")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -135,6 +136,10 @@ public class PersonControllerTest {
     public void givenAPersonToDelete_whenDeletePerson_thenReturnIsOk()
             throws Exception {
         Person personToDelete = personList.get(2);
+        given(personService.deleteAPerson(anyString(),
+                anyString()))
+                        .willReturn(personToDelete);
+
         mockMVC.perform(MockMvcRequestBuilders
                 .delete("/Person/" + personToDelete.getLastName() + "/"
                         + personToDelete.getFirstName()))

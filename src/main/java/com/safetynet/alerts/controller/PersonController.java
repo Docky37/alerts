@@ -28,27 +28,37 @@ import com.safetynet.alerts.service.PersonService;
 @RestController
 public class PersonController {
 
-    public PersonService personService;
+    /**
+     * The service class used to manage person administrative CRUD operations.
+     */
+    private PersonService personService;
 
-    public PersonController(PersonService pPersonService) {
+    /**
+     * Class constructor - Set personService (IoC).
+     *
+     * @param pPersonService
+     */
+    public PersonController(final PersonService pPersonService) {
         personService = pPersonService;
     }
 
     /**
      * POST request to create persons in DataBase from a list.
-     * 
+     *
      * @param pListPerson
-     * @return
+     * @return ResponseEntity<Void>
      */
     @PostMapping(value = "Persons")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@RequestBody List<Person> pListPerson) {
+    public ResponseEntity<Void> create(
+            @RequestBody final List<Person> pListPerson) {
 
         List<Person> listPersonAdded = personService
                 .addListPersons(pListPerson);
 
-        if (listPersonAdded == null)
+        if (listPersonAdded == null) {
             return ResponseEntity.noContent().build();
+        }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("Persons/")
@@ -61,7 +71,7 @@ public class PersonController {
 
     /**
      * GET request to find all persons in DataBase.
-     * 
+     *
      * @return a List of all persons in DB
      */
     @GetMapping(value = "Person")
@@ -71,7 +81,7 @@ public class PersonController {
 
     /**
      * GET request to find one Person by lastName and firstName.
-     * 
+     *
      * @param lastName
      * @param firstName
      * @return a Person
@@ -84,25 +94,25 @@ public class PersonController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    private void PersonNotFoundHandler(PersonNotFoundException e) {
+    private void personNotFoundHandler(final PersonNotFoundException e) {
 
     }
 
     /**
      * POST request to add a new person in DB.
-     * 
+     *
      * @param pPerson - The person to add in DB
-     * @return
+     * @return ResponseEntity<Void>
      */
     @PostMapping(value = "Person")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@RequestBody Person pPerson) {
+    public ResponseEntity<Void> create(@RequestBody final Person pPerson) {
 
         Person personAdded = personService.addPerson(pPerson);
 
-        if (personAdded == null)
+        if (personAdded == null) {
             return ResponseEntity.noContent().build();
-
+        }
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("Person/{lastName}/{firstName}")
                 .buildAndExpand(personAdded.getLastName(),
@@ -113,19 +123,16 @@ public class PersonController {
     }
 
     /**
-     * PUT request to update a person
-     * 
+     * PUT request to update a person.
+     *
      * @param pPerson
-     * @return
+     * @return ResponseEntity<Void>
      */
     @PutMapping(value = "Person/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> update(@RequestBody Person pPerson) {
+    public ResponseEntity<Void> update(@RequestBody final Person pPerson) {
 
         Person personUpdated = personService.updatePerson(pPerson);
-
-        if (personUpdated == null)
-            return ResponseEntity.noContent().build();
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("Person/{lastName}/{firstName}")
@@ -136,14 +143,23 @@ public class PersonController {
         return ResponseEntity.created(location).build();
     }
 
+    /**
+     * DELETE request to remove a person record from DB.
+     *
+     * @param lastName
+     * @param firstName
+     * @return ResponseEntity<Void>
+     */
     @DeleteMapping(value = "Person/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> deletePerson(
             @PathVariable final String lastName,
             @PathVariable final String firstName) {
-
-        personService.deleteAPerson(lastName, firstName);
+        Person personToDelete = null;
+        personToDelete = personService.deleteAPerson(lastName, firstName);
+        if (personToDelete == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().build();
-
     }
 }
