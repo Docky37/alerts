@@ -2,7 +2,6 @@ package com.safetynet.alerts.service;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.controller.PersonNotFoundException;
@@ -19,11 +18,10 @@ public class PersonService {
     }
 
     public List<Person> findAll() {
-        List<Person> personList = personRepository.findAll();
+        List<Person> personList = (List<Person>) personRepository.findAll();
         return personList;
     }
 
-    @Cacheable("person")
     public Person findByLastNameAndFirstName(final String pLastName,
             final String pFirstName) {
         Person foundPerson = personRepository
@@ -35,19 +33,22 @@ public class PersonService {
     }
 
     public Person addPerson(Person pPerson) {
-        Person addedPerson = personRepository.savePerson(pPerson);
+        Person addedPerson = personRepository.save(pPerson);
         return addedPerson;
     }
 
     public Person updatePerson(Person pPerson) {
-        Person updatedPerson = personRepository.updateByLastNameAndFirstName(
+        Person foundPerson = personRepository.findByLastNameAndFirstName(
                 pPerson.getLastName(), pPerson.getFirstName());
+        pPerson.setId(foundPerson.getId());
+        Person updatedPerson = personRepository.save(foundPerson);
         return updatedPerson;
     }
 
-    public Boolean deletePerson(Person pPerson) {
-        personRepository.deleteByLastNameAndFirstName(
+    public void deleteAPerson(Person pPerson) {
+        Person foundPerson = personRepository.findByLastNameAndFirstName(
                 pPerson.getLastName(), pPerson.getFirstName());
-        return true;
+        pPerson.setId(foundPerson.getId());
+        personRepository.deleteById(pPerson.getId());
     }
 }

@@ -1,4 +1,4 @@
-package com.safetynet.alerts.ServiceTests;
+package com.safetynet.alerts.service_tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -97,7 +97,7 @@ public class PersonServiceTest {
         Person personToAdd = new Person(4L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com");
 
-        given(personRepository.savePerson(any(Person.class)))
+        given(personRepository.save(any(Person.class)))
                 .willReturn(personToAdd);
         // WHEN
         Person addedPerson = personService.addPerson(personToAdd);
@@ -108,17 +108,21 @@ public class PersonServiceTest {
 
     }
 
-    @Test // PUT >>> UPDATE 
+    @Test // PUT >>> UPDATE (
     public void givenAPersonToUpdate_whenUpdatePerson_thenReturnUpdatedPerson()
             throws Exception {
         // GIVEN
         Person personToUpdate = personList.get(2);
-        personToUpdate.setEmail("updated@email.com");
-        personToUpdate.setPhone("0123456789");
-        given(personRepository.updateByLastNameAndFirstName(personToUpdate.getLastName(),personToUpdate.getFirstName()))
+        Person updatedPerson = personList.get(2);
+        updatedPerson.setEmail("updated@email.com");
+        updatedPerson.setPhone("0123456789");
+        given(personRepository.findByLastNameAndFirstName(personToUpdate.getLastName(),personToUpdate.getFirstName()))
                 .willReturn(personToUpdate);
+        given(personRepository.save(any(Person.class)))
+                .willReturn(updatedPerson);
+        
         // WHEN
-        Person updatedPerson = personService.updatePerson(personToUpdate);
+        updatedPerson = personService.updatePerson(personToUpdate);
         // THEN
         assertThat(updatedPerson.getFirstName())
                 .isEqualTo(personToUpdate.getFirstName());
@@ -129,14 +133,17 @@ public class PersonServiceTest {
     }
 
     @Test // DELETE
-    public void givenAPersonToDelete_whenDeletePerson_thenReturnIsDeleted()
+    public void givenAPersonToDelete_whenDeletePerson_thenReturnPersonDoesNotExist()
             throws Exception {
         // GIVEN
         Person personToDelete = personList.get(2);
+        given(personRepository.findByLastNameAndFirstName(personToDelete.getLastName(),personToDelete.getFirstName()))
+        .willReturn(personToDelete);
         // WHEN
-        Boolean isPersonDeleted = personService.deletePerson(personToDelete);
+        personService.deleteAPerson(personToDelete);
         // THEN
-        verify(personRepository).deleteByLastNameAndFirstName(personToDelete.getLastName(),personToDelete.getFirstName());
+        verify(personRepository).findByLastNameAndFirstName(personToDelete.getLastName(),personToDelete.getFirstName());
+        verify(personRepository).deleteById(any(Long.class));
      }
 
 }

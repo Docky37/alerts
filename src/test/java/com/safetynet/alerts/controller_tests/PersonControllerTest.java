@@ -1,4 +1,4 @@
-package com.safetynet.alerts.ControllerTest;
+package com.safetynet.alerts.controller_tests;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.anyString;
