@@ -77,7 +77,7 @@ public class AddressFireStationController {
      *
      * @return a List of all address - fire station associations in DB
      */
-    @GetMapping(value = "firestations")
+    @GetMapping(value = "firestation")
     public List<AddressFireStation> findAll() {
         return addressFireStationService.findAll();
     }
@@ -129,7 +129,8 @@ public class AddressFireStationController {
     }
 
     /**
-     * PUT request to update a address - fire station association from DataBase.
+     * PUT request to update an address - fire station association from
+     * DataBase.
      *
      * @param pAddressFireStation
      * @return ResponseEntity<Void>
@@ -143,8 +144,10 @@ public class AddressFireStationController {
                 .updateAddress(pAddressFireStation);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("\"firestation/{address}\"")
-                .buildAndExpand(addressFireStUpdated.getAddress()).toUri();
+                .path("firestation/{address}")
+                .buildAndExpand(addressFireStUpdated.getAddress(),
+                        addressFireStUpdated.getStation())
+                .toUri();
 
         return ResponseEntity.created(location).build();
     }

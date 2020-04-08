@@ -96,7 +96,7 @@ public class AddressFireStationControllerTest {
             throws Exception {
         given(addressFireStationService.findAll())
                 .willReturn(addressFireStationList);
-        mockMVC.perform(MockMvcRequestBuilders.get("/firestations"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/firestation"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
@@ -129,7 +129,6 @@ public class AddressFireStationControllerTest {
             throws Exception {
         AddressFireStation addressFireStToDelete = addressFireStationList
                 .get(1);
-        System.out.println(addressFireStToDelete);
         given(addressFireStationService.deleteAnAddress(anyString()))
                 .willReturn(addressFireStToDelete);
 

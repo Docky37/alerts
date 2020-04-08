@@ -53,8 +53,9 @@ public class Person {
      */
     @Column(name = "phone")
     private String phone;
+
     /**
-     *
+     * The e-mail of the person.
      */
     @Column(name = "email")
     private String email;
