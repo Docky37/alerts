@@ -6,12 +6,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+/**
+ * Application configuration class.
+ *
+ * @author Thierry Schreiner
+ */
 @Configuration
 @Profile("actuator-endpoints")
-public class AppConfig {
+class AppConfig {
 
+    /**
+     * Method needed by htmltrace actuator.
+     * @return InMemoryHttpTraceRepository()
+     */
     @Bean
-    public HttpTraceRepository htttpTraceRepository() {
+    final public HttpTraceRepository htttpTraceRepository() {
         return new InMemoryHttpTraceRepository();
     }
 

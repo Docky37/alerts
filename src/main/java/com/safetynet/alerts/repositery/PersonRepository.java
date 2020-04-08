@@ -16,7 +16,7 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     /**
      * A method that allows us to find a person with lastName & firstName as
      * arguments.
-     * 
+     *
      * @param pLastName
      * @param pFirstName
      * @return the Person

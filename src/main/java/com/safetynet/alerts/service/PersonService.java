@@ -8,6 +8,11 @@ import com.safetynet.alerts.controller.PersonNotFoundException;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repositery.PersonRepository;
 
+/**
+ * PersonService is the class in charge of the person business work.
+ *
+ * @author Thierry Schreiner
+ */
 @Service
 public class PersonService {
 
