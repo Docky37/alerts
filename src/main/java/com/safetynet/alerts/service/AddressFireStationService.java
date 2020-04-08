@@ -131,6 +131,7 @@ public class AddressFireStationService {
     public AddressFireStation deleteAnAddress(final String pAddress) {
         AddressFireStation foundAddressFireSt = addressFireStationRepository
                 .findByAddress(pAddress);
+System.out.println(foundAddressFireSt);
         if (foundAddressFireSt != null) {
             addressFireStationRepository.deleteById(foundAddressFireSt.getId());
         }

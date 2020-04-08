@@ -1,25 +1,46 @@
 package com.safetynet.alerts.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * AddressFireStation class, use to map an address and its covering fire
  * station.
  *
  * @author Thierry SCHREINER
  */
+@Entity
+@Table(name = "address")
 public class AddressFireStation {
 
     /**
      * The id of the mapping.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private long id;
     /**
      * The address of the house.
      */
+    @Column(name = "address")
     private String address;
     /**
      * The identification number of the covering fire station.
      */
+    @Column(name = "station")
     private String station;
+
+    /**
+     * Empty constructor.
+     */
+    public AddressFireStation() {
+
+    }
 
     /**
      * Class constructor.

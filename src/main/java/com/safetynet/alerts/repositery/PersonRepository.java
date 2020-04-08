@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository;
 import com.safetynet.alerts.model.Person;
 
 /**
- * Interface PersonRepository allows us to use CrudRepository methods.
+ * The interface PersonRepository allows us to use CrudRepository methods
+ * without any implementation. The application uses the standard methods save,
+ * saveAll, findAll, put and remove from the CrudRepository interface. It also
+ * define a findByLastName and firstName method.
  *
  * @author docky
  */
@@ -14,8 +17,8 @@ import com.safetynet.alerts.model.Person;
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
     /**
-     * A method that allows us to find a person with lastName & firstName as
-     * arguments.
+     * The method use keyword "findBy" associated to repository fields, so it is
+     * easily resolved by the CrudRepository.
      *
      * @param pLastName
      * @param pFirstName
