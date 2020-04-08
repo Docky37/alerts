@@ -23,7 +23,7 @@ import com.safetynet.alerts.service.AddressFireStationService;
  * AddressFireStationController class, used to create administrative endpoints
  * for CRUD operations on address-fire station mapping.
  *
- * @author docky
+ * @author Thierry Schreiner
  */
 @RestController
 public class AddressFireStationController {
@@ -55,17 +55,17 @@ public class AddressFireStationController {
     public ResponseEntity<Void> create(
             @RequestBody final List<AddressFireStation> pListFireStation) {
 
-        List<AddressFireStation> listFireStationAdded = addressFireStationService
+        List<AddressFireStation> listFireStAdded = addressFireStationService
                 .addListFireStations(pListFireStation);
 
-        if (listFireStationAdded == null) {
+        if (listFireStAdded == null) {
             return ResponseEntity.noContent().build();
         }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("firestations/")
-                .buildAndExpand(listFireStationAdded.get(1).getAddress(),
-                        listFireStationAdded.get(1).getStation())
+                .buildAndExpand(listFireStAdded.get(1).getAddress(),
+                        listFireStAdded.get(1).getStation())
                 .toUri();
 
         return ResponseEntity.created(location).build();
@@ -111,8 +111,8 @@ public class AddressFireStationController {
     /**
      * GET request to find one address-fire station association.
      *
-     * @param pAddress
-     * @return a AddressFireStation
+     * @param address
+     * @return AddressFireStation
      * @throws AddressFireStationNotFoundException
      */
     @GetMapping(value = "firestation/{address}")
@@ -131,7 +131,7 @@ public class AddressFireStationController {
     /**
      * PUT request to update a address - fire station association from DataBase.
      *
-     * @param address
+     * @param pAddressFireStation
      * @return ResponseEntity<Void>
      */
     @PutMapping(value = "firestation/{address}")

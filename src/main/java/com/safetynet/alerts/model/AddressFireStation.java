@@ -24,9 +24,9 @@ public class AddressFireStation {
     /**
      * Class constructor.
      *
-     * @param id
-     * @param address
-     * @param station
+     * @param pId
+     * @param pAddress
+     * @param pStation
      */
     public AddressFireStation(final long pId, final String pAddress,
             final String pStation) {
@@ -38,7 +38,7 @@ public class AddressFireStation {
 
     /**
      * Getter of id.
-     * 
+     *
      * @return an long - the id of the mapping address
      */
     public long getId() {
@@ -47,7 +47,7 @@ public class AddressFireStation {
 
     /**
      * Setter of id.
-     * 
+     *
      * @param pId - the id of the fire station
      */
     public void setId(final long pId) {
