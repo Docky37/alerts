@@ -2,8 +2,11 @@ package com.safetynet.alerts.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.PersonNotFoundException;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.repositery.PersonRepository;
@@ -15,6 +18,12 @@ import com.safetynet.alerts.repositery.PersonRepository;
  */
 @Service
 public class PersonService {
+
+    /**
+     * Create a SLF4J/LOG4J LOGGER instance.
+     */
+    static final Logger LOGGER = LoggerFactory
+            .getLogger(AlertsApplication.class);
 
     /**
      * PersonRepository is an Interface that extends CrudRepository.

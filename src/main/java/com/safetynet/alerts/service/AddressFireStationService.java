@@ -19,16 +19,16 @@ public class AddressFireStationService {
     /**
      * PersonRepository is an Interface that extends CrudRepository.
      */
-    private AddressFireStationRepository addressFireStationRepository;
+    private AddressFireStationRepository addressFireStRepository;
 
     /**
-     * Class constructor - Set addressFireStationRepository (IoC).
+     * Class constructor - Set addressFireStRepository (IoC).
      *
      * @param pAddressFireStRepositery
      */
     public AddressFireStationService(
             final AddressFireStationRepository pAddressFireStRepositery) {
-        addressFireStationRepository = pAddressFireStRepositery;
+        addressFireStRepository = pAddressFireStRepositery;
     }
 
     /**
@@ -42,7 +42,7 @@ public class AddressFireStationService {
     public List<AddressFireStation> addListFireStations(
             final List<AddressFireStation> pListFireStation) {
         List<AddressFireStation> createdList;
-        createdList = (List<AddressFireStation>) addressFireStationRepository
+        createdList = (List<AddressFireStation>) addressFireStRepository
                 .saveAll(pListFireStation);
         return createdList;
     }
@@ -56,7 +56,7 @@ public class AddressFireStationService {
      */
     public List<AddressFireStation> findAll() {
         List<AddressFireStation> addressFireStList;
-        addressFireStList = (List<AddressFireStation>) addressFireStationRepository
+        addressFireStList = (List<AddressFireStation>) addressFireStRepository
                 .findAll();
         return addressFireStList;
     }
@@ -71,10 +71,10 @@ public class AddressFireStationService {
      */
     public AddressFireStation addAddressFireStation(
             final AddressFireStation pAddressFireStation) {
-        AddressFireStation foundAddressFireSt = addressFireStationRepository
+        AddressFireStation foundAddressFireSt = addressFireStRepository
                 .findByAddress(pAddressFireStation.getAddress());
         if (foundAddressFireSt == null) {
-            AddressFireStation addedAddressFireSt = addressFireStationRepository
+            AddressFireStation addedAddressFireSt = addressFireStRepository
                     .save(pAddressFireStation);
             return addedAddressFireSt;
         } else {
@@ -93,7 +93,7 @@ public class AddressFireStationService {
      */
     public AddressFireStation findByAddress(final String pAddress)
             throws AddressFireStationNotFoundException {
-        AddressFireStation foundAddressFireSt = addressFireStationRepository
+        AddressFireStation foundAddressFireSt = addressFireStRepository
                 .findByAddress(pAddress);
         if (foundAddressFireSt == null) {
             throw new AddressFireStationNotFoundException();
@@ -112,10 +112,10 @@ public class AddressFireStationService {
     public AddressFireStation updateAddress(
             final AddressFireStation pAddressFireStation) {
         AddressFireStation addressFireStToUpdate = pAddressFireStation;
-        AddressFireStation foundAddressFireSt = addressFireStationRepository
+        AddressFireStation foundAddressFireSt = addressFireStRepository
                 .findByAddress(pAddressFireStation.getAddress());
         addressFireStToUpdate.setId(foundAddressFireSt.getId());
-        AddressFireStation updatedAddressFireSt = addressFireStationRepository
+        AddressFireStation updatedAddressFireSt = addressFireStRepository
                 .save(addressFireStToUpdate);
         return updatedAddressFireSt;
     }
@@ -129,11 +129,11 @@ public class AddressFireStationService {
      * @return an AddressFireStation instance
      */
     public AddressFireStation deleteAnAddress(final String pAddress) {
-        AddressFireStation foundAddressFireSt = addressFireStationRepository
+        AddressFireStation foundAddressFireSt = addressFireStRepository
                 .findByAddress(pAddress);
 System.out.println(foundAddressFireSt);
         if (foundAddressFireSt != null) {
-            addressFireStationRepository.deleteById(foundAddressFireSt.getId());
+            addressFireStRepository.deleteById(foundAddressFireSt.getId());
         }
         return foundAddressFireSt;
     }

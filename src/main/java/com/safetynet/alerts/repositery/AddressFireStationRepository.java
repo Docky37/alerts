@@ -22,6 +22,6 @@ public interface AddressFireStationRepository
      * @param pAddressFireStation
      * @return an AddressFireStation instance
      */
-    AddressFireStation findByAddress(final String pAddressFireStation);
+    AddressFireStation findByAddress(String pAddressFireStation);
 
 }

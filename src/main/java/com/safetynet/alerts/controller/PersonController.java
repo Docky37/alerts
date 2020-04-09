@@ -3,6 +3,8 @@ package com.safetynet.alerts.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.service.PersonService;
 
@@ -27,6 +30,12 @@ import com.safetynet.alerts.service.PersonService;
  */
 @RestController
 public class PersonController {
+
+    /**
+     * Create a SLF4J/LOG4J LOGGER instance.
+     */
+    static final Logger LOGGER = LoggerFactory
+            .getLogger(AlertsApplication.class);
 
     /**
      * The service class used to manage person administrative CRUD operations.

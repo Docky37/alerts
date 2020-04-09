@@ -20,7 +20,7 @@ class AppConfig {
      * @return InMemoryHttpTraceRepository()
      */
     @Bean
-    final public HttpTraceRepository htttpTraceRepository() {
+    protected final HttpTraceRepository htttpTraceRepository() {
         return new InMemoryHttpTraceRepository();
     }
 
