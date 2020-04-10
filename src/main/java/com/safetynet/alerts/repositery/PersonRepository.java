@@ -3,7 +3,7 @@ package com.safetynet.alerts.repositery;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.safetynet.alerts.model.Person;
+import com.safetynet.alerts.model.PersonEntity;
 
 /**
  * The interface PersonRepository allows us to use CrudRepository methods
@@ -14,7 +14,7 @@ import com.safetynet.alerts.model.Person;
  * @author docky
  */
 @Repository
-public interface PersonRepository extends CrudRepository<Person, Long> {
+public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
 
     /**
      * The method use keyword "findBy" associated to repository fields, so it is
@@ -24,5 +24,5 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
      * @param pFirstName
      * @return the Person
      */
-    Person findByLastNameAndFirstName(String pLastName, String pFirstName);
+    PersonEntity findByLastNameAndFirstName(String pLastName, String pFirstName);
 }

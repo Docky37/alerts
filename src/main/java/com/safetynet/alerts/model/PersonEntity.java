@@ -1,45 +1,56 @@
 package com.safetynet.alerts.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;;
 
 /**
  * Person class, used to contain inhabitant data.
  *
  * @author Thierry SCHREINER
  */
-public class Person {
+@Entity
+@Table(name = "persons")
+public class PersonEntity {
 
     /**
      * The id of the person.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private long id;
     /**
      * The first name of the person.
      */
+    @Column(name = "first_name")
     private String firstName;
     /**
      * The last name of the person.
      */
+    @Column(name = "last_name")
     private String lastName;
     /**
      * The address of the person.
      */
-    private String address;
-    /**
-     * The city where lives the person.
-     */
-    private String city;
-    /**
-     * Zip code of the city where lives the person.
-     */
-    private String zip;
+    @ManyToOne(targetEntity = AddressFireStation.class)
+    @JoinColumn(name = "address_id")
+    private AddressFireStation address_id;
     /**
      * The phone number of the person.
      */
+    @Column(name = "phone")
     private String phone;
 
     /**
      * The e-mail of the person.
      */
+    @Column(name = "email")
     private String email;
 
     /**
@@ -54,16 +65,14 @@ public class Person {
      * @param pPhone
      * @param pEmail
      */
-    public Person(final Long pId, final String pFirstName,
-            final String pLastName, final String pAddress, final String pCity,
-            final String pZip, final String pPhone, final String pEmail) {
+    public PersonEntity(final Long pId, final String pFirstName,
+            final String pLastName, final AddressFireStation pAddressFireSt,
+            final String pPhone, final String pEmail) {
         super();
         id = pId;
         firstName = pFirstName;
         lastName = pLastName;
-        address = pAddress;
-        city = pCity;
-        zip = pZip;
+        address_id = pAddressFireSt;
         phone = pPhone;
         email = pEmail;
     }
@@ -71,7 +80,7 @@ public class Person {
     /**
      * Empty constructor.
      */
-    public Person() {
+    public PersonEntity() {
     }
 
     /**
@@ -133,8 +142,8 @@ public class Person {
      *
      * @return a String
      */
-    public String getAddress() {
-        return address;
+    public AddressFireStation getAddressFireSt() {
+        return address_id;
     }
 
     /**
@@ -142,44 +151,8 @@ public class Person {
      *
      * @param pAddress
      */
-    public void setAddress(final String pAddress) {
-        address = pAddress;
-    }
-
-    /**
-     * Getter of the person city.
-     *
-     * @return a String
-     */
-    public String getCity() {
-        return city;
-    }
-
-    /**
-     * Getter of the person city.
-     *
-     * @param pCity
-     */
-    public void setCity(final String pCity) {
-        city = pCity;
-    }
-
-    /**
-     * Getter of the city zip code.
-     *
-     * @return a String
-     */
-    public String getZip() {
-        return zip;
-    }
-
-    /**
-     * Setter of the city zip code.
-     *
-     * @param pZip
-     */
-    public void setZip(final String pZip) {
-        zip = pZip;
+    public void setAddressFireSt(final AddressFireStation pAddressFireSt) {
+        address_id = pAddressFireSt;
     }
 
     /**
@@ -224,9 +197,8 @@ public class Person {
     @Override
     public String toString() {
         return "Person [id= " + id + ", firstName=" + firstName + ", lastName="
-                + lastName + ", address=" + address + ", city=" + city
-                + ", zip=" + zip + ", phone=" + phone + ", email=" + email
-                + "]";
+                + lastName + ", address=" + address_id.getAddress() + ", phone="
+                + phone + ", email=" + email + "]";
     }
 
 }

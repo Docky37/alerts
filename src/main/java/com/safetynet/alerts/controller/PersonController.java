@@ -85,7 +85,7 @@ public class PersonController {
      */
     @GetMapping(value = "Person")
     public List<Person> findAll() {
-        return personService.findAll();
+        return null;//personService.findAll();
     }
 
     /**
@@ -98,7 +98,7 @@ public class PersonController {
     @GetMapping(value = "Person/{lastName}/{firstName}")
     public Person findPersonByName(@PathVariable final String lastName,
             @PathVariable final String firstName) {
-        return personService.findByLastNameAndFirstName(lastName, firstName);
+        return null;//personService.findByLastNameAndFirstName(lastName, firstName);
     }
 
     @ExceptionHandler
@@ -117,7 +117,7 @@ public class PersonController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody final Person pPerson) {
 
-        Person personAdded = personService.addPerson(pPerson);
+        Person personAdded = null;//personService.addPerson(pPerson);
 
         if (personAdded == null) {
             return ResponseEntity.noContent().build();
@@ -141,7 +141,7 @@ public class PersonController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> update(@RequestBody final Person pPerson) {
 
-        Person personUpdated = personService.updatePerson(pPerson);
+        Person personUpdated = null;//personService.updatePerson(pPerson);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("Person/{lastName}/{firstName}")
@@ -165,7 +165,7 @@ public class PersonController {
             @PathVariable final String lastName,
             @PathVariable final String firstName) {
         Person personToDelete = null;
-        personToDelete = personService.deleteAPerson(lastName, firstName);
+        personToDelete = null;//personService.deleteAPerson(lastName, firstName);
         if (personToDelete == null) {
             return ResponseEntity.notFound().build();
         }
