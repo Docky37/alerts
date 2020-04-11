@@ -98,7 +98,7 @@ public class PersonController {
     @GetMapping(value = "Person/{lastName}/{firstName}")
     public Person findPersonByName(@PathVariable final String lastName,
             @PathVariable final String firstName) {
-        return null;//personService.findByLastNameAndFirstName(lastName, firstName);
+        return personService.findByLastNameAndFirstName(lastName, firstName);
     }
 
     @ExceptionHandler
@@ -117,7 +117,7 @@ public class PersonController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody final Person pPerson) {
 
-        Person personAdded = null;//personService.addPerson(pPerson);
+        Person personAdded = personService.addPerson(pPerson);
 
         if (personAdded == null) {
             return ResponseEntity.noContent().build();
@@ -141,15 +141,19 @@ public class PersonController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> update(@RequestBody final Person pPerson) {
 
-        Person personUpdated = null;//personService.updatePerson(pPerson);
+        Person personUpdated = personService.updatePerson(pPerson);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("Person/{lastName}/{firstName}")
-                .buildAndExpand(personUpdated.getLastName(),
-                        personUpdated.getFirstName())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
+        if (personUpdated != null) {
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("Person/{lastName}/{firstName}")
+                    .buildAndExpand(personUpdated.getLastName(),
+                            personUpdated.getFirstName())
+                    .toUri();
+    
+            return ResponseEntity.created(location).build();
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -165,7 +169,7 @@ public class PersonController {
             @PathVariable final String lastName,
             @PathVariable final String firstName) {
         Person personToDelete = null;
-        personToDelete = null;//personService.deleteAPerson(lastName, firstName);
+        personToDelete = personService.deleteAPerson(lastName, firstName);
         if (personToDelete == null) {
             return ResponseEntity.notFound().build();
         }

@@ -12,7 +12,7 @@ import com.safetynet.alerts.controller.PersonNotFoundException;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
-import com.safetynet.alerts.service.util.PersonMapping;
+import com.safetynet.alerts.utils.PersonMapping;
 
 /**
  * PersonService is the class in charge of the person business work.
@@ -58,7 +58,7 @@ public class PersonService {
         List<PersonEntity> createdList = (List<PersonEntity>) personRepository
                 .saveAll(listPE);
 
-        return pListPerson;
+        return personMapping.convertToPerson(createdList);
     }
 
     /**
@@ -79,61 +79,87 @@ public class PersonService {
      * in DB.
      *
      * @param pLastName
-     * 
      * @param pFirstName
-     * 
      * @return a Person (the found person)
      */
-    /*
-     * public Person findByLastNameAndFirstName(final String pLastName, final
-     * String pFirstName) { Person foundPerson = personRepository
-     * .findByLastNameAndFirstName(pLastName, pFirstName); if (foundPerson ==
-     * null) { throw new PersonNotFoundException(); } return foundPerson; }
-     * 
-     * /** The addPerson method that first verify if the person already exists
-     * in DB before adding him with the save method of CrudRepository.
+    public Person findByLastNameAndFirstName(final String pLastName,
+            final String pFirstName) {
+        PersonEntity foundPE = personRepository
+                .findByLastNameAndFirstName(pLastName, pFirstName);
+        if (foundPE == null) {
+            throw new PersonNotFoundException();
+        }
+        Person foundPerson = personMapping.convertToPerson(foundPE);
+        return foundPerson;
+    }
+
+    /**
+     * The addPerson method first uses the
+     * personRepository.findByLastNameAndFirstName method to verify if the
+     * person already exists in DB. If not, it calls the method
+     * personMapping.convertToPersonEntity(pPerson), and then it add the
+     * PersonEntity returned with the save method of CrudRepository.
      *
      * @param pPerson
-     * 
      * @return a Person (the added person) or null if person already exists.
      */
-    /*
-     * public Person addPerson(final Person pPerson) { Person foundPerson =
-     * personRepository.findByLastNameAndFirstName( pPerson.getLastName(),
-     * pPerson.getFirstName()); if (foundPerson == null) { Person addedPerson =
-     * personRepository.save(pPerson); return addedPerson; } else { return null;
-     * } }
-     * 
-     * /** Update method that uses first findByLastNameAndFirstName to find the
-     * Person to update in DB and invokes the save method of CrudRepository.
+    public Person addPerson(final Person pPerson) {
+        PersonEntity pEnt = personRepository.findByLastNameAndFirstName(
+                pPerson.getLastName(), pPerson.getFirstName());
+        if (pEnt == null) {
+            pEnt = personMapping.convertToPersonEntity(pPerson);
+            PersonEntity addedPerson = personRepository.save(pEnt);
+            pEnt = personRepository.findByLastNameAndFirstName(
+                    pPerson.getLastName(), pPerson.getFirstName());
+            return pPerson;
+        }
+        return null;
+    }
+
+    /**
+     * The updatePerson method first uses the
+     * personRepository.findByLastNameAndFirstName method to verify if the
+     * person already exists in DB. If person exists, it calls the method
+     * personMapping.convertToPersonEntity(pPerson), and then it calls the save
+     * method of CrudRepository. It ends returning the convertToPerson return of
+     * the personRepository.save method.
      *
-     * @param pPerson
-     * 
-     * @return a Person (the updated person)
+     * @param pPerson - the person to update
+     * @return a Person (the updated person) or null if person to update not
+     *         found.
      */
-    /*
-     * public Person updatePerson(final Person pPerson) { Person personToUpdate
-     * = pPerson; Person foundPerson =
-     * personRepository.findByLastNameAndFirstName( pPerson.getLastName(),
-     * pPerson.getFirstName()); personToUpdate.setId(foundPerson.getId());
-     * Person updatedPerson = personRepository.save(personToUpdate); return
-     * updatedPerson; }
-     * 
-     * /** Delete method that uses first findByLastNameAndFirstName to find the
+    public Person updatePerson(final Person pPerson) {
+        PersonEntity pEnt = personRepository.findByLastNameAndFirstName(
+                pPerson.getLastName(), pPerson.getFirstName());
+        if (pEnt != null) {
+            long id = pEnt.getId();
+            pEnt = personMapping.convertToPersonEntity(pPerson);
+            pEnt.setId(id);
+            PersonEntity updatedPEnt = personRepository.save(pEnt);
+            return personMapping.convertToPerson(updatedPEnt);
+        }
+        return null;
+    }
+
+    /**
+     * Delete method that uses first findByLastNameAndFirstName to find the
      * Person to delete in DB and get its id to invokes the deleteById method of
      * CrudRepository.
      *
      * @param pLastName
-     * 
      * @param pFirstName
-     * 
-     * @return a Person (the deleted person) or null if not found.
+     * @return a Person (the deleted person) or null if person to delete not
+     *         found.
      */
-    /*
-     * public Person deleteAPerson(final String pLastName, final String
-     * pFirstName) { Person foundPerson = personRepository
-     * .findByLastNameAndFirstName(pLastName, pFirstName); if (foundPerson !=
-     * null) { personRepository.deleteById(foundPerson.getId()); } return
-     * foundPerson; }
-     */
+    public Person deleteAPerson(final String pLastName,
+            final String pFirstName) {
+        PersonEntity pEnt = personRepository
+                .findByLastNameAndFirstName(pLastName, pFirstName);
+        if (pEnt != null) {
+            personRepository.deleteById(pEnt.getId());
+            return personMapping.convertToPerson(pEnt);
+        }
+        return null;
+    }
+
 }

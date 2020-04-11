@@ -1,4 +1,4 @@
-package com.safetynet.alerts.service.util;
+package com.safetynet.alerts.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,12 +91,18 @@ public class PersonMapping {
      */
     public Person convertToPerson(PersonEntity pEnt) {
         Person person = new Person();
-            person.setFirstName(pEnt.getFirstName());
-            person.setLastName(pEnt.getLastName());
-            person.setAddress(pEnt.getAddressFireSt().getAddress());
-            person.setPhone(pEnt.getPhone());
-            person.setEmail(pEnt.getEmail());
-        
-        return person; 
+        person.setId(pEnt.getId());
+        person.setFirstName(pEnt.getFirstName());
+        person.setLastName(pEnt.getLastName());
+        person.setAddress(pEnt.getAddressFireSt().getAddress());
+// A modifier --------------------------------------------------
+        person.setCity("Culver");
+// A modifier --------------------------------------------------
+        person.setZip("97451");
+// -------------------------------------------------------------
+        person.setPhone(pEnt.getPhone());
+        person.setEmail(pEnt.getEmail());
+
+        return person;
     }
 }
