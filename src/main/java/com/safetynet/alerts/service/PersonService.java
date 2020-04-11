@@ -17,6 +17,7 @@ import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.AddressFireStationRepository;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.DozerMappingUtil;
+import com.safetynet.alerts.service.util.PersonMapping;
 
 /**
  * PersonService is the class in charge of the person business work.
@@ -37,6 +38,8 @@ public class PersonService {
      */
     private PersonRepository personRepository;
 
+    @Autowired
+    private PersonMapping personMapping;
     /**
      * Class constructor - Set personRepository (IoC).
      *
@@ -45,8 +48,6 @@ public class PersonService {
     public PersonService(final PersonRepository pPersonRepositery) {
         personRepository = pPersonRepositery;
     }
-    @Autowired
-    AddressFireStationRepository addressFireStationRepository;
 
     /**
      * The addListPersons method allows user to save a list of persons in DB.
@@ -55,20 +56,8 @@ public class PersonService {
      * @return a List<Person> (of created persons)
      */
     public List<Person> addListPersons(final List<Person> pListPerson) {
-        List<PersonEntity> listPE = new ArrayList<PersonEntity>();
-        PersonEntity pEnt = new PersonEntity();
-        for (Person p : pListPerson) {
-            pEnt.setFirstName(p.getFirstName());
-            pEnt.setLastName(p.getLastName());
-            pEnt.setAddressFireSt(addressFireStationRepository.findByAddress(p.getAddress()));
-            pEnt.setPhone(p.getPhone());
-            pEnt.setEmail(p.getEmail());
-            listPE.add(pEnt);
-System.out.println(pEnt);
-            pEnt=new PersonEntity();
-        }
-System.out.println("------------------------------------------------------------");
-System.out.println(listPE);
+        List<PersonEntity> listPE = personMapping.convertToPersonEntity(pListPerson);
+
 
         List<PersonEntity> createdList = (List<PersonEntity>) personRepository
                 .saveAll(listPE);
