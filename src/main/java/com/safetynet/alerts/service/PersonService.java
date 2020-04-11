@@ -1,8 +1,6 @@
 package com.safetynet.alerts.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.PersonNotFoundException;
-import com.safetynet.alerts.model.AddressFireStation;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
-import com.safetynet.alerts.repositery.AddressFireStationRepository;
 import com.safetynet.alerts.repositery.PersonRepository;
-import com.safetynet.alerts.service.DozerMappingUtil;
 import com.safetynet.alerts.service.util.PersonMapping;
 
 /**
@@ -40,6 +35,7 @@ public class PersonService {
 
     @Autowired
     private PersonMapping personMapping;
+
     /**
      * Class constructor - Set personRepository (IoC).
      *
@@ -56,11 +52,12 @@ public class PersonService {
      * @return a List<Person> (of created persons)
      */
     public List<Person> addListPersons(final List<Person> pListPerson) {
-        List<PersonEntity> listPE = personMapping.convertToPersonEntity(pListPerson);
-
+        List<PersonEntity> listPE = personMapping
+                .convertToPersonEntity(pListPerson);
 
         List<PersonEntity> createdList = (List<PersonEntity>) personRepository
                 .saveAll(listPE);
+
         return pListPerson;
     }
 
@@ -69,12 +66,17 @@ public class PersonService {
      *
      * @return a List<Person> (of saved persons)
      */
-    /*
-     * public List<Person> findAll() { List<Person> personList = (List<Person>)
-     * personRepository.findAll(); return personList; }
-     * 
-     * /** The findByLastNameAndFirstName method that allows user to find a
-     * person in DB.
+    public List<Person> findAll() {
+        List<PersonEntity> listPE = (List<PersonEntity>) personRepository
+                .findAll();
+        List<Person> personList = personMapping.convertToPerson(listPE);
+
+        return personList;
+    }
+
+    /**
+     * The findByLastNameAndFirstName method that allows user to find a person
+     * in DB.
      *
      * @param pLastName
      * 

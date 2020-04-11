@@ -64,4 +64,39 @@ public class PersonMapping {
         return pEnt;
     }
 
+    /**
+     * This method is used to transform a list of PersonEntity to a list of
+     * Person, using the next method to convert each PersonEntity to Person.
+     *
+     * @param listPE - the list of PersonEntity
+     * @return a List<Person> object
+     */
+    public List<Person> convertToPerson(List<PersonEntity> listPE) {
+        List<Person> listPersons = new ArrayList<Person>();
+        Person person = new Person();
+        for (PersonEntity pEnt : listPE) {
+            person = convertToPerson(pEnt);
+            listPersons.add(person);
+            person = new Person();
+        }
+
+        return (listPersons);
+    }
+
+    /**
+     * This method convert a PersonEntity to a Person.
+     *
+     * @param pEnt - the PersonEntity object to convert
+     * @return a Person object
+     */
+    public Person convertToPerson(PersonEntity pEnt) {
+        Person person = new Person();
+            person.setFirstName(pEnt.getFirstName());
+            person.setLastName(pEnt.getLastName());
+            person.setAddress(pEnt.getAddressFireSt().getAddress());
+            person.setPhone(pEnt.getPhone());
+            person.setEmail(pEnt.getEmail());
+        
+        return person; 
+    }
 }

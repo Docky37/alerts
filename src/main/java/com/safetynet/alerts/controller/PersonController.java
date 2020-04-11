@@ -85,7 +85,7 @@ public class PersonController {
      */
     @GetMapping(value = "Person")
     public List<Person> findAll() {
-        return null;//personService.findAll();
+        return personService.findAll();
     }
 
     /**
