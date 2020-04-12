@@ -96,9 +96,9 @@ public class PersonMapping {
         person.setLastName(pEnt.getLastName());
         person.setAddress(pEnt.getAddressFireSt().getAddress());
 // A modifier --------------------------------------------------
-        person.setCity("Culver");
+        person.setCity(pEnt.getAddressFireSt().getCity());
 // A modifier --------------------------------------------------
-        person.setZip("97451");
+        person.setZip(pEnt.getAddressFireSt().getZip());
 // -------------------------------------------------------------
         person.setPhone(pEnt.getPhone());
         person.setEmail(pEnt.getEmail());

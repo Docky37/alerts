@@ -30,6 +30,16 @@ public class AddressFireStation {
     @Column(name = "address")
     private String address;
     /**
+     * The city of the address.
+     */
+    @Column(name = "city")
+    private String city = "Culver";
+    /**
+     * The zip code of the city.
+     */
+    @Column(name = "zip")
+    private String zip = "97451";
+    /**
      * The identification number of the covering fire station.
      */
     @Column(name = "station")
@@ -94,6 +104,34 @@ public class AddressFireStation {
     }
 
     /**
+     * @return the city
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * @param city the city to set
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * @return the zip
+     */
+    public String getZip() {
+        return zip;
+    }
+
+    /**
+     * @param zip the zip to set
+     */
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    /**
      * Getter of station (identification number).
      *
      * @return a String - the station identification number
@@ -116,8 +154,8 @@ public class AddressFireStation {
      */
     @Override
     public String toString() {
-        return "FireStations [id=" + id + ", adress=" + address + ", station="
-                + station + "]";
+        return "FireStations [id=" + id + ", address=" + address + ", city="
+                + city + ", zip code=" + zip + ", station=" + station + "]";
     }
 
 }
