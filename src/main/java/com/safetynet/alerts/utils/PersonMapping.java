@@ -35,7 +35,7 @@ public class PersonMapping {
      * @param pListPerson - a list of Person objects
      * @return a list of PersonEntity objects
      */
-    public List<PersonEntity> convertToPersonEntity(List<Person> pListPerson) {
+    public List<PersonEntity> convertToPersonEntity(final List<Person> pListPerson) {
         List<PersonEntity> listPE = new ArrayList<PersonEntity>();
         PersonEntity pEnt = new PersonEntity();
         for (Person p : pListPerson) {
@@ -52,7 +52,7 @@ public class PersonMapping {
      * @param pPerson - the Person object to convert
      * @return a PersonEntity object
      */
-    public PersonEntity convertToPersonEntity(Person pPerson) {
+    public PersonEntity convertToPersonEntity(final Person pPerson) {
         PersonEntity pEnt = new PersonEntity();
         pEnt.setFirstName(pPerson.getFirstName());
         pEnt.setLastName(pPerson.getLastName());
@@ -71,7 +71,7 @@ public class PersonMapping {
      * @param listPE - the list of PersonEntity
      * @return a List<Person> object
      */
-    public List<Person> convertToPerson(List<PersonEntity> listPE) {
+    public List<Person> convertToPerson(final List<PersonEntity> listPE) {
         List<Person> listPersons = new ArrayList<Person>();
         Person person = new Person();
         for (PersonEntity pEnt : listPE) {
@@ -89,7 +89,7 @@ public class PersonMapping {
      * @param pEnt - the PersonEntity object to convert
      * @return a Person object
      */
-    public Person convertToPerson(PersonEntity pEnt) {
+    public Person convertToPerson(final PersonEntity pEnt) {
         Person person = new Person();
         person.setId(pEnt.getId());
         person.setFirstName(pEnt.getFirstName());

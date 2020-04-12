@@ -24,5 +24,6 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
      * @param pFirstName
      * @return the Person
      */
-    PersonEntity findByLastNameAndFirstName(String pLastName, String pFirstName);
+    PersonEntity findByLastNameAndFirstName(String pLastName,
+            String pFirstName);
 }

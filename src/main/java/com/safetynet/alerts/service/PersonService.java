@@ -31,18 +31,26 @@ public class PersonService {
     /**
      * PersonRepository is an Interface that extends CrudRepository.
      */
+    @Autowired
     private PersonRepository personRepository;
 
+    /**
+     * PersonMapping is an utility that provides bidirectional conversion
+     * between Person and PersoonEntity.
+     */
     @Autowired
     private PersonMapping personMapping;
 
     /**
-     * Class constructor - Set personRepository (IoC).
+     * Class constructor - Set personRepository and personMapping(IoC).
      *
-     * @param pPersonRepositery
+     * @param pPersonRepos
+     * @param pPersonMapping
      */
-    public PersonService(final PersonRepository pPersonRepositery) {
-        personRepository = pPersonRepositery;
+    public PersonService(final PersonRepository pPersonRepos,
+            final PersonMapping pPersonMapping) {
+        personRepository = pPersonRepos;
+        personMapping = pPersonMapping;
     }
 
     /**
@@ -110,8 +118,8 @@ public class PersonService {
             pEnt = personMapping.convertToPersonEntity(pPerson);
             PersonEntity addedPerson = personRepository.save(pEnt);
             pEnt = personRepository.findByLastNameAndFirstName(
-                    pPerson.getLastName(), pPerson.getFirstName());
-            return pPerson;
+                    addedPerson.getLastName(), addedPerson.getFirstName());
+            return personMapping.convertToPerson(pEnt);
         }
         return null;
     }

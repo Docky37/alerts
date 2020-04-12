@@ -149,9 +149,8 @@ public class PersonController {
                     .buildAndExpand(personUpdated.getLastName(),
                             personUpdated.getFirstName())
                     .toUri();
-    
             return ResponseEntity.created(location).build();
-        }else {
+        } else {
             return ResponseEntity.notFound().build();
         }
     }

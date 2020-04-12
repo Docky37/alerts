@@ -39,8 +39,8 @@ public class PersonEntity {
      * The address of the person.
      */
     @ManyToOne(targetEntity = AddressFireStation.class)
-    @JoinColumn(name = "address_id")
-    private AddressFireStation address_id;
+    @JoinColumn(name = "addressId")
+    private AddressFireStation addressId;
     /**
      * The phone number of the person.
      */
@@ -59,9 +59,7 @@ public class PersonEntity {
      * @param pId
      * @param pFirstName
      * @param pLastName
-     * @param pAddress
-     * @param pCity
-     * @param pZip
+     * @param pAddressFireSt - Many to One join with AddressFireStation
      * @param pPhone
      * @param pEmail
      */
@@ -72,7 +70,7 @@ public class PersonEntity {
         id = pId;
         firstName = pFirstName;
         lastName = pLastName;
-        address_id = pAddressFireSt;
+        addressId = pAddressFireSt;
         phone = pPhone;
         email = pEmail;
     }
@@ -143,16 +141,16 @@ public class PersonEntity {
      * @return a String
      */
     public AddressFireStation getAddressFireSt() {
-        return address_id;
+        return addressId;
     }
 
     /**
      * Setter of the person address.
      *
-     * @param pAddress
+     * @param pAddressFireSt
      */
     public void setAddressFireSt(final AddressFireStation pAddressFireSt) {
-        address_id = pAddressFireSt;
+        addressId = pAddressFireSt;
     }
 
     /**
@@ -197,7 +195,7 @@ public class PersonEntity {
     @Override
     public String toString() {
         return "Person [id= " + id + ", firstName=" + firstName + ", lastName="
-                + lastName + ", address=" + address_id.getAddress() + ", phone="
+                + lastName + ", address=" + addressId.getAddress() + ", phone="
                 + phone + ", email=" + email + "]";
     }
 
