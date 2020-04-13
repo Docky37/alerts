@@ -104,6 +104,8 @@ public class AddressFireStation {
     }
 
     /**
+     * Getter of the city.
+     *
      * @return the city
      */
     public String getCity() {
@@ -111,13 +113,17 @@ public class AddressFireStation {
     }
 
     /**
-     * @param city the city to set
+     * Setter of the city.
+     *
+     * @param pCity the city to set
      */
-    public void setCity(String city) {
-        this.city = city;
+    public void setCity(final String pCity) {
+        this.city = pCity;
     }
 
     /**
+     * Getter of the zip code.
+     *
      * @return the zip
      */
     public String getZip() {
@@ -125,10 +131,12 @@ public class AddressFireStation {
     }
 
     /**
-     * @param zip the zip to set
+     * Setter of the zip code.
+     *
+     * @param pZip the zip to set
      */
-    public void setZip(String zip) {
-        this.zip = zip;
+    public void setZip(final String pZip) {
+        this.zip = pZip;
     }
 
     /**

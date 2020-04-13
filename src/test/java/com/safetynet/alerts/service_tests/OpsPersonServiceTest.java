@@ -37,13 +37,13 @@ public class OpsPersonServiceTest {
     static {
         personList.add(new Person(1L, "John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(2L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new Person(2L, "Johnathan", "Barrack", "29 15th St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
         personList.add(new Person(3L, "Doc", "Spring",
                 "1515 Java St - Beverly Hills", "Los Angeles", "90211",
                 "123-456-7890", "Doc.Spring@email.com"));
         personList.add(new Person(4L, "Tenley", "Boyd", "1509 Culver St",
-                "Culver", "97451", "841-874-6512", "tenz@email.com"));
+                "Culver", "97451", "841-874-6515", "tenz@email.com"));
     }
 
     public static List<AddressFireStation> addressFireStList = new ArrayList<>();
@@ -56,9 +56,21 @@ public class OpsPersonServiceTest {
     public static List<PersonEntity> pEntList = new ArrayList<>();
 
     static {
-        pEntList.add(new PersonEntity(1L, "John", "Boyd", addressFireStList.get(0), "841-874-6512", "jaboyd@email.com"));
-        pEntList.add(new PersonEntity(2L, "Jacob", "Boyd", addressFireStList.get(1),  "841-874-6513", "drk@email.com"));
-        pEntList.add(new PersonEntity(4L, "Tenley", "Boyd", addressFireStList.get(0),  "841-874-6512", "tenz@email.com"));
+        pEntList.add(new PersonEntity(1L, "John", "Boyd",
+                addressFireStList.get(0), "841-874-6512", "jaboyd@email.com"));
+        pEntList.add(new PersonEntity(2L, "Jacob", "Boyd",
+                addressFireStList.get(1), "841-874-6513", "drk@email.com"));
+        pEntList.add(new PersonEntity(4L, "Tenley", "Boyd",
+                addressFireStList.get(0), "841-874-6512", "tenz@email.com"));
+    }
+
+    public static List<PersonEntity> pEnt2List = new ArrayList<>();
+
+    static {
+        pEnt2List.add(new PersonEntity(1L, "John", "Boyd",
+                addressFireStList.get(0), "841-874-6512", "jaboyd@email.com"));
+        pEnt2List.add(new PersonEntity(4L, "Tenley", "Boyd",
+                addressFireStList.get(0), "841-874-6515", "tenz@email.com"));
     }
 
     @Before
@@ -84,6 +96,26 @@ public class OpsPersonServiceTest {
         assertThat(eMailList.get(0)).isEqualTo(personList.get(0).getEmail());
         assertThat(eMailList.get(1)).isEqualTo(personList.get(1).getEmail());
         assertThat(eMailList.get(2)).isEqualTo(personList.get(3).getEmail());
+    }
+
+    // GET("/phoneAlert/{station}")>>READ(Find all person phones by station
+    @Test
+    @Tag("TestB-PhoneListByStation")
+    @DisplayName("1. Given a fireStation, when findAllPhonesByStation,"
+            + " then returns the phone list of inhabitants covered by this station.")
+    public void givenAStation_whenFindAllPhoneByStation_thenReturnListOfPhones()
+            throws Exception {
+        // GIVEN
+        String station = "3";
+        List<String> phoneList = new ArrayList<>();
+        given(personRepository.findByAddressIdStation(station))
+                .willReturn(pEnt2List);
+        // WHEN
+        phoneList = opsPersonService.findAllPhoneListByStation(station);
+        // THEN
+        assertThat(phoneList.size()).isEqualTo(2);
+        assertThat(phoneList.get(0)).isEqualTo(personList.get(0).getPhone());
+        assertThat(phoneList.get(1)).isEqualTo(personList.get(3).getPhone());
     }
 
 }

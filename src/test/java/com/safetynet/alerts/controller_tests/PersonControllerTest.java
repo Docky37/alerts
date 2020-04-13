@@ -39,7 +39,7 @@ public class PersonControllerTest {
      */
     static final Logger LOGGER = LoggerFactory
             .getLogger(AlertsApplication.class);
-    
+
     @Autowired
     private MockMvc mockMVC;
 
@@ -68,7 +68,7 @@ public class PersonControllerTest {
                                 "841-874-6512", "jaboyd@email.com"));
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/Person/lastName/firstName"))
+                MockMvcRequestBuilders.get("/person/lastName/firstName"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
@@ -85,7 +85,7 @@ public class PersonControllerTest {
                 anyString())).willThrow(new PersonNotFoundException());
 
         mockMVC.perform(
-                MockMvcRequestBuilders.get("/Person/lastName/firstName"))
+                MockMvcRequestBuilders.get("/person/lastName/firstName"))
                 .andExpect(status().isNotFound());
 
     }
@@ -96,7 +96,7 @@ public class PersonControllerTest {
         LOGGER.info("Start test: GET - findAll");
         given(personService.findAll()).willReturn(personList);
 
-        mockMVC.perform(MockMvcRequestBuilders.get("/Person"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/person"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
@@ -111,7 +111,7 @@ public class PersonControllerTest {
         given(personService.addPerson(any(Person.class)))
                 .willReturn(personToAdd);
 
-        mockMVC.perform(MockMvcRequestBuilders.post("/Person")
+        mockMVC.perform(MockMvcRequestBuilders.post("/person")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(personToAdd)))
                 .andExpect(status().isCreated());
@@ -129,7 +129,7 @@ public class PersonControllerTest {
                 .willReturn(personToUpdate);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
-                .put("/Person/" + personToUpdate.getLastName() + "/"
+                .put("/person/" + personToUpdate.getLastName() + "/"
                         + personToUpdate.getFirstName())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
@@ -137,9 +137,9 @@ public class PersonControllerTest {
 
         mockMVC.perform(builder)
                 .andExpect(MockMvcResultMatchers.status().isCreated());
-                // .andExpect(MockMvcResultMatchers.content()
-                // .string("Person updated."))
-                //.andDo(MockMvcResultHandlers.print())
+        // .andExpect(MockMvcResultMatchers.content()
+        // .string("Person updated."))
+        // .andDo(MockMvcResultHandlers.print())
     }
 
     @Test // DELETE
@@ -147,12 +147,11 @@ public class PersonControllerTest {
             throws Exception {
         LOGGER.info("Start test: DELETE - Remove one person");
         Person personToDelete = personList.get(2);
-        given(personService.deleteAPerson(anyString(),
-                anyString()))
-                        .willReturn(personToDelete);
+        given(personService.deleteAPerson(anyString(), anyString()))
+                .willReturn(personToDelete);
 
         mockMVC.perform(MockMvcRequestBuilders
-                .delete("/Person/" + personToDelete.getLastName() + "/"
+                .delete("/person/" + personToDelete.getLastName() + "/"
                         + personToDelete.getFirstName()))
                 .andExpect(status().isOk());
     }

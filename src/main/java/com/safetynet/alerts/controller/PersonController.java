@@ -57,7 +57,7 @@ public class PersonController {
      * @param pListPerson
      * @return ResponseEntity<Void>
      */
-    @PostMapping(value = "Persons")
+    @PostMapping(value = "persons")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(
             @RequestBody final List<Person> pListPerson) {
@@ -83,7 +83,7 @@ public class PersonController {
      *
      * @return a List of all persons in DB
      */
-    @GetMapping(value = "Person")
+    @GetMapping(value = "person")
     public List<Person> findAll() {
         return personService.findAll();
     }
@@ -95,7 +95,7 @@ public class PersonController {
      * @param firstName
      * @return a Person
      */
-    @GetMapping(value = "Person/{lastName}/{firstName}")
+    @GetMapping(value = "person/{lastName}/{firstName}")
     public Person findPersonByName(@PathVariable final String lastName,
             @PathVariable final String firstName) {
         return personService.findByLastNameAndFirstName(lastName, firstName);
@@ -113,7 +113,7 @@ public class PersonController {
      * @param pPerson - The person to add in DB
      * @return ResponseEntity<Void>
      */
-    @PostMapping(value = "Person")
+    @PostMapping(value = "person")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody final Person pPerson) {
 
@@ -137,7 +137,7 @@ public class PersonController {
      * @param pPerson
      * @return ResponseEntity<Void>
      */
-    @PutMapping(value = "Person/{lastName}/{firstName}")
+    @PutMapping(value = "person/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> update(@RequestBody final Person pPerson) {
 
@@ -162,7 +162,7 @@ public class PersonController {
      * @param firstName
      * @return ResponseEntity<Void>
      */
-    @DeleteMapping(value = "Person/{lastName}/{firstName}")
+    @DeleteMapping(value = "person/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> deletePerson(
             @PathVariable final String lastName,

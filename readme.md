@@ -1,23 +1,25 @@
-# SafetyNet - Alerts v0.2 beta release
+# SafetyNet - Alerts v1.0 release
 
 ### Infos
 author: 		Thierry SCHREINER
 
-release date:	09/04/2020
+release date:	14/04/2020
 
 ### Content
-This second release contains : 
+This third release contains : 
 
 - the administrative Person endpoint that can be used for CRUD operations on person data ;
 
 - the administrative firestation endpoint that can be used for CRUD operations on address - FireStation associations.
 
-- It also contains actuators (health, info & metrics).
+- the OPS endpoints comunityEmail/{city} and phoneAlert/{firestation}
+
+It also contains actuators (health, info & metrics).
 
 The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'rootroot') that contains persons and address tables. 
 
 ### The person endpoint
-**GET - http://localhost/Person**   >>> returns the list of persons recorded in DataBase.
+**GET - http://localhost:8080/person**   >>> returns the list of persons recorded in DataBase.
 	
 	Response: 200 OK - An array of persons or 404 Not found if persons table is empty
 		[
@@ -54,9 +56,9 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		    }
 		]
 		
-**GET - http://localhost/Person/{lastName}/{fistName}**   >>> returns the person named {firstName} {lastName} if exists in DB.
+**GET - http://localhost:8080/person/{lastName}/{fistName}**   >>> returns the person named {firstName} {lastName} if exists in DB.
 
-	Response: 200 An array of persons or 404 Not found
+	Response: 200 A person or 404 Not found
 	for example /Person/Boyd/Tenley returns :
 		{
 		    "id": 3,
@@ -69,7 +71,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		    "email": "tenz@email.com"
 		}
   
-**POST - http://localhost/Person**   >>> add the person in DB persons table, if this person is not already recorded in DB.
+**POST - http://localhost:8080/person**   >>> add the person in DB persons table, if this person is not already recorded in DB.
   for example you can add 'Tenley Boyd' with this JSON raw body (Do not add an id):
   
 		{
@@ -81,8 +83,9 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		    "phone": "841-874-6512",
 		    "email": "tenz@email.com"
 		}
+		Response 201 Created
 
-**PUT - http://localhost/Person**   >>> add the person in DB persons table, if this person is not already recorded in DB.
+**PUT - http://localhost:8080/person**   >>> add the person in DB persons table, if this person is not already recorded in DB.
 
 	Response 201 Created or 404 Not found
 	for example you can update 'Tenley Boyd' data with this JSON raw body (Do not add an id):
@@ -96,14 +99,14 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		    "email": "Tenley.Boyd@OpenClassrooms.com"
 		}
 		
-**DELETE - http://localhost/Person/{lastName}/{fistName}**   >>> Delete the person named {firstName} {lastName} if exists in DB.
+**DELETE - http://localhost:8080/person/{lastName}/{fistName}**   >>> Delete the person named {firstName} {lastName} if exists in DB.
 
 	Response 200 OK or 404 Not found
 	
 	
 -------   Other URI: Persons (with a final s)   -------
 
-**POST - http://localhost/Persons**   >>> add a list of persons in DB persons table. Used to copy all JSON list of person.
+**POST - http://localhost:8080/persons**   >>> add a list of persons in DB persons table. Used to copy all JSON list of person.
   for example you can add the project 5 given data:
   
 		[
@@ -143,7 +146,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
   
 ### The firestation endpoint
   
-**GET - http://localhost/firestation**   >>> returns the list of address - FireStation associations recorded in DataBase.
+**GET - http://localhost:8080/firestation**   >>> returns the list of address - FireStation associations recorded in DataBase.
 
 	Response: 200 OK - An array of address - FireStation associations or 404 Not found if address table is empty
 	[
@@ -166,7 +169,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    }
 	]
 
-**GET - http://localhost/firestation/{address}**   >>> returns the address - FiresStation association if exists in DB.
+**GET - http://localhost:8080/firestation/{address}**   >>> returns the address - FiresStation association if exists in DB.
 
 	Response: 200 An array of address - FiresStation association or 404 Not found
 	for example /firestation/29 15th St returns :
@@ -177,7 +180,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    }  
 
   
-**POST - http://localhost/firestation**   >>> add the address - FiresStation association, if this person is not already recorded in DB.
+**POST - http://localhost:8080/firestation**   >>> add the address - FiresStation association, if this person is not already recorded in DB.
   
   
 	Response 201 Created
@@ -188,7 +191,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    }
 	      
 
-**PUT - http://localhost/firestation**   >>> update the address - FiresStation association, if this address is recorded in DB.
+**PUT - http://localhost:8080/firestation**   >>> update the address - FiresStation association, if this address is recorded in DB.
 
 	Response 201 Created or 404 Not found
 	for example you can update '29 15th St' address  with this JSON raw body (Do not add an id):
@@ -198,14 +201,14 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    }
 		
 		
-**DELETE - http://localhost/firestation/{address}**   >>> Delete the address - FiresStation association if exists in DB.
+**DELETE - http://localhost:8080/firestation/{address}**   >>> Delete the address - FiresStation association if exists in DB.
 
 	Response 200 OK or 404 Not found
 	
 	
 -------   Other URI: firestations (with a final s)   -------
 
-**POST - http://localhost/firestations**   >>> add a list of address - FiresStation association in DB. Used to copy all JSON list of person. for example you can add the project 5 given data:  
+**POST - http://localhost:8080/firestations**   >>> add a list of address - FiresStation association in DB. Used to copy all JSON list of person. for example you can add the project 5 given data:  
 	
 	[
 		{ "address":"1509 Culver St", "station":"3" },
@@ -222,4 +225,49 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    { "address":"748 Townings Dr", "station":"3" },
 	    { "address":"951 LoneTree Rd", "station":"2" }
 	]
+ 
+### OPS endpoints
   
+**GET - http://localhost:8080/communityEmail/{city}**   >>> returns the list of eMail address of inhabitants of the given city.
+
+	[
+	    "jaboyd@email.com",
+	    "drk@email.com",
+	    "tenz@email.com",
+	    "jaboyd@email.com",
+	    "jaboyd@email.com",
+	    "drk@email.com",
+	    "tenz@email.com",
+	    "jaboyd@email.com",
+	    "jaboyd@email.com",
+	    "clivfd@ymail.com",
+	    "tcoop@ymail.com",
+	    "jpeter@email.com",
+	    "aly@imail.com",
+	    "lily@email.com",
+	    "soph@email.com",
+	    "ward@email.com",
+	    "zarc@email.com",
+	    "reg@email.com",
+	    "jpeter@email.com",
+	    "bstel@email.com",
+	    "ssanw@email.com",
+	    "bstel@email.com",
+	    "gramps@email.com"
+	]
+	
+**GET - http://localhost:8080/phoneAlert/{station}**   >>> returns the list of phone numbers of inhabitants covered by the given fire station number.
+
+	[
+	    "841-874-6512",
+	    "841-874-6513",
+	    "841-874-6512",
+	    "841-874-6512",
+	    "841-874-6544",
+	    "841-874-6512",
+	    "841-874-6544",
+	    "841-874-6741",
+	    "841-874-6874",
+	    "841-874-8888",
+	    "841-874-9888"
+	]

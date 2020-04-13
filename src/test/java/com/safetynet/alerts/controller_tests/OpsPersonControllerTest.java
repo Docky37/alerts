@@ -45,7 +45,7 @@ public class OpsPersonControllerTest {
     static {
         personList.add(new Person(1L, "John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(2L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new Person(2L, "Johnathan", "Barrack", "29 15th St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
         personList.add(new Person(3L, "Doc", "Spring",
                 "1515 Java St - Beverly Hills", "Los Angeles", "90211",
@@ -64,17 +64,34 @@ public class OpsPersonControllerTest {
         }
     }
 
+    public static List<String> phoneList = new ArrayList<>();
+
+    static {
+        for (Person person : personList) {
+            if (person.getCity() == "Culver") {
+                eMailList.add(person.getEmail());
+            }
+        }
+    }
+
     @Test // GET
     public void givenACity_whenGetEMailListByCity_thenReturnEmailList()
             throws Exception {
         LOGGER.info("Start test: GET - findEmailListBy City");
-        String city = "Culver";
         given(opsPersonService.findAllMailByCity(anyString()))
                 .willReturn(eMailList);
         mockMVC.perform(MockMvcRequestBuilders.get("/communityEmail/city"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
-        // .andExpect(jsonPath("$.lastName").value("Boyd"))
-        // .andExpect(jsonPath("$.firstName").value("John"));
     }
-}
+
+    @Test // GET
+    public void givenAFireStation_whenGetPhoneListByFireStation_thenReturnPhoneListOfStation()
+            throws Exception {
+        LOGGER.info("Start test: GET - findPhoneListByFireStation");
+        given(opsPersonService.findAllPhoneListByStation(anyString()))
+                .willReturn(phoneList);
+        mockMVC.perform(MockMvcRequestBuilders.get("/phoneAlert/station"))
+                .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
+                        .content().contentType("application/json"));
+    }}
