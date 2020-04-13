@@ -95,11 +95,8 @@ public class PersonMapping {
         person.setFirstName(pEnt.getFirstName());
         person.setLastName(pEnt.getLastName());
         person.setAddress(pEnt.getAddressFireSt().getAddress());
-// A modifier --------------------------------------------------
         person.setCity(pEnt.getAddressFireSt().getCity());
-// A modifier --------------------------------------------------
         person.setZip(pEnt.getAddressFireSt().getZip());
-// -------------------------------------------------------------
         person.setPhone(pEnt.getPhone());
         person.setEmail(pEnt.getEmail());
 

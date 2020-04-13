@@ -1,5 +1,7 @@
 package com.safetynet.alerts.repositery;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +28,7 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
      */
     PersonEntity findByLastNameAndFirstName(String pLastName,
             String pFirstName);
+
+    List<PersonEntity> findByAddressIdCity(String city);
+   
 }
