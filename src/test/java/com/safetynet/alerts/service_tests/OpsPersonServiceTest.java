@@ -57,20 +57,20 @@ public class OpsPersonServiceTest {
 
     static {
         pEntList.add(new PersonEntity(1L, "John", "Boyd",
-                addressFireStList.get(0), "841-874-6512", "jaboyd@email.com"));
+                addressFireStList.get(0), "841-874-6512", "jaboyd@email.com", null));
         pEntList.add(new PersonEntity(2L, "Jacob", "Boyd",
-                addressFireStList.get(1), "841-874-6513", "drk@email.com"));
+                addressFireStList.get(1), "841-874-6513", "drk@email.com", null));
         pEntList.add(new PersonEntity(4L, "Tenley", "Boyd",
-                addressFireStList.get(0), "841-874-6512", "tenz@email.com"));
+                addressFireStList.get(0), "841-874-6512", "tenz@email.com", null));
     }
 
     public static List<PersonEntity> pEnt2List = new ArrayList<>();
 
     static {
         pEnt2List.add(new PersonEntity(1L, "John", "Boyd",
-                addressFireStList.get(0), "841-874-6512", "jaboyd@email.com"));
+                addressFireStList.get(0), "841-874-6512", "jaboyd@email.com", null));
         pEnt2List.add(new PersonEntity(4L, "Tenley", "Boyd",
-                addressFireStList.get(0), "841-874-6515", "tenz@email.com"));
+                addressFireStList.get(0), "841-874-6515", "tenz@email.com", null));
     }
 
     @Before

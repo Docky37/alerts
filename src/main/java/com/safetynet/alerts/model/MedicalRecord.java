@@ -3,36 +3,53 @@ package com.safetynet.alerts.model;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
- * Medical records class, used to contain the medical data of inhabitants.
+ * Medical records class, used to contain the medical data of persons.
  *
  * @author Thierry SCHREINER
  */
-public class MedicalRecords {
+@Entity
+@Table(name = "medical_records")
+public class MedicalRecord {
 
     /**
      * The id of a medical record.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private int id;
     /**
      * The first name of the medical record owner.
      */
+    @Column(name = "first_name")
     private String firstName;
     /**
      * The last name of the medical record owner.
      */
+    @Column(name = "last_name")
     private String lastName;
     /**
      * The birthday of the medical record owner.
      */
+    @Column(name = "birthdate")
     private LocalDate birthDate;
     /**
      * List of medications taken by the medical record owner.
      */
+    @Column(name = "medications")
     private String[] medications;
     /**
      * List of allergies taken by the medical record owner.
      */
+    @Column(name = "allergies")
     private String[] allergies;
 
     /**
@@ -148,7 +165,7 @@ public class MedicalRecords {
      */
     @Override
     public String toString() {
-        return "MedicalRecords [firstName=" + firstName + ", lastName="
+        return "MedicalRecord [id= " + id + ", firstName=" + firstName + ", lastName="
                 + lastName + ", birthDate=" + birthDate + ", medications="
                 + Arrays.toString(medications) + ", allergies="
                 + Arrays.toString(allergies) + "]";

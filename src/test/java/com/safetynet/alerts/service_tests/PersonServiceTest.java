@@ -62,12 +62,15 @@ public class PersonServiceTest {
     public static List<PersonEntity> pEntList = new ArrayList<>();
 
     static {
-        pEntList.add(new PersonEntity(1L, "John", "Boyd",
-                addressFireStList.get(0), "841-874-6512", "jaboyd@email.com"));
-        pEntList.add(new PersonEntity(2L, "Jacob", "Boyd",
-                addressFireStList.get(0), "841-874-6513", "drk@email.com"));
-        pEntList.add(new PersonEntity(3L, "Tenley", "Boyd",
-                addressFireStList.get(0), "841-874-6512", "tenz@email.com"));
+        pEntList.add(
+                new PersonEntity(1L, "John", "Boyd", addressFireStList.get(0),
+                        "841-874-6512", "jaboyd@email.com", null));
+        pEntList.add(
+                new PersonEntity(2L, "Jacob", "Boyd", addressFireStList.get(0),
+                        "841-874-6513", "drk@email.com", null));
+        pEntList.add(
+                new PersonEntity(3L, "Tenley", "Boyd", addressFireStList.get(0),
+                        "841-874-6512", "tenz@email.com", null));
     }
 
     @Before
@@ -197,10 +200,12 @@ public class PersonServiceTest {
         given(personRepository.findByLastNameAndFirstName(
                 updatedPerson.getLastName(), updatedPerson.getFirstName()))
                         .willReturn(pEntList.get(2));
-        given(personMapping.convertToPersonEntity(any(Person.class))).willReturn(personInDB);
+        given(personMapping.convertToPersonEntity(any(Person.class)))
+                .willReturn(personInDB);
         given(personRepository.save(any(PersonEntity.class)))
                 .willReturn(updatedPersonInDB);
-        given(personMapping.convertToPerson(any(PersonEntity.class))).willReturn(updatedPerson);     
+        given(personMapping.convertToPerson(any(PersonEntity.class)))
+                .willReturn(updatedPerson);
 
         // WHEN
         updatedPerson = personService.updatePerson(personToUpdate);

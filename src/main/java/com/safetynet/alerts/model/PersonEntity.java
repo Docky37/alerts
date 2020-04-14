@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;;
 
 /**
@@ -53,6 +54,24 @@ public class PersonEntity {
     @Column(name = "email")
     private String email;
 
+    @OneToOne
+    @JoinColumn(name = "id")
+    private MedicalRecord medRecId;
+
+    /**
+     * @return the medRecId
+     */
+    public MedicalRecord getMedRecId() {
+        return medRecId;
+    }
+
+    /**
+     * @param medRecId the medRecId to set
+     */
+    public void setMedRecId(MedicalRecord medRecId) {
+        this.medRecId = medRecId;
+    }
+
     /**
      * Class constructor.
      *
@@ -62,10 +81,12 @@ public class PersonEntity {
      * @param pAddressFireSt - Many to One join with AddressFireStation
      * @param pPhone
      * @param pEmail
+     * @param pMedRecId
      */
     public PersonEntity(final Long pId, final String pFirstName,
             final String pLastName, final AddressFireStation pAddressFireSt,
-            final String pPhone, final String pEmail) {
+            final String pPhone, final String pEmail,
+            final MedicalRecord pMedRecId) {
         super();
         id = pId;
         firstName = pFirstName;
@@ -196,7 +217,8 @@ public class PersonEntity {
     public String toString() {
         return "Person [id= " + id + ", firstName=" + firstName + ", lastName="
                 + lastName + ", address=" + addressId.getAddress() + ", phone="
-                + phone + ", email=" + email + "]";
+                + phone + ", email=" + email + ", medicalRecord= "
+                + medRecId.getMedications() + "]";
     }
 
 }
