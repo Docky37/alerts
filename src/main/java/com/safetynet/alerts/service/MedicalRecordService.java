@@ -1,5 +1,6 @@
 package com.safetynet.alerts.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
 import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.MedicalRecordRepository;
+import com.safetynet.alerts.repositery.PersonRepository;
 
 /**
  * MedicalRecordService is the class in charge of the MedicalRecord business
@@ -28,18 +31,27 @@ public class MedicalRecordService {
             .getLogger(AlertsApplication.class);
 
     /**
-     * PersonRepository is an Interface that extends CrudRepository.
+     * MedicalRecordRepository is an Interface that extends CrudRepository.
      */
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
 
     /**
+     * PersonRepository is an Interface that extends CrudRepository.
+     */
+    @Autowired
+    private PersonRepository personRepository;
+
+    /**
      * Class constructor - Set medicalRecordRepository and personMapping(IoC).
      *
      * @param pMedRecRepos
+     * @param pPersonRepository
      */
-    public MedicalRecordService(final MedicalRecordRepository pMedRecRepos) {
+    public MedicalRecordService(final MedicalRecordRepository pMedRecRepos,
+            final PersonRepository pPersonRepository) {
         medicalRecordRepository = pMedRecRepos;
+        personRepository = pPersonRepository;
     }
 
     /**
@@ -51,9 +63,13 @@ public class MedicalRecordService {
      */
     public List<MedicalRecord> addListMedicalRecord(
             final List<MedicalRecord> pListMedicalRecord) {
-        List<MedicalRecord> createdList;
-        createdList = (List<MedicalRecord>) medicalRecordRepository
-                .saveAll(pListMedicalRecord);
+        List<MedicalRecord> createdList = new ArrayList<MedicalRecord>();
+        for (MedicalRecord medicalRecord : pListMedicalRecord) {
+            MedicalRecord createdMedRec = addMedicalRecord(medicalRecord);
+            createdList.add(createdMedRec);
+        }
+        // createdList = (List<MedicalRecord>) medicalRecordRepository
+        // .saveAll(pListMedicalRecord);
         return createdList;
     }
 
@@ -71,7 +87,9 @@ public class MedicalRecordService {
     }
 
     /**
-     * The addMedicalRecord method allows user to add one medical record in DB.
+     * The addMedicalRecord method allows user to add one medical record in DB,
+     * only if the person identified by lastName & firstName in the
+     * MedicalRecord exists in database persons table.
      *
      * @param pMedicalRecord
      * @return a MedicalRecord
@@ -81,12 +99,22 @@ public class MedicalRecordService {
                 .findByLastNameAndFirstName(pMedicalRecord.getLastName(),
                         pMedicalRecord.getFirstName());
         if (foundMedicalRecord == null) {
-            MedicalRecord addedMedicalRecord = medicalRecordRepository
-                    .save(pMedicalRecord);
-            return addedMedicalRecord;
-        } else {
-            return null;
+            PersonEntity personToJoin = personRepository
+                    .findByLastNameAndFirstName(pMedicalRecord.getLastName(),
+                            pMedicalRecord.getFirstName());
+            if (personToJoin == null) {
+                // TO DO message : Cannot save this medical record because its
+                // owner is unknown in Alerts DB.
+                return null;
+            } else {
+                MedicalRecord addedMedicalRecord = medicalRecordRepository
+                        .save(pMedicalRecord);
+                personToJoin.setMedRecId(addedMedicalRecord);
+                personRepository.save(personToJoin);
+                return addedMedicalRecord;
+            }
         }
+        return null;
     }
 
     /**

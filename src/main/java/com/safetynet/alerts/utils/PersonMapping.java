@@ -61,7 +61,7 @@ public class PersonMapping {
                 .findByAddress(pPerson.getAddress()));
         pEnt.setPhone(pPerson.getPhone());
         pEnt.setEmail(pPerson.getEmail());
-
+        pEnt.setMedRecId(null);
         return pEnt;
     }
 

@@ -5,9 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +23,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.Mockito.verify;
 
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
+import com.safetynet.alerts.model.AddressFireStation;
 import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.MedicalRecordRepository;
+import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.MedicalRecordService;
 
 @RunWith(SpringRunner.class)
@@ -37,9 +37,19 @@ public class MedicalRecordServiceTest {
 
     @MockBean
     private MedicalRecordRepository medicalRecordRepository;
+    
+    @MockBean
+    PersonRepository personRepository;
 
     @Autowired
     MedicalRecordService medicalRecordService;
+
+    public static AddressFireStation addressFireStation = new AddressFireStation(
+            1L, "1509 Culver St", "3");
+
+    public static PersonEntity personEntity = new PersonEntity(1L, "John",
+            "Boyd", addressFireStation, "841-874-6512", "jaboyd@email.com",
+            null);
 
     public static List<MedicalRecord> medicalRecordList = new ArrayList<>();
 
@@ -59,8 +69,8 @@ public class MedicalRecordServiceTest {
 
     @Before
     public void SetUp() {
-        medicalRecordService = new MedicalRecordService(
-                medicalRecordRepository);
+        medicalRecordService = new MedicalRecordService(medicalRecordRepository,
+                personRepository);
     }
 
     // POST >>> CREATE (Add a list of Person)
@@ -70,12 +80,7 @@ public class MedicalRecordServiceTest {
             + " then MedicalRecord are created.")
     public void a_givenAListOfMedicalRecordsToAdd_whenPostList_thenMedicalRecordsAreCreated()
             throws Exception {
-        DateTimeFormatter Formatter=DateTimeFormatter
-                .ofPattern("dd/MM/yyyy")
-;
         // GIVEN
-LocalDate birthDate = LocalDate.parse("25/12/2010", Formatter);
-System.out.println(Date.valueOf(birthDate));
         given(medicalRecordRepository.saveAll(Mockito.<MedicalRecord>anyList()))
                 .willReturn(medicalRecordList);
         // WHEN
@@ -151,6 +156,8 @@ System.out.println(Date.valueOf(birthDate));
                 medicalRecordToAdd.getLastName(),
                 medicalRecordToAdd.getFirstName())).willReturn(null,
                         medicalRecordList.get(2));
+        given(personRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(personEntity);
         given(medicalRecordRepository.save(any(MedicalRecord.class)))
                 .willReturn(medicalRecordList.get(2));
 

@@ -1,5 +1,6 @@
 package com.safetynet.alerts.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,8 +58,8 @@ public class PersonEntity {
     /**
      * Foreign key for OneToOne join with MedicalRecord.
      */
-    @OneToOne
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "medRecId")
     private MedicalRecord medRecId;
 
     /**
