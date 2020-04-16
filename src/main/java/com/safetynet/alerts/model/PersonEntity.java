@@ -59,20 +59,6 @@ public class PersonEntity {
     private MedicalRecord medRecId;
 
     /**
-     * @return the medRecId
-     */
-    public MedicalRecord getMedRecId() {
-        return medRecId;
-    }
-
-    /**
-     * @param medRecId the medRecId to set
-     */
-    public void setMedRecId(MedicalRecord medRecId) {
-        this.medRecId = medRecId;
-    }
-
-    /**
      * Class constructor.
      *
      * @param pId
@@ -208,6 +194,19 @@ public class PersonEntity {
      */
     public void setEmail(final String pEmail) {
         email = pEmail;
+    }
+
+    /**
+     * @return the medRecId
+     */
+    public MedicalRecord getMedRecId() {
+        return medRecId;
+    }
+    /**
+     * @param medRecId the medRecId to set
+     */
+    public void setMedRecId(MedicalRecord medRecId) {
+        this.medRecId = medRecId;
     }
 
     /**

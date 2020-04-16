@@ -1,6 +1,10 @@
 package com.safetynet.alerts.model;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 import javax.persistence.Column;
@@ -11,7 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * Medical records class, used to contain the medical data of persons.
+ * MedicalRecord class, is used to contain the medical data of persons, in
+ * relation with the database.
  *
  * @author Thierry SCHREINER
  */
@@ -19,13 +24,23 @@ import javax.persistence.Table;
 @Table(name = "medical_records")
 public class MedicalRecord {
 
+    static DateTimeFormatter Formatter = DateTimeFormatter
+            .ofPattern("MM/dd/yyyy");
+    static DateFormat Format = new SimpleDateFormat("MM/dd/yyyy");
+
+    /**
+     * Empty class constructor.
+     */
+    public MedicalRecord() {
+    }
+
     /**
      * The id of a medical record.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
-    private int id;
+    private long id;
     /**
      * The first name of the medical record owner.
      */
@@ -39,8 +54,8 @@ public class MedicalRecord {
     /**
      * The birthday of the medical record owner.
      */
-    @Column(name = "birthdate")
-    private LocalDate birthDate;
+    @Column(name = "birth_date")
+    private Date birthDate;
     /**
      * List of medications taken by the medical record owner.
      */
@@ -53,11 +68,34 @@ public class MedicalRecord {
     private String[] allergies;
 
     /**
+     * Class constructor.
+     *
+     * @param id
+     * @param firstName
+     * @param lastName
+     * @param birthDate
+     * @param medications
+     * @param allergies
+     */
+    public MedicalRecord(final long pId, final String pFirstName,
+            final String pLastName, final String pBirthDate,
+            final String[] pMedications, final String[] pAllergies) {
+
+        super();
+        id = pId;
+        firstName = pFirstName;
+        lastName = pLastName;
+        birthDate = Date.valueOf(LocalDate.parse(pBirthDate, Formatter));
+        medications = pMedications;
+        allergies = pAllergies;
+    }
+
+    /**
      * Getter of medical record id.
      *
      * @return an int
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -66,7 +104,7 @@ public class MedicalRecord {
      *
      * @param pId
      */
-    public void setId(final int pId) {
+    public void setId(final long pId) {
         id = pId;
     }
 
@@ -111,8 +149,8 @@ public class MedicalRecord {
      *
      * @return a String
      */
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public String getBirthDate() {
+        return Format.format(birthDate);
     }
 
     /**
@@ -120,8 +158,8 @@ public class MedicalRecord {
      *
      * @param pBirthDate
      */
-    public void setBirthDate(final LocalDate pBirthDate) {
-        birthDate = pBirthDate;
+    public void setBirthDate(final String pBirthDate) {
+        birthDate = Date.valueOf(LocalDate.parse(pBirthDate, Formatter));
     }
 
     /**
@@ -165,8 +203,9 @@ public class MedicalRecord {
      */
     @Override
     public String toString() {
-        return "MedicalRecord [id= " + id + ", firstName=" + firstName + ", lastName="
-                + lastName + ", birthDate=" + birthDate + ", medications="
+        return "MedicalRecord [id= " + id + ", firstName=" + firstName
+                + ", lastName=" + lastName + ", birthDate="
+                + Format.format(birthDate) + ", medications="
                 + Arrays.toString(medications) + ", allergies="
                 + Arrays.toString(allergies) + "]";
     }

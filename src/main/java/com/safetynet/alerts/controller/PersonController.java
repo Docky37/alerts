@@ -70,7 +70,7 @@ public class PersonController {
         }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("Persons/")
+                .path("persons/")
                 .buildAndExpand(listPersonAdded.get(1).getLastName(),
                         listPersonAdded.get(1).getFirstName())
                 .toUri();
@@ -123,7 +123,7 @@ public class PersonController {
             return ResponseEntity.noContent().build();
         }
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("Person/{lastName}/{firstName}")
+                .path("person/{lastName}/{firstName}")
                 .buildAndExpand(personAdded.getLastName(),
                         personAdded.getFirstName())
                 .toUri();
@@ -145,7 +145,7 @@ public class PersonController {
 
         if (personUpdated != null) {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("Person/{lastName}/{firstName}")
+                    .path("person/{lastName}/{firstName}")
                     .buildAndExpand(personUpdated.getLastName(),
                             personUpdated.getFirstName())
                     .toUri();

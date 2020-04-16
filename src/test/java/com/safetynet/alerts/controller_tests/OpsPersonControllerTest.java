@@ -74,7 +74,7 @@ public class OpsPersonControllerTest {
         }
     }
 
-    @Test // GET
+    @Test // GET (OPS 7 communityEmail by city)
     public void givenACity_whenGetEMailListByCity_thenReturnEmailList()
             throws Exception {
         LOGGER.info("Start test: GET - findEmailListBy City");
@@ -85,7 +85,7 @@ public class OpsPersonControllerTest {
                         .content().contentType("application/json"));
     }
 
-    @Test // GET
+    @Test // GET (OPS 3 phoneAlert by station)
     public void givenAFireStation_whenGetPhoneListByFireStation_thenReturnPhoneListOfStation()
             throws Exception {
         LOGGER.info("Start test: GET - findPhoneListByFireStation");
