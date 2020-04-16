@@ -35,7 +35,8 @@ public class PersonMapping {
      * @param pListPerson - a list of Person objects
      * @return a list of PersonEntity objects
      */
-    public List<PersonEntity> convertToPersonEntity(final List<Person> pListPerson) {
+    public List<PersonEntity> convertToPersonEntity(
+            final List<Person> pListPerson) {
         List<PersonEntity> listPE = new ArrayList<PersonEntity>();
         PersonEntity pEnt = new PersonEntity();
         for (Person p : pListPerson) {

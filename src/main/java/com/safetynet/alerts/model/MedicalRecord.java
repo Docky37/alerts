@@ -24,9 +24,16 @@ import javax.persistence.Table;
 @Table(name = "medical_records")
 public class MedicalRecord {
 
-    static DateTimeFormatter Formatter = DateTimeFormatter
+    /**
+     * Date format used to convert String parameter to LocalDate.
+     */
+    private static DateTimeFormatter formatter = DateTimeFormatter
             .ofPattern("MM/dd/yyyy");
-    static DateFormat Format = new SimpleDateFormat("MM/dd/yyyy");
+
+    /**
+     * Date format used to convert Date to String.
+     */
+    private static DateFormat formatter2 = new SimpleDateFormat("MM/dd/yyyy");
 
     /**
      * Empty class constructor.
@@ -70,12 +77,12 @@ public class MedicalRecord {
     /**
      * Class constructor.
      *
-     * @param id
-     * @param firstName
-     * @param lastName
-     * @param birthDate
-     * @param medications
-     * @param allergies
+     * @param pId
+     * @param pFirstName
+     * @param pLastName
+     * @param pBirthDate
+     * @param pMedications
+     * @param pAllergies
      */
     public MedicalRecord(final long pId, final String pFirstName,
             final String pLastName, final String pBirthDate,
@@ -85,7 +92,7 @@ public class MedicalRecord {
         id = pId;
         firstName = pFirstName;
         lastName = pLastName;
-        birthDate = Date.valueOf(LocalDate.parse(pBirthDate, Formatter));
+        birthDate = Date.valueOf(LocalDate.parse(pBirthDate, formatter));
         medications = pMedications;
         allergies = pAllergies;
     }
@@ -150,7 +157,7 @@ public class MedicalRecord {
      * @return a String
      */
     public String getBirthDate() {
-        return Format.format(birthDate);
+        return formatter2.format(birthDate);
     }
 
     /**
@@ -159,7 +166,7 @@ public class MedicalRecord {
      * @param pBirthDate
      */
     public void setBirthDate(final String pBirthDate) {
-        birthDate = Date.valueOf(LocalDate.parse(pBirthDate, Formatter));
+        birthDate = Date.valueOf(LocalDate.parse(pBirthDate, formatter));
     }
 
     /**
@@ -205,7 +212,7 @@ public class MedicalRecord {
     public String toString() {
         return "MedicalRecord [id= " + id + ", firstName=" + firstName
                 + ", lastName=" + lastName + ", birthDate="
-                + Format.format(birthDate) + ", medications="
+                + formatter2.format(birthDate) + ", medications="
                 + Arrays.toString(medications) + ", allergies="
                 + Arrays.toString(allergies) + "]";
     }

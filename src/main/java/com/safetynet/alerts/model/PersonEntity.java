@@ -54,6 +54,9 @@ public class PersonEntity {
     @Column(name = "email")
     private String email;
 
+    /**
+     * Foreign key for OneToOne join with MedicalRecord.
+     */
     @OneToOne
     @JoinColumn(name = "id")
     private MedicalRecord medRecId;
@@ -80,6 +83,7 @@ public class PersonEntity {
         addressId = pAddressFireSt;
         phone = pPhone;
         email = pEmail;
+        medRecId = pMedRecId;
     }
 
     /**
@@ -202,11 +206,12 @@ public class PersonEntity {
     public MedicalRecord getMedRecId() {
         return medRecId;
     }
+
     /**
-     * @param medRecId the medRecId to set
+     * @param pMedRecId the medRecId to set.
      */
-    public void setMedRecId(MedicalRecord medRecId) {
-        this.medRecId = medRecId;
+    public void setMedRecId(final MedicalRecord pMedRecId) {
+        medRecId = pMedRecId;
     }
 
     /**
@@ -216,8 +221,8 @@ public class PersonEntity {
     public String toString() {
         return "Person [id= " + id + ", firstName=" + firstName + ", lastName="
                 + lastName + ", address=" + addressId.getAddress() + ", phone="
-                + phone + ", email=" + email + ", medicalRecord= "
-                + medRecId.getMedications() + "]";
+                + phone + ", email=" + email + ", medicalRecord= " + medRecId
+                + "]";
     }
 
 }

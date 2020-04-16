@@ -51,7 +51,6 @@ public class OpsPersonService {
     public List<String> findAllMailByCity(final String pCity) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdCity(pCity);
-        System.out.println(listPE);
         List<String> eMailList = new ArrayList<>();
         for (PersonEntity p : listPE) {
             eMailList.add(p.getEmail());
@@ -70,7 +69,6 @@ public class OpsPersonService {
     public List<String> findAllPhoneListByStation(final String pStation) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStation(pStation);
-        System.out.println(listPE);
         List<String> phoneList = new ArrayList<>();
         for (PersonEntity p : listPE) {
             phoneList.add(p.getPhone());

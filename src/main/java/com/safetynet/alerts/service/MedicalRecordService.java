@@ -36,12 +36,19 @@ public class MedicalRecordService {
     /**
      * Class constructor - Set medicalRecordRepository and personMapping(IoC).
      *
-     * @param pPersonRepos
+     * @param pMedRecRepos
      */
     public MedicalRecordService(final MedicalRecordRepository pMedRecRepos) {
         medicalRecordRepository = pMedRecRepos;
     }
 
+    /**
+     * The addListMedicalRecord method allows user to save a list of medical
+     * records in DB.
+     *
+     * @param pListMedicalRecord
+     * @return a List<MedicalRecord>
+     */
     public List<MedicalRecord> addListMedicalRecord(
             final List<MedicalRecord> pListMedicalRecord) {
         List<MedicalRecord> createdList;
@@ -50,6 +57,12 @@ public class MedicalRecordService {
         return createdList;
     }
 
+    /**
+     * The find all method allows user to get a list of all medical records
+     * saved in DB.
+     *
+     * @return a List<MedicalRecord>
+     */
     public List<MedicalRecord> findAll() {
         List<MedicalRecord> medicalRecordList;
         medicalRecordList = (List<MedicalRecord>) medicalRecordRepository
@@ -57,6 +70,12 @@ public class MedicalRecordService {
         return medicalRecordList;
     }
 
+    /**
+     * The addMedicalRecord method allows user to add one medical record in DB.
+     *
+     * @param pMedicalRecord
+     * @return a MedicalRecord
+     */
     public MedicalRecord addMedicalRecord(final MedicalRecord pMedicalRecord) {
         MedicalRecord foundMedicalRecord = medicalRecordRepository
                 .findByLastNameAndFirstName(pMedicalRecord.getLastName(),
@@ -70,6 +89,15 @@ public class MedicalRecordService {
         }
     }
 
+    /**
+     * The findByLastNameAndFirstName method allows user to find a medical
+     * record in DB.
+     *
+     * @param lastName
+     * @param firstName
+     * @return a MedicalRecord
+     * @throws MedicalRecordNotFoundException
+     */
     public MedicalRecord findByLastNameAndFirstName(final String lastName,
             final String firstName) throws MedicalRecordNotFoundException {
         MedicalRecord foundMedicalRecord = medicalRecordRepository
@@ -80,6 +108,15 @@ public class MedicalRecordService {
         return foundMedicalRecord;
     }
 
+    /**
+     * The updateMedicalRecord method first uses the
+     * MedicalRecordRepository.findByLastNameAndFirstName method to verify if
+     * the person already exists in DB. If record exists, it calls the save
+     * method of CrudRepository to update it.
+     *
+     * @param pMedicalRecord
+     * @return a MedicalRecord
+     */
     public MedicalRecord updateMedicalRecord(
             final MedicalRecord pMedicalRecord) {
         MedicalRecord medicalRecordToUpdate = pMedicalRecord;
@@ -92,6 +129,15 @@ public class MedicalRecordService {
         return updatedMedicalRecord;
     }
 
+    /**
+     * Delete method that uses first findByLastNameAndFirstName to find the
+     * MedicalRecord to delete in DB and get its id to invokes the deleteById
+     * method of CrudRepository.
+     *
+     * @param lastName
+     * @param firstName
+     * @return a MedicalRecord
+     */
     public MedicalRecord deleteAMedicalRecord(final String lastName,
             final String firstName) {
         MedicalRecord medicalRecordToDelete = medicalRecordRepository
@@ -100,8 +146,7 @@ public class MedicalRecordService {
             medicalRecordRepository.deleteById(medicalRecordToDelete.getId());
         }
         return medicalRecordToDelete;
-        
-        
+
     }
 
 }

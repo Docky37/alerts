@@ -111,14 +111,16 @@ public class MedicalRecordController {
     /**
      * GET request to find one MedicalRecord.
      *
-     * @param address
+     * @param lastName
+     * @param firstName
      * @return MedicalRecord
      * @throws MedicalRecordNotFoundException
      */
     @GetMapping(value = "medicalRecord/{lastName}/{firstName}")
     public MedicalRecord findMedicalRecordByName(
             @PathVariable final String lastName,
-            @PathVariable final String firstName) throws MedicalRecordNotFoundException {
+            @PathVariable final String firstName)
+            throws MedicalRecordNotFoundException {
         return medicalRecordService.findByLastNameAndFirstName(lastName,
                 firstName);
     }
@@ -162,7 +164,8 @@ public class MedicalRecordController {
      * DELETE request to remove an address - fire station association from
      * DataBase.
      *
-     * @param address
+     * @param lastName
+     * @param firstName
      * @return ResponseEntity<Void>
      */
     @DeleteMapping(value = "medicalRecord/{lastName}/{firstName}")
