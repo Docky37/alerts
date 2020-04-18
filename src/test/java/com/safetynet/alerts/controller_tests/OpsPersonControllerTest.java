@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.OpsPersonController;
+import com.safetynet.alerts.model.CountOfPersons;
+import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.service.OpsPersonService;
 
@@ -54,6 +56,17 @@ public class OpsPersonControllerTest {
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
+    public static List<CoveredPerson> coveredPersonList = new ArrayList<>();
+
+    static {
+        coveredPersonList.add(new CoveredPerson(1L, "John", "Boyd",
+                "1509 Culver St", "841-874-6512"));
+        coveredPersonList.add(new CoveredPerson(2L, "Johnathan", "Barrack",
+                "29 15th St", "841-874-6513"));
+        coveredPersonList.add(new CoveredPerson(3L, "Tenley", "Boyd",
+                "1509 Culver St", "841-874-6512"));
+    }
+
     public static List<String> eMailList = new ArrayList<>();
 
     static {
@@ -64,6 +77,8 @@ public class OpsPersonControllerTest {
         }
     }
 
+    public static CountOfPersons countOfPersons = new CountOfPersons(8,3,11);
+    
     public static List<String> phoneList = new ArrayList<>();
 
     static {
@@ -74,13 +89,26 @@ public class OpsPersonControllerTest {
         }
     }
 
-    @Test // GET (OPS 7 communityEmail by city)
-    public void givenACity_whenGetEMailListByCity_thenReturnEmailList()
+    @Test // GET (OPS 1 list of persons covered by the given station)
+    public void givenAFireStation_whenGetListOfPersonsCoveredByStation_thenReturnList()
             throws Exception {
-        LOGGER.info("Start test: GET - findEmailListBy City");
-        given(opsPersonService.findAllMailByCity(anyString()))
-                .willReturn(eMailList);
-        mockMVC.perform(MockMvcRequestBuilders.get("/communityEmail/city"))
+        LOGGER.info("Start test: GET - findPhoneListByFireStation");
+        given(opsPersonService.findListOfPersonsCoveredByStation(anyString()))
+                .willReturn(coveredPersonList);
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/firestation/stationNumber/3"))
+                .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
+                        .content().contentType("application/json"));
+    }
+
+    @Test // GET (OPS 1 list of persons covered by the given station)
+    public void givenAFireStation_whenGetAdultAndChildCountByStation_thenReturnCount()
+            throws Exception {
+        LOGGER.info("Start test: GET - findPhoneListByFireStation");
+        given(opsPersonService.countPersonsCoveredByStation(anyString()))
+                .willReturn(countOfPersons);
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/firestation/count/3"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
@@ -94,4 +122,16 @@ public class OpsPersonControllerTest {
         mockMVC.perform(MockMvcRequestBuilders.get("/phoneAlert/station"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
-    }}
+    }
+
+    @Test // GET (OPS 7 communityEmail by city)
+    public void givenACity_whenGetEMailListByCity_thenReturnEmailList()
+            throws Exception {
+        LOGGER.info("Start test: GET - findEmailListBy City");
+        given(opsPersonService.findAllMailByCity(anyString()))
+                .willReturn(eMailList);
+        mockMVC.perform(MockMvcRequestBuilders.get("/communityEmail/city"))
+                .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
+                        .content().contentType("application/json"));
+    }
+}
