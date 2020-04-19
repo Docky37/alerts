@@ -16,10 +16,13 @@ import org.junit.jupiter.api.Tag;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.AddressFireStation;
 import com.safetynet.alerts.model.CountOfPersons;
 import com.safetynet.alerts.model.CoveredPerson;
@@ -33,6 +36,12 @@ import com.safetynet.alerts.utils.PersonMapping;
 @WebMvcTest(OpsPersonService.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class OpsPersonServiceTest {
+
+    /**
+     * Create a SLF4J/LOG4J LOGGER instance.
+     */
+    static final Logger LOGGER = LoggerFactory
+            .getLogger(AlertsApplication.class);
 
     @MockBean
     private PersonRepository personRepository;
@@ -114,7 +123,8 @@ public class OpsPersonServiceTest {
             + " then returns the list of persons covered by this station.")
     public void a1_givenAStation_whenFindAllPersonByStation_thenReturnList()
             throws Exception {
-        // GIVEN
+        LOGGER.info("Start test: OPS 1 list of persons covered by the given station");
+       // GIVEN
         String station = "3";
         given(personRepository.findByAddressIdStation(station))
                 .willReturn(pEnt2List);
@@ -135,6 +145,7 @@ public class OpsPersonServiceTest {
             + " then returns the count of persons covered by this station.")
     public void a2_givenAStation_whenCountPersonByStation_thenReturnCount()
             throws Exception {
+        LOGGER.info("Start test: OPS 1 Adult & Child counts by the given station");
         // GIVEN
         String station = "3";
         Date compareDate = Date.valueOf(LocalDate.now().minusYears(18));
@@ -160,6 +171,7 @@ public class OpsPersonServiceTest {
             + " then returns the phone list of inhabitants covered by this station.")
     public void b_givenAStation_whenFindAllPhoneByStation_thenReturnListOfPhones()
             throws Exception {
+        LOGGER.info("Start test: OPS 3 phoneAlert by station");
         // GIVEN
         String station = "3";
         List<String> phoneList = new ArrayList<>();
@@ -180,6 +192,7 @@ public class OpsPersonServiceTest {
             + " then returns the eMail list of the city.")
     public void c_givenACity_whenFindAllEmailByCity_thenReturnListOfEmails()
             throws Exception {
+        LOGGER.info("Start test: OPS 7 communityEmail by city");
         // GIVEN
         String city = "Culver";
         List<String> eMailList = new ArrayList<>();

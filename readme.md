@@ -1,17 +1,12 @@
-# SafetyNet - Alerts v1.1 release
+# SafetyNet - Alerts v1.2 release
 
 ### Infos
 author: 		Thierry SCHREINER
 
-release date:	14/04/2020
+release date:	19/04/2020
 
 ### Content
-The fourth release v1.1 adds an administrative medicalRecord endpoint to perform CRUD operations on MedicalRecord.
-The post request to add one MedicalRecord automatically makes the one to one join between the new MedicalRecord and the Person concerned if exists (else the MedicalRecord add is rejected).
-
-The Post request "add a list of MedicalRecord" performs a for each loop and uses add one MedicalRecord to add and join each.
- 
-A cascade delete has been created to remove the MedicalRecord of a person when this person is deleted.
+The fifth release v1.2 adds an OPS#1 endpoint allows user to get the list of persons covered by a given fire station and the dissociated count of adults and children covered.
 
 Previous releases contains : 
 
@@ -21,9 +16,11 @@ Previous releases contains :
 
 - the OPS endpoints comunityEmail/{city} and phoneAlert/{firestation} (since v1.0).
 
+- the administrative medicalRecord endpoint to perform CRUD operations on MedicalRecord (since v1.1).
+
 It also contains actuators (health, info & metrics).
 
-The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'rootroot') that contains persons and address tables. 
+The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'rootroot') that contains persons, address and medical_records tables. 
 
 ### The person endpoint
 **GET - http://localhost:8080/person**   >>> returns the list of persons recorded in DataBase.
@@ -325,8 +322,59 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
   
 ### OPS endpoints
 
+**OPS#1: GET - http://localhost:8080/firestation/stationNumber/{station}**   >>> returns the list of persons covered by the given fire station number.
+
+	[
+	    {
+	        "id": 1,
+	        "firstName": "John",
+	        "lastName": "Boyd",
+	        "address": "1509 Culver St",
+	        "phone": "841-874-6512"
+	    },
+	    {
+	        "id": 2,
+	        "firstName": "Jacob",
+	        "lastName": "Boyd",
+	        "address": "1509 Culver St",
+	        "phone": "841-874-6513"
+	    },
+			...
+	    {
+	        "id": 18,
+	        "firstName": "Allison",
+	        "lastName": "Boyd",
+	        "address": "112 Steppes Pl",
+	        "phone": "841-874-9888"
+	    }
+	]
+	
+**OPS#1: GET - http://localhost:8080/firestation/count/{station}**   >>> returns a dissociated count of adults and children (18 years old and less) covered by the given station.
+
+	{
+	    "adultCount": 8,
+	    "childCount": 3,
+	    "total": 11
+	}
+	
   
-**GET - http://localhost:8080/communityEmail/{city}**   >>> returns the list of eMail address of inhabitants of the given city.
+**OPS#3: GET - http://localhost:8080/phoneAlert/{station}**   >>> returns the list of phone numbers of inhabitants covered by the given fire station number.
+
+	[
+	    "841-874-6512",
+	    "841-874-6513",
+	    "841-874-6512",
+	    "841-874-6512",
+	    "841-874-6544",
+	    "841-874-6512",
+	    "841-874-6544",
+	    "841-874-6741",
+	    "841-874-6874",
+	    "841-874-8888",
+	    "841-874-9888"
+	]
+	
+**OPS#7: GET - http://localhost:8080/communityEmail/{city}**   >>> returns the list of eMail address of inhabitants of the given city.
 
 	[
 	    "jaboyd@email.com",
@@ -352,20 +400,4 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    "ssanw@email.com",
 	    "bstel@email.com",
 	    "gramps@email.com"
-	]
-	
-**GET - http://localhost:8080/phoneAlert/{station}**   >>> returns the list of phone numbers of inhabitants covered by the given fire station number.
-
-	[
-	    "841-874-6512",
-	    "841-874-6513",
-	    "841-874-6512",
-	    "841-874-6512",
-	    "841-874-6544",
-	    "841-874-6512",
-	    "841-874-6544",
-	    "841-874-6741",
-	    "841-874-6874",
-	    "841-874-8888",
-	    "841-874-9888"
 	]

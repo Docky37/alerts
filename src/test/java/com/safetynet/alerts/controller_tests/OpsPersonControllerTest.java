@@ -92,7 +92,7 @@ public class OpsPersonControllerTest {
     @Test // GET (OPS 1 list of persons covered by the given station)
     public void givenAFireStation_whenGetListOfPersonsCoveredByStation_thenReturnList()
             throws Exception {
-        LOGGER.info("Start test: GET - findPhoneListByFireStation");
+        LOGGER.info("Start test: OPS 1 list of persons covered by the given station");
         given(opsPersonService.findListOfPersonsCoveredByStation(anyString()))
                 .willReturn(coveredPersonList);
         mockMVC.perform(
@@ -101,10 +101,10 @@ public class OpsPersonControllerTest {
                         .content().contentType("application/json"));
     }
 
-    @Test // GET (OPS 1 list of persons covered by the given station)
+    @Test // GET (OPS 1 Adult & Child counts by the given station)
     public void givenAFireStation_whenGetAdultAndChildCountByStation_thenReturnCount()
             throws Exception {
-        LOGGER.info("Start test: GET - findPhoneListByFireStation");
+        LOGGER.info("Start test: OPS 1 Adult & Child counts by the given station");
         given(opsPersonService.countPersonsCoveredByStation(anyString()))
                 .willReturn(countOfPersons);
         mockMVC.perform(
@@ -116,7 +116,7 @@ public class OpsPersonControllerTest {
     @Test // GET (OPS 3 phoneAlert by station)
     public void givenAFireStation_whenGetPhoneListByFireStation_thenReturnPhoneListOfStation()
             throws Exception {
-        LOGGER.info("Start test: GET - findPhoneListByFireStation");
+        LOGGER.info("Start test: OPS 3 phoneAlert by station");
         given(opsPersonService.findAllPhoneListByStation(anyString()))
                 .willReturn(phoneList);
         mockMVC.perform(MockMvcRequestBuilders.get("/phoneAlert/station"))
@@ -127,7 +127,7 @@ public class OpsPersonControllerTest {
     @Test // GET (OPS 7 communityEmail by city)
     public void givenACity_whenGetEMailListByCity_thenReturnEmailList()
             throws Exception {
-        LOGGER.info("Start test: GET - findEmailListBy City");
+        LOGGER.info("Start test: OPS 7 communityEmail by city");
         given(opsPersonService.findAllMailByCity(anyString()))
                 .willReturn(eMailList);
         mockMVC.perform(MockMvcRequestBuilders.get("/communityEmail/city"))
