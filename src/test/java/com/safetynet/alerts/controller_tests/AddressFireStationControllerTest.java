@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -46,6 +47,20 @@ public class AddressFireStationControllerTest {
                 .add(new AddressFireStation(2L, "29_15th_St", "2"));
         addressFireStationList
                 .add(new AddressFireStation(3L, "834 Binoc Ave", "3"));
+    }
+
+    @Test // POST
+    public void givenAnAddressFireStationListToAdd_whenPost_thenReturnsIsCreated()
+            throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
+        given(addressFireStationService.addListFireStations(Mockito.<AddressFireStation>anyList()))
+                        .willReturn(addressFireStationList);
+
+        mockMVC.perform(MockMvcRequestBuilders.post("/firestations")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(addressFireStationList)))
+                .andExpect(status().isCreated());
     }
 
     @Test // POST

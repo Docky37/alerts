@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,20 @@ public class PersonControllerTest {
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
         personList.add(new Person(3L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
+    }
+
+    @Test // POST
+    public void givenAPersonListToAdd_whenPostList_thenReturnIsCreated()
+            throws Exception {
+        LOGGER.info("Start test: POST - Add a list of Person");
+        ObjectMapper mapper = new ObjectMapper();
+        given(personService.addListPersons(Mockito.<Person>anyList()))
+                .willReturn(personList);
+
+        mockMVC.perform(MockMvcRequestBuilders.post("/persons")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(personList)))
+                .andExpect(status().isCreated());
     }
 
     @Test // GET
