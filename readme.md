@@ -1,12 +1,14 @@
-# SafetyNet - Alerts v1.2 release
+# SafetyNet - Alerts v1.21 release
 
 ### Infos
-author: 		Thierry SCHREINER
+author: 		Thierry 'Docky' SCHREINER   -   DA Java student - Open ClassRooms
 
-release date:	19/04/2020
+mentored by:	Yann 'Monsieur Plus' IRRILO	
+
+release date:	20/04/2020
 
 ### Content
-The fifth release v1.2 adds an OPS#1 endpoint allows user to get the list of persons covered by a given fire station and the dissociated count of adults and children covered.
+The sixth minor release v1.21 adds administrative endpoints integration tests (for firestation, person, medicalRecords) and increase JaCoCo covering rate by adding unit tests (PersonMappingTest and missed branches in existing tests). 
 
 Previous releases contains : 
 
@@ -17,6 +19,8 @@ Previous releases contains :
 - the OPS endpoints comunityEmail/{city} and phoneAlert/{firestation} (since v1.0).
 
 - the administrative medicalRecord endpoint to perform CRUD operations on MedicalRecord (since v1.1).
+
+- OPS#1 endpoint allows user to get the list of persons covered by a given fire station and the dissociated count of adults and children covered (since v1.2).
 
 It also contains actuators (health, info & metrics).
 

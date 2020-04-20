@@ -19,6 +19,8 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
@@ -130,12 +132,14 @@ public class AddressFireStationServiceTest {
     @Tag("TestD-CreateAAddressFireStation")
     @DisplayName("4. Given a AddressFireStation to add, when POST the AddressFireStation, "
             + "then a new AddressFireStation is created.")
-    public void d_givenAAddressFireStationToAdd_whenPostAddressFireStation_thenAddressFireStationIsCreated()
+    public void d1_givenAAddressFireStationToAdd_whenPostAddressFireStation_thenAddressFireStationIsCreated()
             throws Exception {
         // GIVEN
         AddressFireStation addressFireStationToAdd = new AddressFireStation(4L,
                 "644 Gershwin Cir", "1");
 
+        given(addressFireStationRepository.findByAddress(anyString()))
+                .willReturn(null);
         given(addressFireStationRepository.save(any(AddressFireStation.class)))
                 .willReturn(addressFireStationToAdd);
         // WHEN
@@ -146,7 +150,24 @@ public class AddressFireStationServiceTest {
         assertThat(addedAddressFireStation.getAddress())
                 .isEqualTo("644 Gershwin Cir");
         assertThat(addedAddressFireStation.getStation()).isEqualTo("1");
+    }
 
+    // POST >>> CREATE (Add a new AddressFireStation)
+    @Test
+    @Tag("TestD-CreateAAddressFireStation")
+    @DisplayName("4. Given a AddressFireStation to add, when POST the AddressFireStation, "
+            + "then a new AddressFireStation is created.")
+    public void d2_givenAnExistingAddressFireStationToAdd_whenPost_thenReturnsNull()
+            throws Exception {
+        // GIVEN
+        AddressFireStation addedAddressFireStation = addressFireStList.get(0);
+        given(addressFireStationRepository.findByAddress(anyString()))
+                .willReturn(addedAddressFireStation);
+        // WHEN
+        addedAddressFireStation = addressFireStationService
+                .addAddressFireStation(addedAddressFireStation);
+        // THEN
+        verify(addressFireStationRepository,never()).save(any(AddressFireStation.class));
     }
 
     @Test // PUT >>> UPDATE (
@@ -179,7 +200,7 @@ public class AddressFireStationServiceTest {
     @Tag("TestF-DeleteAAddressFireStation")
     @DisplayName("6. Given a AddressFireStation to delete, when delete the AddressFireStation,"
             + " then find this AddressFireStation returns null.")
-    public void f_givenAAddressFireStationToDelete_whenDeleteAddressFireStation_thenReturnAddressFireStationDoesNotExist()
+    public void f1_givenAAddressFireStationToDelete_whenDeleteAddressFireStation_thenReturnAddressFireStationDoesNotExist()
             throws Exception {
         // GIVEN
         AddressFireStation addressFireStToDelete = addressFireStList.get(2);
@@ -192,6 +213,24 @@ public class AddressFireStationServiceTest {
         verify(addressFireStationRepository).findByAddress(
                 addressFireStToDelete.getAddress());
         verify(addressFireStationRepository).deleteById(any(Long.class));
+    }
+
+    @Test // DELETE
+    @Tag("TestF-DeleteAAddressFireStation")
+    @DisplayName("6. Given an unknown AddressFireStation to delete, when delete, returns null.")
+    public void f2_givenAnUnknownAddressFireStationToDelete_whenDelete_thenReturnNull()
+            throws Exception {
+        // GIVEN
+        AddressFireStation addressFireStToDelete = addressFireStList.get(2);
+        given(addressFireStationRepository.findByAddress(anyString()))
+                .willReturn(null);
+        // WHEN
+        addressFireStationService.deleteAnAddress(
+                addressFireStToDelete.getAddress());
+        // THEN
+        verify(addressFireStationRepository).findByAddress(
+                addressFireStToDelete.getAddress());
+        verify(addressFireStationRepository,never()).deleteById(any(Long.class));
     }
 
 }

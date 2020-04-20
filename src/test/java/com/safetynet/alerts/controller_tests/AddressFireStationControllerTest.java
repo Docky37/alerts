@@ -64,6 +64,20 @@ public class AddressFireStationControllerTest {
     }
 
     @Test // POST
+    public void givenAnAddressFireStationListToAdd_whenPost_thenReturnsNoContent()
+            throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
+        given(addressFireStationService.addListFireStations(Mockito.<AddressFireStation>anyList()))
+                        .willReturn(null);
+
+        mockMVC.perform(MockMvcRequestBuilders.post("/firestations")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(addressFireStationList)))
+                .andExpect(status().isNoContent());
+    }
+
+     @Test // POST
     public void givenAnAddressFireStationToAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
 
@@ -78,6 +92,23 @@ public class AddressFireStationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(addressFireStToAdd)))
                 .andExpect(status().isCreated());
+    }
+
+     @Test // POST
+    public void givenAnAddressFireStationToAdd_whenPost_thenReturnsNoContent()
+            throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
+        AddressFireStation addressFireStToAdd = new AddressFireStation(4L,
+                "644 Gershwin Cir", "1");
+        given(addressFireStationService
+                .addAddressFireStation(any(AddressFireStation.class)))
+                        .willReturn(null);
+
+        mockMVC.perform(MockMvcRequestBuilders.post("/firestation")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(addressFireStToAdd)))
+                .andExpect(status().isNoContent());
     }
 
     @Test // GET
@@ -150,6 +181,19 @@ public class AddressFireStationControllerTest {
         mockMVC.perform(MockMvcRequestBuilders
                 .delete("/firestation/" + addressFireStToDelete.getAddress()))
                 .andExpect(status().isOk());
+    }
+
+    @Test // DELETE
+    public void givenAnUnknownAddressFireStationToDelete_whenDelete_thenReturnsIsNotFound()
+            throws Exception {
+        AddressFireStation addressFireStToDelete = addressFireStationList
+                .get(1);
+        given(addressFireStationService.deleteAnAddress(anyString()))
+                .willReturn(null);
+
+        mockMVC.perform(MockMvcRequestBuilders
+                .delete("/firestation/" + addressFireStToDelete.getAddress()))
+                .andExpect(status().isNotFound());
     }
 
 }

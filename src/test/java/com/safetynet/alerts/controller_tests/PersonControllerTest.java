@@ -72,6 +72,20 @@ public class PersonControllerTest {
                 .andExpect(status().isCreated());
     }
 
+
+    @Test // POST
+    public void givenAPersonListToAdd_whenPostList_thenReturnNoContent()
+            throws Exception {
+        LOGGER.info("Start test: POST - Add a list of Person");
+        ObjectMapper mapper = new ObjectMapper();
+        given(personService.addListPersons(Mockito.<Person>anyList()))
+                .willReturn(null);
+
+        mockMVC.perform(MockMvcRequestBuilders.post("/persons")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(personList)))
+                .andExpect(status().isNoContent());
+    }
     @Test // GET
     public void givenAPersonToFind_whenGetPersonByLastNameAndFirstName_thenReturnThePerson()
             throws Exception {
@@ -117,6 +131,22 @@ public class PersonControllerTest {
     }
 
     @Test // POST
+    public void givenAPersonToAdd_whenPostPerson_thenReturnNoContent()
+            throws Exception {
+        LOGGER.info("Start test: POST - Add one person");
+        ObjectMapper mapper = new ObjectMapper();
+        Person personToAdd = new Person(4L, "Roger", "Boyd", "1509 Culver St",
+                "Culver", "97451", "841-874-6512", "tenz@email.com");
+        given(personService.addPerson(any(Person.class)))
+                .willReturn(null);
+
+        mockMVC.perform(MockMvcRequestBuilders.post("/person")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(personToAdd)))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test // POST
     public void givenAPersonToAdd_whenPostPerson_thenReturnIsCreated()
             throws Exception {
         LOGGER.info("Start test: POST - Add one person");
@@ -157,6 +187,31 @@ public class PersonControllerTest {
         // .andDo(MockMvcResultHandlers.print())
     }
 
+    @Test // PUT
+    public void givenAnUnknownToUpdate_whenPutPerson_thenNotFound()
+            throws Exception {
+        LOGGER.info("Start test: PUT - Update a person");
+        ObjectMapper mapper = new ObjectMapper();
+        Person personToUpdate = personList.get(2);
+        personToUpdate.setEmail("updated@email.com");
+        personToUpdate.setPhone("0123456789");
+        given(personService.updatePerson(any(Person.class)))
+                .willReturn(null);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
+                .put("/person/" + personToUpdate.getLastName() + "/"
+                        + personToUpdate.getFirstName())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+                .content(mapper.writeValueAsString(personToUpdate));
+
+        mockMVC.perform(builder)
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+        // .andExpect(MockMvcResultMatchers.content()
+        // .string("Person updated."))
+        // .andDo(MockMvcResultHandlers.print())
+    }
+
     @Test // DELETE
     public void givenAPersonToDelete_whenDeletePerson_thenReturnIsOk()
             throws Exception {
@@ -169,6 +224,20 @@ public class PersonControllerTest {
                 .delete("/person/" + personToDelete.getLastName() + "/"
                         + personToDelete.getFirstName()))
                 .andExpect(status().isOk());
+    }
+
+    @Test // DELETE
+    public void givenAnUnknownToDelete_whenDeletePerson_thenReturnNotFound()
+            throws Exception {
+        LOGGER.info("Start test: DELETE - Remove unknown person");
+        Person personToDelete = personList.get(2);
+        given(personService.deleteAPerson(anyString(), anyString()))
+                .willReturn(null);
+
+        mockMVC.perform(MockMvcRequestBuilders
+                .delete("/person/" + personToDelete.getLastName() + "/"
+                        + personToDelete.getFirstName()))
+                .andExpect(status().isNotFound());
     }
 
 }

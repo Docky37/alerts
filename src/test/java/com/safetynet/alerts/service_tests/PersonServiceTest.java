@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.safetynet.alerts.controller.PersonNotFoundException;
 import com.safetynet.alerts.model.AddressFireStation;
@@ -96,7 +98,6 @@ public class PersonServiceTest {
         List<Person> addedList = personService.addListPersons(personList);
         // THEN
         assertThat(addedList.size()).isEqualTo(3);
-
     }
 
     // GET ("/Person")>>> READ (Find all persons)
@@ -160,7 +161,7 @@ public class PersonServiceTest {
     @Tag("TestD-CreateAPerson")
     @DisplayName("4. Given a person to add, when POST the person, "
             + "then a new person is created.")
-    public void d_givenAPersonToAdd_whenPostPerson_thenPersonIsCreated()
+    public void d1_givenAPersonToAdd_whenPostPerson_thenPersonIsCreated()
             throws Exception {
         // GIVEN
         Person personToAdd = personList.get(2);
@@ -179,14 +180,35 @@ public class PersonServiceTest {
         // THEN
         assertThat(addedPerson.getLastName()).isEqualTo("Boyd");
         assertThat(addedPerson.getFirstName()).isEqualTo("Tenley");
+    }
 
+    // POST >>> CREATE (Add a new Person)
+    @Test
+    @Tag("TestD2-CreateAPerson")
+    @DisplayName("4. Given a person to add, when POST the person, "
+            + "then a new person is created.")
+    public void d2_givenAnExistingPersonToAdd_whenPostPerson_thenReturnNull()
+            throws Exception {
+        // GIVEN
+        Person personToAdd = personList.get(2);
+        given(personRepository.findByLastNameAndFirstName(
+                personToAdd.getLastName(), personToAdd.getFirstName()))
+                        .willReturn(pEntList.get(2));
+        given(personMapping.convertToPersonEntity(any(Person.class)))
+                .willReturn(pEntList.get(2));
+        given(personRepository.save(any(PersonEntity.class)))
+                .willReturn(pEntList.get(2));
+        // WHEN
+        personToAdd = personService.addPerson(personToAdd);
+        // THEN
+        verify(personRepository,never()).save(any(PersonEntity.class));
     }
 
     @Test // PUT >>> UPDATE (
     @Tag("TestE-UpdateAPerson")
     @DisplayName("5. Given a person to update, when save the person,"
             + " then this person is updated.")
-    public void e_givenAPersonToUpdate_whenUpdatePerson_thenReturnUpdatedPerson()
+    public void e1_givenAPersonToUpdate_whenUpdatePerson_thenReturnUpdatedPerson()
             throws Exception {
         // GIVEN
         Person personToUpdate = personList.get(2);
@@ -206,7 +228,6 @@ public class PersonServiceTest {
                 .willReturn(updatedPersonInDB);
         given(personMapping.convertToPerson(any(PersonEntity.class)))
                 .willReturn(updatedPerson);
-
         // WHEN
         updatedPerson = personService.updatePerson(personToUpdate);
         // THEN
@@ -218,11 +239,35 @@ public class PersonServiceTest {
                 .isEqualTo(personToUpdate.getPhone());
     }
 
+    @Test // PUT >>> UPDATE (
+    @Tag("TestE-UpdateAPerson")
+    @DisplayName("5. Given a unknown person to update, when save the person,"
+            + " then returns null.")
+    public void e2_givenAnUnknownPersonToUpdate_whenUpdatePerson_thenReturnNull()
+            throws Exception {
+        // GIVEN
+        Person personToUpdate = personList.get(2);
+        personToUpdate.setEmail("Tenley.Boyd@OpenClassrooms.com");
+        personToUpdate.setPhone("0123456789");
+        Person updatedPerson = personToUpdate;
+        PersonEntity updatedPersonInDB = pEntList.get(2);
+        updatedPersonInDB.setEmail("Tenley.Boyd@OpenClassrooms.com");
+        updatedPersonInDB.setPhone("0123456789");
+        given(personRepository.findByLastNameAndFirstName(
+                updatedPerson.getLastName(), updatedPerson.getFirstName()))
+                        .willReturn(null);
+
+        // WHEN
+        updatedPerson = personService.updatePerson(personToUpdate);
+        // THEN
+        verify(personRepository,never()).save(any(PersonEntity.class));
+    }
+
     @Test // DELETE
     @Tag("TestF-DeleteAPerson")
     @DisplayName("6. Given a person to delete, when delete the person,"
-            + " then find this person returns null.")
-    public void f_givenAPersonToDelete_whenDeletePerson_thenReturnPersonDoesNotExist()
+            + " then person is deleted.")
+    public void f1_givenAPersonToDelete_whenDeletePerson_thenReturnPersonDoesNotExist()
             throws Exception {
         // GIVEN
         Person personToDelete = personList.get(2);
@@ -235,6 +280,26 @@ public class PersonServiceTest {
         verify(personRepository).findByLastNameAndFirstName(
                 personToDelete.getLastName(), personToDelete.getFirstName());
         verify(personRepository).deleteById(any(Long.class));
+    }
+
+    @Test // DELETE
+    @Tag("TestF-DeleteAPerson")
+    @DisplayName("6. Given a unknown person to delete, when delete the person,"
+            + " then find this person returns null.")
+    public void f2_givenAUnknownPersonToDelete_whenDeletePerson_thenReturnNull()
+            throws Exception {
+        // GIVEN
+        Person personToDelete = personList.get(2);
+        given(personRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(null);
+        // WHEN
+        personService.deleteAPerson(personToDelete.getLastName(),
+                personToDelete.getFirstName());
+        // THEN
+        verify(personRepository).findByLastNameAndFirstName(
+                personToDelete.getLastName(), personToDelete.getFirstName());
+        verify(personRepository,never()).deleteById(any(Long.class));
+        
     }
 
 }

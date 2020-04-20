@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
@@ -37,7 +39,7 @@ public class MedicalRecordServiceTest {
 
     @MockBean
     private MedicalRecordRepository medicalRecordRepository;
-    
+
     @MockBean
     PersonRepository personRepository;
 
@@ -143,12 +145,12 @@ public class MedicalRecordServiceTest {
         assertThat(medicalRecord).isNull();
     }
 
-    // POST >>> CREATE (Add a new Person)
+    // POST >>> CREATE (Add a new MedicalRecord)
     @Test
     @Tag("TestD-CreateAMedicalRecord")
     @DisplayName("4. Given a MedicalRecord to add, when POST the person, "
             + "then a new MedicalRecord is created.")
-    public void d_givenAPersonToAdd_whenPostPerson_thenPersonIsCreated()
+    public void d1_givenAPersonToAdd_whenPostPerson_thenPersonIsCreated()
             throws Exception {
         // GIVEN
         MedicalRecord medicalRecordToAdd = medicalRecordList.get(2);
@@ -170,7 +172,59 @@ public class MedicalRecordServiceTest {
 
     }
 
-    @Test // PUT >>> UPDATE (
+    // POST >>> CREATE (Try to add an existing MedicalRecord)
+    @Test
+    @Tag("TestD-CreateAMedicalRecord")
+    @DisplayName("4. Given a MedicalRecord to add that already exist, when POST, "
+            + "then returns null.")
+    public void d2_givenAMedicalRecordToAddThatExists_whenPost_thenReturnNull()
+            throws Exception {
+        // GIVEN
+        MedicalRecord medicalRecordToAdd = medicalRecordList.get(2);
+        given(medicalRecordRepository.findByLastNameAndFirstName(
+                medicalRecordToAdd.getLastName(),
+                medicalRecordToAdd.getFirstName())).willReturn(
+                        medicalRecordList.get(2));
+        // WHEN
+        medicalRecordToAdd = medicalRecordService
+                .addMedicalRecord(medicalRecordToAdd);
+        // THEN
+        verify(medicalRecordRepository).findByLastNameAndFirstName(anyString(),
+                anyString());
+        verify(personRepository,never()).findByLastNameAndFirstName(anyString(),
+                anyString());
+        verify(medicalRecordRepository, never()).save(any(MedicalRecord.class));
+
+    }
+
+    // POST >>> CREATE (Try to add an orphan MedicalRecord)
+    @Test
+    @Tag("TestD-CreateAnOrphanMedicalRecord")
+    @DisplayName("4. Given an Orphan MedicalRecord to add, when POST the person, "
+            + "then a new MedicalRecord is created.")
+    public void d3_givenAnOrphanMedicalRecord_whenPost_thenReturnNull()
+            throws Exception {
+        // GIVEN
+        MedicalRecord medicalRecordToAdd = medicalRecordList.get(2);
+        given(medicalRecordRepository.findByLastNameAndFirstName(
+                medicalRecordToAdd.getLastName(),
+                medicalRecordToAdd.getFirstName())).willReturn(null,
+                        medicalRecordList.get(2));
+        given(personRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(null);
+        // WHEN
+        medicalRecordToAdd = medicalRecordService
+                .addMedicalRecord(medicalRecordToAdd);
+        // THEN
+        verify(medicalRecordRepository).findByLastNameAndFirstName(anyString(),
+                anyString());
+        verify(personRepository).findByLastNameAndFirstName(anyString(),
+                anyString());
+        verify(medicalRecordRepository, never()).save(any(MedicalRecord.class));
+
+    }
+
+    @Test // PUT >>> UPDATE a MedicalRecord
     @Tag("TestE-UpdateAMedicalRecord")
     @DisplayName("5. Given a MedicalRecord to update, when save the MedicalRecord,"
             + " then this MedicalRecord is updated.")
@@ -197,11 +251,11 @@ public class MedicalRecordServiceTest {
                 .isEqualTo(medicalRecordToUpdate.getBirthDate());
     }
 
-    @Test // DELETE
+    @Test // DELETE a MedicalRecord
     @Tag("TestF-DeleteAPerson")
     @DisplayName("6. Given a person to delete, when delete the person,"
             + " then find this person returns null.")
-    public void f_givenAMedicalRecordToDelete_whenDelete_thenMedicalRecordIsDeleted()
+    public void f1_givenAMedicalRecordToDelete_whenDelete_thenMedicalRecordIsDeleted()
             throws Exception {
         // GIVEN
         MedicalRecord medicalRecordToDelete = medicalRecordList.get(2);
@@ -216,6 +270,27 @@ public class MedicalRecordServiceTest {
                 medicalRecordToDelete.getLastName(),
                 medicalRecordToDelete.getFirstName());
         verify(medicalRecordRepository).deleteById(any(Long.class));
+    }
+
+    @Test // DELETE a MedicalRecord that not exists
+    @Tag("TestF-DeleteAPerson")
+    @DisplayName("6. Given a unknown MedicalRecord to delete, when delete,"
+            + " returns null.")
+    public void f2_givenAnUnknownMedicalRecordToDelete_whenDelete_thenReturnsNull()
+            throws Exception {
+        // GIVEN
+        MedicalRecord medicalRecordToDelete = medicalRecordList.get(2);
+        given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(null);
+        // WHEN
+        medicalRecordService.deleteAMedicalRecord(
+                medicalRecordToDelete.getLastName(),
+                medicalRecordToDelete.getFirstName());
+        // THEN
+        verify(medicalRecordRepository).findByLastNameAndFirstName(
+                medicalRecordToDelete.getLastName(),
+                medicalRecordToDelete.getFirstName());
+        verify(medicalRecordRepository,never()).deleteById(any(Long.class));
     }
 
 }

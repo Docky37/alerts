@@ -72,10 +72,12 @@ public class MedicalRecordControllerTest {
             throws Exception {
         LOGGER.info("Start test: GET - findByLastNameAndFirstName");
         given(medicalRecordService.findByLastNameAndFirstName(anyString(),
-                anyString())).willReturn(new MedicalRecord(1L, "John", "Boyd", "03/06/1984",
-                        new String[] { "aznol:350mg", "hydrapermazol:100mg" },
-                        new String[] { "nillacilan" }));
-        
+                anyString())).willReturn(
+                        new MedicalRecord(1L, "John", "Boyd", "03/06/1984",
+                                new String[] { "aznol:350mg",
+                                        "hydrapermazol:100mg" },
+                                new String[] { "nillacilan" }));
+
         mockMVC.perform(
                 MockMvcRequestBuilders.get("/medicalRecord/lastName/firstName"))
                 .andExpect(status().isOk())
@@ -91,13 +93,29 @@ public class MedicalRecordControllerTest {
             throws Exception {
         LOGGER.info("Start test: POST - A list of MedicalRecords");
         ObjectMapper mapper = new ObjectMapper();
-        given(medicalRecordService.addListMedicalRecord(Mockito.<MedicalRecord>anyList()))
-                .willReturn(medicalRecordList);
+        given(medicalRecordService
+                .addListMedicalRecord(Mockito.<MedicalRecord>anyList()))
+                        .willReturn(medicalRecordList);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecords")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(medicalRecordList)))
                 .andExpect(status().isCreated());
+    }
+
+    @Test // POST
+    public void givenAMedicalRecordListToAdd_whenPostList_thenReturnNoContent()
+            throws Exception {
+        LOGGER.info("Start test: POST - A list of MedicalRecords");
+        ObjectMapper mapper = new ObjectMapper();
+        given(medicalRecordService
+                .addListMedicalRecord(Mockito.<MedicalRecord>anyList()))
+                        .willReturn(null);
+
+        mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecords")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(medicalRecordList)))
+                .andExpect(status().isNoContent());
     }
 
     @Test // GET
@@ -140,6 +158,22 @@ public class MedicalRecordControllerTest {
                 .andExpect(status().isCreated());
     }
 
+    @Test // POST
+    public void givenAnUnknownMedicalRecordToAdd_whenPostMedicalRecord_thenReturnNoContent()
+            throws Exception {
+        LOGGER.info("Start test: POST - Add one MedicalRecord");
+        ObjectMapper mapper = new ObjectMapper();
+        MedicalRecord personToAdd = new MedicalRecord(4L, "Roger", "Boyd",
+                "09/06/2017", new String[] {}, new String[] {});
+        given(medicalRecordService.addMedicalRecord(any(MedicalRecord.class)))
+                .willReturn(null);
+
+        mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecord")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(personToAdd)))
+                .andExpect(status().isNoContent());
+    }
+
     @Test // PUT
     public void givenAMedicalRecordToUpdate_whenPutMedicalRecord_thenReturnIsCreated()
             throws Exception {
@@ -153,14 +187,40 @@ public class MedicalRecordControllerTest {
                         .willReturn(medicalRecordToUpdate);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
-                .put("/medicalRecord/" + medicalRecordToUpdate.getLastName() + "/"
-                        + medicalRecordToUpdate.getFirstName())
+                .put("/medicalRecord/" + medicalRecordToUpdate.getLastName()
+                        + "/" + medicalRecordToUpdate.getFirstName())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
                 .content(mapper.writeValueAsString(medicalRecordToUpdate));
 
         mockMVC.perform(builder)
                 .andExpect(MockMvcResultMatchers.status().isCreated());
+        // .andExpect(MockMvcResultMatchers.content()
+        // .string("MedicalRecord updated."))
+        // .andDo(MockMvcResultHandlers.print())
+    }
+
+    @Test // PUT
+    public void givenAnUnknownMedicalRecordToUpdate_whenPutMedicalRecord_thenReturnNotFound()
+            throws Exception {
+        LOGGER.info("Start test: PUT - Update a person");
+        ObjectMapper mapper = new ObjectMapper();
+        MedicalRecord medicalRecordToUpdate = medicalRecordList.get(2);
+        // medicalRecordToUpdate.setEmail("updated@email.com");
+        // medicalRecordToUpdate.setPhone("0123456789");
+        given(medicalRecordService
+                .updateMedicalRecord(any(MedicalRecord.class)))
+                        .willReturn(null);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
+                .put("/medicalRecord/" + medicalRecordToUpdate.getLastName()
+                        + "/" + medicalRecordToUpdate.getFirstName())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+                .content(mapper.writeValueAsString(medicalRecordToUpdate));
+
+        mockMVC.perform(builder)
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
         // .andExpect(MockMvcResultMatchers.content()
         // .string("MedicalRecord updated."))
         // .andDo(MockMvcResultHandlers.print())
@@ -175,9 +235,23 @@ public class MedicalRecordControllerTest {
                 anyString())).willReturn(medicalRecordToDelete);
 
         mockMVC.perform(MockMvcRequestBuilders
-                .delete("/medicalRecord/" + medicalRecordToDelete.getLastName() + "/"
-                        + medicalRecordToDelete.getFirstName()))
+                .delete("/medicalRecord/" + medicalRecordToDelete.getLastName()
+                        + "/" + medicalRecordToDelete.getFirstName()))
                 .andExpect(status().isOk());
+    }
+
+    @Test // DELETE
+    public void givenAnUnknownMedicalRecordToDelete_whenDeleteMedicalRecord_thenReturnNotFound()
+            throws Exception {
+        LOGGER.info("Start test: DELETE - Remove one person");
+        MedicalRecord medicalRecordToDelete = medicalRecordList.get(2);
+        given(medicalRecordService.deleteAMedicalRecord(anyString(),
+                anyString())).willReturn(null);
+
+        mockMVC.perform(MockMvcRequestBuilders
+                .delete("/medicalRecord/" + medicalRecordToDelete.getLastName()
+                        + "/" + medicalRecordToDelete.getFirstName()))
+                .andExpect(status().isNotFound());
     }
 
 }
