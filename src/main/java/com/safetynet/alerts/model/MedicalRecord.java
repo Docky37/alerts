@@ -159,6 +159,14 @@ public class MedicalRecord {
     public String getBirthDate() {
         return formatter2.format(birthDate);
     }
+    /**
+     * Second Getter of medical record owner birthday.
+     *
+     * @return a Date (for age calculation)
+     */
+    public Date getBirthDate2() {
+        return birthDate;
+    }
 
     /**
      * Setter of medical record owner birthday.

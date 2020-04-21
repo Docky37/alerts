@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CountOfPersons;
 import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.service.OpsPersonService;
@@ -44,8 +45,7 @@ public class OpsPersonController {
 
     // OPS #1 ENDPOINT -------------------------------------------------------
     /**
-     * OPS1 - GET request to list the phone number off all inhabitants covered
-     * by one station.
+     * OPS1 - GET request to list the persons covered by one station.
      *
      * @param station - the number of the fire station
      * @return a List of persons in DB covered by this station
@@ -67,6 +67,19 @@ public class OpsPersonController {
     public CountOfPersons adultAndChildCountByStation(
             @PathVariable final String station) {
         return opsPersonService.countPersonsCoveredByStation(station);
+    }
+
+    // OPS #2 ENDPOINT -------------------------------------------------------
+    /**
+     * OPS2 - GET request to list the child.
+     *
+     * @param address - the given address
+     * @return a ChildAlert object
+     */
+    @GetMapping(value = "childAlert/{address}")
+    public ChildAlert childAlertByAddress(
+            @PathVariable final String address) {
+        return opsPersonService.findListOfChildByaddress(address);
     }
 
     // OPS #3 ENDPOINT -------------------------------------------------------

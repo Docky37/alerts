@@ -24,8 +24,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.AddressFireStation;
+import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CountOfPersons;
 import com.safetynet.alerts.model.CoveredPerson;
+import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
@@ -62,6 +64,12 @@ public class OpsPersonServiceTest {
                 "123-456-7890", "Doc.Spring@email.com"));
         personList.add(new Person(4L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6515", "tenz@email.com"));
+        personList.add(new Person(5L, "Jacob", "Boyd", "1509 Culver St",
+                "Culver", "97451", "841-874-6513", "drk@email.com"));
+        personList.add(new Person(6L, "Roger", "Boyd", "1509 Culver St",
+                "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
+        personList.add(new Person(7L, "Felicia", "Boyd", "1509 Culver St",
+                "Culver", "97451", "841-874-6544", "jaboyd@email.com"));
     }
 
     public static List<AddressFireStation> addressFireStList = new ArrayList<>();
@@ -71,18 +79,44 @@ public class OpsPersonServiceTest {
         addressFireStList.add(new AddressFireStation(2L, "29_15th_St", "2"));
     }
 
+    public static List<MedicalRecord> medicalRecordList = new ArrayList<>();
+
+    static {
+        medicalRecordList
+                .add(new MedicalRecord(1L, "John", "Boyd", "03/06/1984",
+                        new String[] { "aznol:350mg", "hydrapermazol:100mg" },
+                        new String[] { "nillacilan" }));
+        medicalRecordList.add(new MedicalRecord(
+                2L, "Jacob", "Boyd", "03/06/1989", new String[] {
+                        "pharmacol:5000mg", "terazine:10mg", "noznazol:250mg" },
+                new String[] {}));
+        medicalRecordList.add(new MedicalRecord(3L, "Tenley", "Boyd",
+                "02/18/2012", new String[] {}, new String[] { "peanut" }));
+        medicalRecordList.add(new MedicalRecord(4L, "Roger", "Boyd",
+                "09/06/2017", new String[] {}, new String[] {}));
+        medicalRecordList.add(new MedicalRecord(4L, "Felicia", "Boyd",
+                "01/08/1986", new String[] { "tetracyclaz:650mg" },
+                new String[] { "xilliathal" }));
+    }
+
     public static List<PersonEntity> pEntList = new ArrayList<>();
 
     static {
-        pEntList.add(
-                new PersonEntity(1L, "John", "Boyd", addressFireStList.get(0),
-                        "841-874-6512", "jaboyd@email.com", null));
-        pEntList.add(
-                new PersonEntity(2L, "Jacob", "Boyd", addressFireStList.get(1),
-                        "841-874-6513", "drk@email.com", null));
-        pEntList.add(
-                new PersonEntity(4L, "Tenley", "Boyd", addressFireStList.get(0),
-                        "841-874-6512", "tenz@email.com", null));
+        pEntList.add(new PersonEntity(1L, "John", "Boyd",
+                addressFireStList.get(0), "841-874-6512", "jaboyd@email.com",
+                medicalRecordList.get(0)));
+        pEntList.add(new PersonEntity(2L, "Jacob", "Boyd",
+                addressFireStList.get(1), "841-874-6513", "drk@email.com",
+                medicalRecordList.get(1)));
+        pEntList.add(new PersonEntity(4L, "Tenley", "Boyd",
+                addressFireStList.get(0), "841-874-6512", "tenz@email.com",
+                medicalRecordList.get(2)));
+        pEntList.add(new PersonEntity(6L, "Roger", "Boyd",
+                addressFireStList.get(0), "841-874-6512", "jaboyd@email.com",
+                medicalRecordList.get(3)));
+        pEntList.add(new PersonEntity(7L, "Felicia", "Boyd",
+                addressFireStList.get(0), "841-874-6544", "jaboyd@email.com",
+                medicalRecordList.get(4)));
     }
 
     public static List<PersonEntity> pEnt2List = new ArrayList<>();
@@ -121,10 +155,11 @@ public class OpsPersonServiceTest {
     @Tag("Test1a-PersonListByStation")
     @DisplayName("A1. Given a fireStation, when findAllPersonsByStation,"
             + " then returns the list of persons covered by this station.")
-    public void a1_givenAStation_whenFindAllPersonByStation_thenReturnList()
+    public void ops1a_givenAStation_whenFindAllPersonByStation_thenReturnList()
             throws Exception {
-        LOGGER.info("Start test: OPS 1 list of persons covered by the given station");
-       // GIVEN
+        LOGGER.info(
+                "Start test: OPS #1 list of persons covered by the given station");
+        // GIVEN
         String station = "3";
         given(personRepository.findByAddressIdStation(station))
                 .willReturn(pEnt2List);
@@ -143,9 +178,10 @@ public class OpsPersonServiceTest {
     @Tag("Test1b-PersonListByStation")
     @DisplayName("A2. Given a fireStation, when countPersonsCoveredByStation,"
             + " then returns the count of persons covered by this station.")
-    public void a2_givenAStation_whenCountPersonByStation_thenReturnCount()
+    public void ops1b_givenAStation_whenCountPersonByStation_thenReturnCount()
             throws Exception {
-        LOGGER.info("Start test: OPS 1 Adult & Child counts by the given station");
+        LOGGER.info(
+                "Start test: OPS #1 Adult & Child counts by the given station");
         // GIVEN
         String station = "3";
         Date compareDate = Date.valueOf(LocalDate.now().minusYears(18));
@@ -157,21 +193,42 @@ public class OpsPersonServiceTest {
         CountOfPersons resultingCountOfPersons = opsPersonService
                 .countPersonsCoveredByStation(station);
         // THEN
-        assertThat(resultingCountOfPersons.getAdultCount()).isEqualTo(countOfPersons.getAdultCount());
-        assertThat(resultingCountOfPersons.getChildCount()).isEqualTo(countOfPersons.getChildCount());
-        assertThat(resultingCountOfPersons.getTotal()).isEqualTo(countOfPersons.getTotal());
-        
+        assertThat(resultingCountOfPersons.getAdultCount())
+                .isEqualTo(countOfPersons.getAdultCount());
+        assertThat(resultingCountOfPersons.getChildCount())
+                .isEqualTo(countOfPersons.getChildCount());
+        assertThat(resultingCountOfPersons.getTotal())
+                .isEqualTo(countOfPersons.getTotal());
+
     }
 
-    // OPS #3 ENDPOINT -------------------------------------------------------
+    // OPS #2 - CHILD ALERT ---------------------------------------------------
+    @Test
+    @Tag("Test-Child Alert")
+    @DisplayName("Given an Address, when search a list of Child by address,"
+            + " then returns the ChildAlert object.")
+    public void ops2_givenAnAddress_WhenFindListOfChildByaddress_thenReturnChildAlertObject()
+            throws Exception {
+        LOGGER.info("Start test: OPS #2 Child Alert");
+        // GIVEN
+        String address = "1509 Culver St";
+        ChildAlert childAlert = new ChildAlert();
+        given(personRepository.findByAddressIdAddress(address)).willReturn(pEntList);
+        // WHEN
+        childAlert = opsPersonService.findListOfChildByaddress(address);
+        // THEN
+        assertThat(childAlert.toString()).isEqualTo("ChildAlert [childList=[Child [firstName=Tenley, lastName=Boyd, age=8], Child [firstName=Roger, lastName=Boyd, age=2]], adultList=[John Boyd, Jacob Boyd, Felicia Boyd]]");
+    }
+
+    // OPS #3 - PHONE ALERT ---------------------------------------------------
     // GET("/phoneAlert/{station}")>>Find all person phones by station
     @Test
     @Tag("TestB-PhoneListByStation")
     @DisplayName("B. Given a fireStation, when findAllPhonesByStation,"
             + " then returns the phone list of inhabitants covered by this station.")
-    public void b_givenAStation_whenFindAllPhoneByStation_thenReturnListOfPhones()
+    public void ops3_givenAStation_whenFindAllPhoneByStation_thenReturnListOfPhones()
             throws Exception {
-        LOGGER.info("Start test: OPS 3 phoneAlert by station");
+        LOGGER.info("Start test: OPS #3 phoneAlert by station");
         // GIVEN
         String station = "3";
         List<String> phoneList = new ArrayList<>();
@@ -190,9 +247,9 @@ public class OpsPersonServiceTest {
     @Tag("TestA-EMailListByCity")
     @DisplayName("C. Given a City, when findAllEmailsByCity,"
             + " then returns the eMail list of the city.")
-    public void c_givenACity_whenFindAllEmailByCity_thenReturnListOfEmails()
+    public void ops7_givenACity_whenFindAllEmailByCity_thenReturnListOfEmails()
             throws Exception {
-        LOGGER.info("Start test: OPS 7 communityEmail by city");
+        LOGGER.info("Start test: OPS #7 communityEmail by city");
         // GIVEN
         String city = "Culver";
         List<String> eMailList = new ArrayList<>();
@@ -200,7 +257,7 @@ public class OpsPersonServiceTest {
         // WHEN
         eMailList = opsPersonService.findAllMailByCity(city);
         // THEN
-        assertThat(eMailList.size()).isEqualTo(3);
+        assertThat(eMailList.size()).isEqualTo(5);
         assertThat(eMailList.get(0)).isEqualTo(personList.get(0).getEmail());
         assertThat(eMailList.get(1)).isEqualTo(personList.get(1).getEmail());
         assertThat(eMailList.get(2)).isEqualTo(personList.get(3).getEmail());

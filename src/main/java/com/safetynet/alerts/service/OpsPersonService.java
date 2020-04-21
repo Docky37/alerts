@@ -2,6 +2,7 @@ package com.safetynet.alerts.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.model.Child;
+import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CountOfPersons;
 import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.PersonEntity;
@@ -32,8 +35,8 @@ public class OpsPersonService {
             .getLogger(AlertsApplication.class);
 
     /**
-     * This final value of 18 years is subtracted to the day date to make
-     * a comparison date to recognize adult persons using their birth date.
+     * This final value of 18 years is subtracted to the day date to make a
+     * comparison date to recognize adult persons using their birth date.
      */
     static final long DIX_HUIT_YEARS = 18;
 
@@ -95,6 +98,45 @@ public class OpsPersonService {
         countOfPersons.setChildCount(
                 countOfPersons.getTotal() - countOfPersons.getAdultCount());
         return countOfPersons;
+    }
+
+    // OPS #2 ENDPOINT -------------------------------------------------------
+    /**
+     * OPS#2 - ChildAlert: the list of children (with age) and adults living in
+     * a given address.
+     *
+     * @param address
+     * @return a ChildAlert object
+     */
+    public ChildAlert findListOfChildByaddress(final String address) {
+        ChildAlert childAlert = new ChildAlert();
+        long dateInterval;
+        List<String> adultList = new ArrayList<>();
+        List<Child> childList = new ArrayList<>();
+        List<PersonEntity> pEntList = personRepository
+                .findByAddressIdAddress(address);
+        LOGGER.info("pEntList= {}", pEntList);
+        for (PersonEntity personEntity : pEntList) {
+            LocalDate birthDate = personEntity.getMedRecId().getBirthDate2()
+                    .toLocalDate();
+            LOGGER.info("First Name= {} and Birth Date = {}",
+                    personEntity.getFirstName(), birthDate);
+            dateInterval = birthDate.until(LocalDate.now(), ChronoUnit.YEARS);
+            if (dateInterval > DIX_HUIT_YEARS) {
+                adultList.add(personEntity.getFirstName() + " "
+                        + personEntity.getLastName());
+                LOGGER.info("Adult list = {}", adultList);
+            } else {
+                childList.add(new Child(personEntity.getFirstName(),
+                        personEntity.getLastName(),
+                        Long.toString(dateInterval)));
+                LOGGER.info("Child list = {}", childList.toString());
+            }
+        }
+        childAlert.setChildList(childList);
+        childAlert.setAdultList(adultList);
+        LOGGER.info("ChildAlert = {}", childAlert.toString());
+        return childAlert;
     }
 
     // OPS #3 ENDPOINT -------------------------------------------------------

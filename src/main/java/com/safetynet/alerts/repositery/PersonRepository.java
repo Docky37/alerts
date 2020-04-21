@@ -45,6 +45,16 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
     /**
      * This method use keyword "findBy" associated to repository fields
      * AddressId, a foreign key for ManyToOne join with AdressFireStation entity
+     * class that contains the address field.
+     *
+     * @param address
+     * @return a List<PersonEntity>
+     */
+    List<PersonEntity> findByAddressIdAddress(String address);
+
+    /**
+     * This method use keyword "findBy" associated to repository fields
+     * AddressId, a foreign key for ManyToOne join with AdressFireStation entity
      * class that contains the station field.
      *
      * @param pStation - the fire station that we want covered inhabitants phone
