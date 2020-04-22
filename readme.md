@@ -1,14 +1,14 @@
-# SafetyNet - Alerts v1.21 release
+# SafetyNet - Alerts v1.3 release
 
 ### Infos
 author: 		Thierry 'Docky' SCHREINER   -   DA Java student - Open ClassRooms
 
 mentored by:	Yann 'Monsieur Plus' IRRILO	
 
-release date:	20/04/2020
+release date:	22/04/2020
 
 ### Content
-The sixth minor release v1.21 adds administrative endpoints integration tests (for firestation, person, medicalRecords) and increase JaCoCo covering rate by adding unit tests (PersonMappingTest and missed branches in existing tests). 
+The seventh release v1.3 adds OPS#2 ChildAlert that provides a list of children (first name, last name, age) and a list of adults living at a given address.  
 
 Previous releases contains : 
 
@@ -21,6 +21,8 @@ Previous releases contains :
 - the administrative medicalRecord endpoint to perform CRUD operations on MedicalRecord (since v1.1).
 
 - OPS#1 endpoint allows user to get the list of persons covered by a given fire station and the dissociated count of adults and children covered (since v1.2).
+
+- the administrative endpoints integration tests (for firestation, person, medicalRecords) and increase JaCoCo covering rate by adding unit tests (PersonMappingTest and missed branches in existing tests), since v1.21.
 
 It also contains actuators (health, info & metrics).
 
@@ -361,7 +363,28 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    "total": 11
 	}
 	
-  
+**OPS#2: GET - http://localhost:8080/childAlert/{address}**   >>> returns the list of children (first name, last name, age) and a list of adults living at a given address.
+
+	{
+	    "childList": [
+	        {
+	            "firstName": "Tenley",
+	            "lastName": "Boyd",
+	            "age": "8"
+	        },
+	        {
+	            "firstName": "Roger",
+	            "lastName": "Boyd",
+	            "age": "2"
+	        }
+	    ],
+	    "adultList": [
+	        "John Boyd",
+	        "Jacob Boyd",
+	        "Felicia Boyd"
+	    ]
+	}
+
 **OPS#3: GET - http://localhost:8080/phoneAlert/{station}**   >>> returns the list of phone numbers of inhabitants covered by the given fire station number.
 
 	[
@@ -377,7 +400,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    "841-874-8888",
 	    "841-874-9888"
 	]
-	
+
 **OPS#7: GET - http://localhost:8080/communityEmail/{city}**   >>> returns the list of eMail address of inhabitants of the given city.
 
 	[
