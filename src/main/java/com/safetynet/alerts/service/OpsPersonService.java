@@ -2,6 +2,7 @@ package com.safetynet.alerts.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,12 @@ public class OpsPersonService {
      */
     static final Logger LOGGER = LoggerFactory
             .getLogger(AlertsApplication.class);
+
+    /**
+     * Date format used to convert String parameter to LocalDate.
+     */
+    private static DateTimeFormatter formatter = DateTimeFormatter
+            .ofPattern("MM/dd/yyyy");
 
     /**
      * This final value of 18 years is subtracted to the day date to make a
@@ -118,8 +125,7 @@ public class OpsPersonService {
                 .findByAddressIdAddress(address);
         LOGGER.info("pEntList= {}", pEntList);
         for (PersonEntity personEntity : pEntList) {
-            LocalDate birthDate = personEntity.getMedRecId().getBirthDate2()
-                    .toLocalDate();
+            LocalDate birthDate = LocalDate.parse(personEntity.getMedRecId().getBirthDate(),formatter);
             LOGGER.info("First Name= {} and Birth Date = {}",
                     personEntity.getFirstName(), birthDate);
             dateInterval = birthDate.until(LocalDate.now(), ChronoUnit.YEARS);

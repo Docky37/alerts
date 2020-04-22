@@ -39,11 +39,10 @@ public class PersonMapping {
     public List<PersonEntity> convertToPersonEntity(
             final List<Person> pListPerson) {
         List<PersonEntity> listPE = new ArrayList<PersonEntity>();
-        PersonEntity pEnt = new PersonEntity();
+        PersonEntity pEnt;
         for (Person p : pListPerson) {
             pEnt = convertToPersonEntity(p);
             listPE.add(pEnt);
-            pEnt = new PersonEntity();
         }
         return listPE;
     }
@@ -75,11 +74,10 @@ public class PersonMapping {
      */
     public List<Person> convertToPerson(final List<PersonEntity> listPE) {
         List<Person> listPersons = new ArrayList<Person>();
-        Person person = new Person();
+        Person person;
         for (PersonEntity pEnt : listPE) {
             person = convertToPerson(pEnt);
             listPersons.add(person);
-            person = new Person();
         }
 
         return (listPersons);
@@ -116,11 +114,10 @@ public class PersonMapping {
     public List<CoveredPerson> convertToCoveredByStationPerson(
             final List<PersonEntity> listPE) {
         List<CoveredPerson> listPersons = new ArrayList<CoveredPerson>();
-        CoveredPerson coveredPerson = new CoveredPerson();
+        CoveredPerson coveredPerson;
         for (PersonEntity pEnt : listPE) {
             coveredPerson = convertToCoveredPerson(pEnt);
             listPersons.add(coveredPerson);
-            coveredPerson = new CoveredPerson();
         }
 
         return (listPersons);

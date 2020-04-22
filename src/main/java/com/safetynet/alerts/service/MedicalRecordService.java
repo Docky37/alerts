@@ -151,8 +151,11 @@ public class MedicalRecordService {
         MedicalRecord foundMedicalRecord = medicalRecordRepository
                 .findByLastNameAndFirstName(pMedicalRecord.getLastName(),
                         pMedicalRecord.getFirstName());
-        if (foundMedicalRecord != null && foundMedicalRecord.getFirstName() == pMedicalRecord.getFirstName() 
-                && foundMedicalRecord.getLastName() == pMedicalRecord.getLastName()) {
+        if (foundMedicalRecord != null
+                && foundMedicalRecord.getFirstName()
+                        .contentEquals(pMedicalRecord.getFirstName())
+                && foundMedicalRecord.getLastName()
+                        .contentEquals(pMedicalRecord.getLastName())) {
             medicalRecordToUpdate.setId(foundMedicalRecord.getId());
             MedicalRecord updatedMedicalRecord = medicalRecordRepository
                     .save(medicalRecordToUpdate);
