@@ -157,7 +157,7 @@ public class OpsPersonControllerTest {
     public void ops2_givenAnAddress_whenGetChildAlert_thenReturnChilAlertObject()
             throws Exception {
         LOGGER.info("Start test: OPS 3 chidAlert by address");
-        given(opsPersonService.findListOfChildByaddress(anyString()))
+        given(opsPersonService.findListOfChildByAddress(anyString()))
                 .willReturn(childAlert);
         mockMVC.perform(MockMvcRequestBuilders.get("/childAlert/address"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers

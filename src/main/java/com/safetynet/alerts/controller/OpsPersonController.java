@@ -27,10 +27,10 @@ public class OpsPersonController {
      */
     static final Logger LOGGER = LoggerFactory
             .getLogger(AlertsApplication.class);
+
     /**
      * The service class used to manage person administrative CRUD operations.
      */
-
     @Autowired
     private OpsPersonService opsPersonService;
 
@@ -79,7 +79,7 @@ public class OpsPersonController {
     @GetMapping(value = "childAlert/{address}")
     public ChildAlert childAlertByAddress(
             @PathVariable final String address) {
-        return opsPersonService.findListOfChildByaddress(address);
+        return opsPersonService.findListOfChildByAddress(address);
     }
 
     // OPS #3 ENDPOINT -------------------------------------------------------

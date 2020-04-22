@@ -2,8 +2,6 @@ package com.safetynet.alerts.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.AlertsApplication;
-import com.safetynet.alerts.model.Child;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CountOfPersons;
 import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
+import com.safetynet.alerts.utils.ChildAlertMapping;
 import com.safetynet.alerts.utils.PersonMapping;
 
 /**
@@ -36,12 +34,6 @@ public class OpsPersonService {
             .getLogger(AlertsApplication.class);
 
     /**
-     * Date format used to convert String parameter to LocalDate.
-     */
-    private static DateTimeFormatter formatter = DateTimeFormatter
-            .ofPattern("MM/dd/yyyy");
-
-    /**
      * This final value of 18 years is subtracted to the day date to make a
      * comparison date to recognize adult persons using their birth date.
      */
@@ -54,6 +46,13 @@ public class OpsPersonService {
     private PersonRepository personRepository;
 
     /**
+     * The ChildAlertMapping class performs data mapping of a List of
+     * PersonEntity to create aChildAlert object.
+     *
+     */
+    @Autowired
+    private ChildAlertMapping childAlertMapping;
+    /**
      * PersonMapping instance is used.
      */
     @Autowired
@@ -64,11 +63,14 @@ public class OpsPersonService {
      *
      * @param pPersonRepos
      * @param pPersonMapping
+     * @param pChildAlertMapping
      */
     public OpsPersonService(final PersonRepository pPersonRepos,
-            final PersonMapping pPersonMapping) {
+            final PersonMapping pPersonMapping,
+            final ChildAlertMapping pChildAlertMapping) {
         personRepository = pPersonRepos;
         personMapping = pPersonMapping;
+        childAlertMapping = pChildAlertMapping;
     }
 
     // OPS #1 ENDPOINT -------------------------------------------------------
@@ -115,42 +117,11 @@ public class OpsPersonService {
      * @param address
      * @return a ChildAlert object
      */
-    public ChildAlert findListOfChildByaddress(final String address) {
-        ChildAlert childAlert = new ChildAlert();
-        long dateInterval;
-        String unit;
-        List<String> adultList = new ArrayList<>();
-        List<Child> childList = new ArrayList<>();
+    public ChildAlert findListOfChildByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
-        LOGGER.info("pEntList= {}", pEntList);
-        for (PersonEntity personEntity : pEntList) {
-            LocalDate birthDate = LocalDate.parse(personEntity.getMedRecId().getBirthDate(),formatter);
-            LOGGER.info("First Name= {} and Birth Date = {}",
-                    personEntity.getFirstName(), birthDate);
-            dateInterval = birthDate.until(LocalDate.now(), ChronoUnit.YEARS);
-            if (dateInterval > DIX_HUIT_YEARS) { // The person is an adult
-                adultList.add(personEntity.getFirstName() + " "
-                        + personEntity.getLastName());
-                LOGGER.info("Adult list = {}", adultList);
-            } else { // The person is child
-                if (dateInterval < 2) {
-                    dateInterval = birthDate.until(LocalDate.now(),
-                            ChronoUnit.MONTHS);
-                    unit = " months old";
-                } else {
-                    unit = " years old";
-                }
-                childList.add(new Child(personEntity.getFirstName(),
-                        personEntity.getLastName(),
-                        Long.toString(dateInterval) + unit));
-                LOGGER.info("Child list = {}", childList.toString());
-            }
-        }
-        childAlert.setAddress(address);
-        childAlert.setChildList(childList);
-        childAlert.setAdultList(adultList);
-        LOGGER.info("ChildAlert = {}", childAlert.toString());
+        ChildAlert childAlert = childAlertMapping.create(pEntList,
+                address);
         return childAlert;
     }
 

@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -24,6 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.AddressFireStation;
+import com.safetynet.alerts.model.Child;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CountOfPersons;
 import com.safetynet.alerts.model.CoveredPerson;
@@ -32,6 +34,7 @@ import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.OpsPersonService;
+import com.safetynet.alerts.utils.ChildAlertMapping;
 import com.safetynet.alerts.utils.PersonMapping;
 
 @RunWith(SpringRunner.class)
@@ -50,6 +53,9 @@ public class OpsPersonServiceTest {
 
     @MockBean
     private PersonMapping personMapping;
+
+    @MockBean
+    private ChildAlertMapping childAlertMapping;
 
     private OpsPersonService opsPersonService;
 
@@ -119,6 +125,19 @@ public class OpsPersonServiceTest {
                 medicalRecordList.get(4)));
     }
 
+    public static ChildAlert mappedChildAlert = new ChildAlert();
+    public static Child child1 = new Child("Tenley", "Boyd", "8 years old");
+    public static Child child2 = new Child("Roger", "Boyd", "19 months old");
+    public static List<Child> childList = Arrays.asList(child1, child2);
+    public static List<String> adultList = Arrays.asList("John Boyd",
+            "Jacob Boyd", "Felicia Boyd");
+    static {
+        mappedChildAlert.setAddress("1509 Culver St");
+        mappedChildAlert.setChildList(childList);
+        mappedChildAlert.setAdultList(adultList);
+    }
+
+
     public static List<PersonEntity> pEnt2List = new ArrayList<>();
 
     static {
@@ -146,7 +165,7 @@ public class OpsPersonServiceTest {
     @Before
     public void SetUp() {
         opsPersonService = new OpsPersonService(personRepository,
-                personMapping);
+                personMapping,childAlertMapping);
     }
 
     // OPS #1 ENDPOINT -------------------------------------------------------
@@ -215,8 +234,10 @@ public class OpsPersonServiceTest {
         ChildAlert childAlert = new ChildAlert();
         given(personRepository.findByAddressIdAddress(address))
                 .willReturn(pEntList);
+        given(childAlertMapping.create(pEntList, address))
+                .willReturn(mappedChildAlert);
         // WHEN
-        childAlert = opsPersonService.findListOfChildByaddress(address);
+        childAlert = opsPersonService.findListOfChildByAddress(address);
         // THEN
         assertThat(childAlert.toString()).isEqualTo(
                 "ChildAlert [address=1509 Culver St childList=[Child [firstName=Tenley, lastName=Boyd, age=8 years old], Child [firstName=Roger, lastName=Boyd, age=19 months old]], adultList=[John Boyd, Jacob Boyd, Felicia Boyd]]");
