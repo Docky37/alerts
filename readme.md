@@ -1,4 +1,4 @@
-# SafetyNet - Alerts v1.3 release
+# SafetyNet - Alerts v1.3.1 release
 
 ### Infos
 author: 		Thierry 'Docky' SCHREINER   -   DA Java student - Open ClassRooms
@@ -8,7 +8,7 @@ mentored by:	Yann 'Monsieur Plus' IRRILO
 release date:	22/04/2020
 
 ### Content
-The seventh release v1.3 adds OPS#2 ChildAlert that provides a list of children (first name, last name, age) and a list of adults living at a given address.  
+This eighth release v1.3.1 fixes a bug in update methods of person and medicalRecord administrative endpoints.   
 
 Previous releases contains : 
 
@@ -23,6 +23,8 @@ Previous releases contains :
 - OPS#1 endpoint allows user to get the list of persons covered by a given fire station and the dissociated count of adults and children covered (since v1.2).
 
 - the administrative endpoints integration tests (for firestation, person, medicalRecords) and increase JaCoCo covering rate by adding unit tests (PersonMappingTest and missed branches in existing tests), since v1.21.
+
+- OPS#2 ChildAlert that provides a list of children (first name, last name, age) and a list of adults living at a given address (since v1.3).
 
 It also contains actuators (health, info & metrics).
 

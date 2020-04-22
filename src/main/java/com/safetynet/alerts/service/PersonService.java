@@ -139,7 +139,8 @@ public class PersonService {
     public Person updatePerson(final Person pPerson) {
         PersonEntity pEnt = personRepository.findByLastNameAndFirstName(
                 pPerson.getLastName(), pPerson.getFirstName());
-        if (pEnt != null) {
+        if (pEnt != null && pEnt.getFirstName() == pPerson.getFirstName()
+                && pEnt.getLastName() == pPerson.getLastName()) {
             long id = pEnt.getId();
             pEnt = personMapping.convertToPersonEntity(pPerson);
             pEnt.setId(id);
