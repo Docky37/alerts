@@ -111,6 +111,7 @@ public class OpsPersonService {
     public ChildAlert findListOfChildByaddress(final String address) {
         ChildAlert childAlert = new ChildAlert();
         long dateInterval;
+        String unit;
         List<String> adultList = new ArrayList<>();
         List<Child> childList = new ArrayList<>();
         List<PersonEntity> pEntList = personRepository
@@ -122,17 +123,25 @@ public class OpsPersonService {
             LOGGER.info("First Name= {} and Birth Date = {}",
                     personEntity.getFirstName(), birthDate);
             dateInterval = birthDate.until(LocalDate.now(), ChronoUnit.YEARS);
-            if (dateInterval > DIX_HUIT_YEARS) {
+            if (dateInterval > DIX_HUIT_YEARS) { // The person is an adult
                 adultList.add(personEntity.getFirstName() + " "
                         + personEntity.getLastName());
                 LOGGER.info("Adult list = {}", adultList);
-            } else {
+            } else { // The person is child
+                if (dateInterval < 2) {
+                    dateInterval = birthDate.until(LocalDate.now(),
+                            ChronoUnit.MONTHS);
+                    unit = " months old";
+                } else {
+                    unit = " years old";
+                }
                 childList.add(new Child(personEntity.getFirstName(),
                         personEntity.getLastName(),
-                        Long.toString(dateInterval)));
+                        Long.toString(dateInterval) + unit));
                 LOGGER.info("Child list = {}", childList.toString());
             }
         }
+        childAlert.setAddress(address);
         childAlert.setChildList(childList);
         childAlert.setAdultList(adultList);
         LOGGER.info("ChildAlert = {}", childAlert.toString());

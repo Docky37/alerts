@@ -93,7 +93,7 @@ public class OpsPersonServiceTest {
         medicalRecordList.add(new MedicalRecord(3L, "Tenley", "Boyd",
                 "02/18/2012", new String[] {}, new String[] { "peanut" }));
         medicalRecordList.add(new MedicalRecord(4L, "Roger", "Boyd",
-                "09/06/2017", new String[] {}, new String[] {}));
+                "09/06/2018", new String[] {}, new String[] {}));
         medicalRecordList.add(new MedicalRecord(4L, "Felicia", "Boyd",
                 "01/08/1986", new String[] { "tetracyclaz:650mg" },
                 new String[] { "xilliathal" }));
@@ -213,11 +213,13 @@ public class OpsPersonServiceTest {
         // GIVEN
         String address = "1509 Culver St";
         ChildAlert childAlert = new ChildAlert();
-        given(personRepository.findByAddressIdAddress(address)).willReturn(pEntList);
+        given(personRepository.findByAddressIdAddress(address))
+                .willReturn(pEntList);
         // WHEN
         childAlert = opsPersonService.findListOfChildByaddress(address);
         // THEN
-        assertThat(childAlert.toString()).isEqualTo("ChildAlert [childList=[Child [firstName=Tenley, lastName=Boyd, age=8], Child [firstName=Roger, lastName=Boyd, age=2]], adultList=[John Boyd, Jacob Boyd, Felicia Boyd]]");
+        assertThat(childAlert.toString()).isEqualTo(
+                "ChildAlert [address=1509 Culver St childList=[Child [firstName=Tenley, lastName=Boyd, age=8 years old], Child [firstName=Roger, lastName=Boyd, age=19 months old]], adultList=[John Boyd, Jacob Boyd, Felicia Boyd]]");
     }
 
     // OPS #3 - PHONE ALERT ---------------------------------------------------

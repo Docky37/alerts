@@ -11,6 +11,10 @@ import java.util.List;
 public class ChildAlert {
 
     /**
+     * The given address.
+     */
+    private String address;
+    /**
      * The list of child living at the address.
      */
     private List<Child> childList;
@@ -23,6 +27,20 @@ public class ChildAlert {
      * Empty class constructor.
      */
     public ChildAlert() {
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param pAddress the address to set
+     */
+    public void setAddress(final String pAddress) {
+        address = pAddress;
     }
 
     /**
@@ -64,13 +82,15 @@ public class ChildAlert {
     /**
      * Class constructor.
      *
+     * @param pAddress
      * @param pChildList
      * @param pAdultList
      */
-    public ChildAlert(final List<Child> pChildList,
+    public ChildAlert(final String pAddress, final List<Child> pChildList,
             final List<String> pAdultList) {
-        this.childList = pChildList;
-        this.adultList = pAdultList;
+        address = pAddress;
+        childList = pChildList;
+        adultList = pAdultList;
     }
 
     /**
@@ -78,7 +98,7 @@ public class ChildAlert {
      */
     @Override
     public String toString() {
-        return "ChildAlert [childList=" + childList + ", adultList=" + adultList
-                + "]";
+        return "ChildAlert [address=" + address + " childList=" + childList
+                + ", adultList=" + adultList + "]";
     }
 }
