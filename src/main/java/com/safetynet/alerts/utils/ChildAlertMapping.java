@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.safetynet.alerts.AlertsApplication;
-import com.safetynet.alerts.model.Child;
+import com.safetynet.alerts.model.PersonFLA;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.PersonEntity;
 
@@ -58,7 +58,7 @@ public class ChildAlertMapping {
         long dateInterval;
         String unit;
         List<String> adultList = new ArrayList<>();
-        List<Child> childList = new ArrayList<>();
+        List<PersonFLA> childList = new ArrayList<>();
         LOGGER.info("pEntList= {}", pEntList);
 
         for (PersonEntity personEntity : pEntList) {
@@ -81,10 +81,10 @@ public class ChildAlertMapping {
                 } else {
                     unit = " years old";
                 }
-                childList.add(new Child(personEntity.getFirstName(),
+                childList.add(new PersonFLA(personEntity.getFirstName(),
                         personEntity.getLastName(),
                         Long.toString(dateInterval) + unit));
-                LOGGER.info("Child list = {}", childList.toString());
+                LOGGER.info("PersonFLA list = {}", childList.toString());
             }
         }
         childAlert.setAddress(address);

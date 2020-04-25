@@ -17,7 +17,7 @@ public class ChildAlert {
     /**
      * The list of child living at the address.
      */
-    private List<Child> childList;
+    private List<PersonFLA> childList;
     /**
      * The list of adults living at the address.
      */
@@ -48,7 +48,7 @@ public class ChildAlert {
      *
      * @return the childList
      */
-    public List<Child> getChildList() {
+    public List<PersonFLA> getChildList() {
         return childList;
     }
 
@@ -57,7 +57,7 @@ public class ChildAlert {
      *
      * @param pChildList the childList to set
      */
-    public void setChildList(final List<Child> pChildList) {
+    public void setChildList(final List<PersonFLA> pChildList) {
         childList = pChildList;
     }
 
@@ -86,7 +86,7 @@ public class ChildAlert {
      * @param pChildList
      * @param pAdultList
      */
-    public ChildAlert(final String pAddress, final List<Child> pChildList,
+    public ChildAlert(final String pAddress, final List<PersonFLA> pChildList,
             final List<String> pAdultList) {
         address = pAddress;
         childList = pChildList;

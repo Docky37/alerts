@@ -1,30 +1,30 @@
 package com.safetynet.alerts.model;
 
 /**
- * The class Child is used to store first name, last name and age of each child
- * in the List<Child> field of the class ChildAlert (for OPS#2 endpoint).
+ * The class PersonFLA is used to store first name, last name and age of each child
+ * in the List<PersonFLA> field of the class ChildAlert (for OPS#2 endpoint).
  *
  * @author Thierry Schreiner
  */
-public class Child {
+public class PersonFLA {
 
     /**
      * The first name of the person.
      */
-    private String firstName;
+    public String firstName;
     /**
      * The last name of the person.
      */
-    private String lastName;
+    public String lastName;
     /**
      * The age name of the person.
      */
-    private String age;
+    public String age;
 
     /**
      * Empty class constructor.
      */
-    public Child() {
+    public PersonFLA() {
     }
 
     /**
@@ -32,7 +32,7 @@ public class Child {
      * @param pLastName
      * @param pAge
      */
-    public Child(final String pFirstName, final String pLastName,
+    public PersonFLA(final String pFirstName, final String pLastName,
             final String pAge) {
         firstName = pFirstName;
         lastName = pLastName;
@@ -98,7 +98,7 @@ public class Child {
      */
     @Override
     public String toString() {
-        return "Child [firstName=" + firstName + ", lastName=" + lastName
+        return "PersonFLA [firstName=" + firstName + ", lastName=" + lastName
                 + ", age=" + age + "]";
     }
 }

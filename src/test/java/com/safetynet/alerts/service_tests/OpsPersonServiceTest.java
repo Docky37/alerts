@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.model.Child;
+import com.safetynet.alerts.model.PersonFLA;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CountOfPersons;
 import com.safetynet.alerts.model.CoveredPerson;
@@ -126,9 +126,9 @@ public class OpsPersonServiceTest {
     }
 
     public static ChildAlert mappedChildAlert = new ChildAlert();
-    public static Child child1 = new Child("Tenley", "Boyd", "8 years old");
-    public static Child child2 = new Child("Roger", "Boyd", "19 months old");
-    public static List<Child> childList = Arrays.asList(child1, child2);
+    public static PersonFLA child1 = new PersonFLA("Tenley", "Boyd", "8 years old");
+    public static PersonFLA child2 = new PersonFLA("Roger", "Boyd", "19 months old");
+    public static List<PersonFLA> childList = Arrays.asList(child1, child2);
     public static List<String> adultList = Arrays.asList("John Boyd",
             "Jacob Boyd", "Felicia Boyd");
     static {
@@ -200,7 +200,7 @@ public class OpsPersonServiceTest {
     public void ops1b_givenAStation_whenCountPersonByStation_thenReturnCount()
             throws Exception {
         LOGGER.info(
-                "Start test: OPS #1 Adult & Child counts by the given station");
+                "Start test: OPS #1 Adult & PersonFLA counts by the given station");
         // GIVEN
         String station = "3";
         Date compareDate = Date.valueOf(LocalDate.now().minusYears(18));
@@ -223,12 +223,12 @@ public class OpsPersonServiceTest {
 
     // OPS #2 - CHILD ALERT ---------------------------------------------------
     @Test
-    @Tag("Test-Child Alert")
-    @DisplayName("Given an Address, when search a list of Child by address,"
+    @Tag("Test-PersonFLA Alert")
+    @DisplayName("Given an Address, when search a list of PersonFLA by address,"
             + " then returns the ChildAlert object.")
     public void ops2_givenAnAddress_WhenFindListOfChildByaddress_thenReturnChildAlertObject()
             throws Exception {
-        LOGGER.info("Start test: OPS #2 Child Alert");
+        LOGGER.info("Start test: OPS #2 PersonFLA Alert");
         // GIVEN
         String address = "1509 Culver St";
         ChildAlert childAlert = new ChildAlert();
@@ -240,7 +240,7 @@ public class OpsPersonServiceTest {
         childAlert = opsPersonService.findListOfChildByAddress(address);
         // THEN
         assertThat(childAlert.toString()).isEqualTo(
-                "ChildAlert [address=1509 Culver St childList=[Child [firstName=Tenley, lastName=Boyd, age=8 years old], Child [firstName=Roger, lastName=Boyd, age=19 months old]], adultList=[John Boyd, Jacob Boyd, Felicia Boyd]]");
+                "ChildAlert [address=1509 Culver St childList=[PersonFLA [firstName=Tenley, lastName=Boyd, age=8 years old], PersonFLA [firstName=Roger, lastName=Boyd, age=19 months old]], adultList=[John Boyd, Jacob Boyd, Felicia Boyd]]");
     }
 
     // OPS #3 - PHONE ALERT ---------------------------------------------------

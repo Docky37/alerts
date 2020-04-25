@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.OpsPersonController;
-import com.safetynet.alerts.model.Child;
+import com.safetynet.alerts.model.PersonFLA;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CountOfPersons;
 import com.safetynet.alerts.model.CoveredPerson;
@@ -118,9 +118,9 @@ public class OpsPersonControllerTest {
                 new String[] { "xilliathal" }));
     }
     public static ChildAlert childAlert = new ChildAlert();
-    public static Child child1 = new Child("Tenley", "Boyd", "8");
-    public static Child child2 = new Child("Roger", "Boyd", "2");
-    public static List<Child> childList = Arrays.asList(child1, child2);
+    public static PersonFLA child1 = new PersonFLA("Tenley", "Boyd", "8");
+    public static PersonFLA child2 = new PersonFLA("Roger", "Boyd", "2");
+    public static List<PersonFLA> childList = Arrays.asList(child1, child2);
     public static List<String> adultList = Arrays.asList("John Boyd",
             "Jacob Boyd", "Felicia Boyd");
     static {
@@ -141,11 +141,11 @@ public class OpsPersonControllerTest {
                         .content().contentType("application/json"));
     }
 
-    @Test // GET (OPS 1 Adult & Child counts by the given station)
+    @Test // GET (OPS 1 Adult & PersonFLA counts by the given station)
     public void ops1b_givenAFireStation_whenGetAdultAndChildCountByStation_thenReturnCount()
             throws Exception {
         LOGGER.info(
-                "Start test: OPS 1 Adult & Child counts by the given station");
+                "Start test: OPS 1 Adult & PersonFLA counts by the given station");
         given(opsPersonService.countPersonsCoveredByStation(anyString()))
                 .willReturn(countOfPersons);
         mockMVC.perform(MockMvcRequestBuilders.get("/firestation/count/3"))
