@@ -36,15 +36,15 @@ public class Household {
      * @param pAddressFireStation
      * @param pPersonList
      */
-    public Household(AddressFireStation pAddressFireStation,
-            List<PersonInfoDTO> pPersonList) {
+    public Household(final AddressFireStation pAddressFireStation,
+            final List<PersonInfoDTO> pPersonList) {
         addressFireStation = pAddressFireStation;
         personList = pPersonList;
     }
 
     /**
-     * Getter of addressFireStation
-     * 
+     * Getter of addressFireStation.
+     *
      * @return the addressFireStation
      */
     public AddressFireStation getAddressFireStation() {
@@ -52,30 +52,40 @@ public class Household {
     }
 
     /**
-     * Setter of addressFireStation
-     * 
-     * @param addressFireStation the addressFireStation to set
+     * Setter of addressFireStation.
+     *
+     * @param pAddressFireStation the addressFireStation to set
      */
-    public void setAddressFireStation(AddressFireStation addressFireStation) {
-        this.addressFireStation = addressFireStation;
+    public void setAddressFireStation(
+            final AddressFireStation pAddressFireStation) {
+        addressFireStation = pAddressFireStation;
     }
 
     /**
-     * Getter of personList
-     * 
+     * Getter of personList.
+     *
      * @return the personList
      */
     public List<PersonInfoDTO> getPersonList() {
         return personList;
     }
-    
+
     /**
-     * Setter of personList
-     * 
-     * @param personList the personList to set
+     * Setter of personList.
+     *
+     * @param pPersonList the personList to set
      */
-    public void setPersonList(List<PersonInfoDTO> personList) {
-        this.personList = personList;
+    public void setPersonList(final List<PersonInfoDTO> pPersonList) {
+        personList = pPersonList;
+    }
+
+    /**
+     * Serialization method.
+     */
+    @Override
+    public String toString() {
+        return "Household [addressFireStation=" + addressFireStation.toString()
+                + ", personList=" + personList.toString() + "]";
     }
 
 }

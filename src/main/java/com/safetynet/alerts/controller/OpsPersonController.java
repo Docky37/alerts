@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.ChildAlert;
-import com.safetynet.alerts.model.CountOfPersons;
-import com.safetynet.alerts.model.CoveredPerson;
+import com.safetynet.alerts.model.CoveredPopulation;
 import com.safetynet.alerts.service.OpsPersonService;
 
 /**
@@ -43,30 +42,17 @@ public class OpsPersonController {
         opsPersonService = pOpsPersonService;
     }
 
-    // OPS #1 ENDPOINT -------------------------------------------------------
-    /**
-     * OPS1 - GET request to list the persons covered by one station.
-     *
-     * @param station - the number of the fire station
-     * @return a List of persons in DB covered by this station
-     */
-    @GetMapping(value = "firestation/stationNumber/{station}")
-    public List<CoveredPerson> listOfPersonsCoveredByStation(
-            @PathVariable final String station) {
-        return opsPersonService.findListOfPersonsCoveredByStation(station);
-    }
-
     /**
      * OPS1 - GET request to count the number of children & adults covered by
      * the station.
      *
      * @param station
-     * @return a CountOfPersons object
+     * @return a CoveredPopulation object
      */
-    @GetMapping(value = "firestation/count/{station}")
-    public CountOfPersons adultAndChildCountByStation(
+    @GetMapping(value = "firestation/stationNumber/{station}")
+    public CoveredPopulation adultAndChildCountByStation(
             @PathVariable final String station) {
-        return opsPersonService.countPersonsCoveredByStation(station);
+        return opsPersonService.populationCoveredByStation(station);
     }
 
     // OPS #2 ENDPOINT -------------------------------------------------------

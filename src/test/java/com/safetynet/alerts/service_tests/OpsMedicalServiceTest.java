@@ -157,8 +157,10 @@ public class OpsMedicalServiceTest {
         // WHEN
         household = OpsMedicalService.fireByAddress(address);
         // THEN
-        assertThat(household.toString()).isEqualTo(
-                "Household [address=1509 Culver St childList=[PersonFLA [firstName=Tenley, lastName=Boyd, age=8 years old], PersonFLA [firstName=Roger, lastName=Boyd, age=19 months old]], adultList=[John Boyd, Jacob Boyd, Felicia Boyd]]");
+        assertThat(household.getAddressFireStation().toString()).isEqualTo(
+                "FireStations [id=1, address=1509 Culver St, city=Culver, zip code=97451, station=3]");
+        assertThat(household.getPersonList().toString()).isEqualTo(
+                "[PersonInfoDTO [firstName=John, lastName=Boyd, age=36 years old, medications=[aznol:350mg, hydrapermazol:100mg], allergies=[nillacilan], phone=841-874-6512], PersonInfoDTO [firstName=Jacob, lastName=Boyd, age=31 years old, medications=[pharmacol:5000mg, terazine:10mg, noznazol:250mg], allergies=[], phone=841-874-6513], PersonInfoDTO [firstName=Tenley, lastName=Boyd, age=31 years old, medications=[], allergies=[peanut], phone=841-874-6512]]");
     }
 
 }

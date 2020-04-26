@@ -45,10 +45,9 @@ public class MedicalMapping {
 
     // OPS #4 - FIRE ALERT ---------------------------------------------------
     /**
-     * The Household method loop the given List of PersonEntity...
-     * 
-     * Then it create a new Household object and sets its fields with the given
-     * address and the two previous list, before it returns the Household.
+     * The Household method loop the given List of PersonEntity to create a new
+     * Household object and sets its fields with the given address and the list
+     * of PersonInfoDTO covered, before it returns the Household.
      *
      * @param pEntList
      * @param address
@@ -79,7 +78,15 @@ public class MedicalMapping {
         return household;
     }
 
-    public List<FloodDTO> mapFlood(List<PersonEntity> pEntList) {
+    // OPS #5 - FLOOD ALERT ---------------------------------------------------
+    /**
+     * The mapFlood method loop the given ordered list of PersonEntity to create
+     * the covered Household list of each station.
+     *
+     * @param pEntList
+     * @return a List<FloodDTO> object
+     */
+    public List<FloodDTO> mapFlood(final List<PersonEntity> pEntList) {
         List<FloodDTO> floodDTOList = new ArrayList<>();
         List<Household> householdList = new ArrayList<>();
         LOGGER.info("FLOOD---pEntList= {}", pEntList);
@@ -90,7 +97,6 @@ public class MedicalMapping {
         AddressFireStation currentAddress = null;
         int i = 1;
         for (PersonEntity p : pEntList) {
-            LOGGER.info("count persons = {}", i++);
             if (currentStation == null) {
                 currentStation = p.getAddressFireSt().getStation();
             }
@@ -105,26 +111,23 @@ public class MedicalMapping {
                 household = new Household();
                 currentAddress = p.getAddressFireSt();
             }
-            if (p.getAddressFireSt().getStation() != currentStation) { 
+            if (p.getAddressFireSt().getStation() != currentStation) {
                 floodDTOList.add(new FloodDTO(currentStation, householdList));
                 householdList = new ArrayList<>();
                 currentStation = p.getAddressFireSt().getStation();
-                //currentAddress = p.getAddressFireSt();
-            }   
-            String ageString = ageCalculation(
-                    p.getMedRecId().getBirthDate());
-            personList.add(new PersonInfoDTO(p.getFirstName(),
-                    p.getLastName(), ageString,
-                    p.getMedRecId().getMedications(),
+                // currentAddress = p.getAddressFireSt();
+            }
+            String ageString = ageCalculation(p.getMedRecId().getBirthDate());
+            personList.add(new PersonInfoDTO(p.getFirstName(), p.getLastName(),
+                    ageString, p.getMedRecId().getMedications(),
                     p.getMedRecId().getAllergies(), p.getPhone()));
-            
+
         }
         household.setAddressFireStation(currentAddress);
         household.setPersonList(personList);
         householdList.add(household);
         floodDTOList.add(new FloodDTO(currentStation, householdList));
-        
-        
+
         LOGGER.info("FloodAlert = {}", household.toString());
         // }
         return floodDTOList;

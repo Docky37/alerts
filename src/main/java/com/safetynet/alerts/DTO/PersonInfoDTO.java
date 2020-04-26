@@ -1,5 +1,7 @@
 package com.safetynet.alerts.DTO;
 
+import java.util.Arrays;
+
 /**
  * The PersonInfoDTO class .
  *
@@ -10,15 +12,15 @@ public class PersonInfoDTO {
     /**
      * The first name of the person.
      */
-    public String firstName;
+    private String firstName;
     /**
      * The last name of the person.
      */
-    public String lastName;
+    private String lastName;
     /**
      * The age name of the person.
      */
-    public String age;
+    private String age;
 
     /**
      * List of medications taken by the medical record owner.
@@ -35,15 +37,13 @@ public class PersonInfoDTO {
     private String phone;
 
     /**
-     * Class constructor
-     *
+     * Class constructor.
      */
     public PersonInfoDTO() {
-        super();
     }
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param pFirstName
      * @param pLastName
@@ -171,4 +171,14 @@ public class PersonInfoDTO {
         phone = pPhone;
     }
 
+    /**
+     * Serialization method.
+     */
+    @Override
+    public String toString() {
+        return "PersonInfoDTO [firstName=" + firstName + ", lastName="
+                + lastName + ", age=" + age + ", medications="
+                + Arrays.toString(medications) + ", allergies="
+                + Arrays.toString(allergies) + ", phone=" + phone + "]";
+    }
 }

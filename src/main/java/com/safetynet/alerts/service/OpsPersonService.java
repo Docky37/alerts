@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.ChildAlert;
-import com.safetynet.alerts.model.CountOfPersons;
-import com.safetynet.alerts.model.CoveredPerson;
+import com.safetynet.alerts.model.CoveredPopulation;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.utils.ChildAlertMapping;
@@ -73,40 +72,29 @@ public class OpsPersonService {
         childAlertMapping = pChildAlertMapping;
     }
 
-    // OPS #1 ENDPOINT -------------------------------------------------------
     /**
-     * OPS#1 - Get the list of persons covered by the given station.
-     *
-     * @param pStation - the fire station that we want the list of all covered
-     *                 inhabitants
-     * @return a List<String> of persons.
-     */
-    public List<CoveredPerson> findListOfPersonsCoveredByStation(
-            final String pStation) {
-        List<PersonEntity> listPE = (List<PersonEntity>) personRepository
-                .findByAddressIdStation(pStation);
-        List<CoveredPerson> coveredPersonList = personMapping
-                .convertToCoveredByStationPerson(listPE);
-        return coveredPersonList;
-    }
-
-    /**
-     * OPS#1 - Count of children and adults covered by a given station.
+     * OPS#1 - Get the count of children and adults and the list of all persons
+     * covered by the given station.
      *
      * @param pStation
-     * @return a CountOfPersons object
+     * @return a CoveredPopulation object
      */
-    public CountOfPersons countPersonsCoveredByStation(final String pStation) {
+    public CoveredPopulation populationCoveredByStation(final String pStation) {
         Date compareDate = Date
                 .valueOf(LocalDate.now().minusYears(DIX_HUIT_YEARS));
-        CountOfPersons countOfPersons = new CountOfPersons();
-        countOfPersons
+        CoveredPopulation coveredPopulation = new CoveredPopulation();
+        coveredPopulation
                 .setTotal(personRepository.countByAddressIdStation(pStation));
-        countOfPersons.setAdultCount(personRepository
+        coveredPopulation.setAdultCount(personRepository
                 .countAdultsByAddressIdStation(pStation, compareDate));
-        countOfPersons.setChildCount(
-                countOfPersons.getTotal() - countOfPersons.getAdultCount());
-        return countOfPersons;
+        coveredPopulation.setChildCount(coveredPopulation.getTotal()
+                - coveredPopulation.getAdultCount());
+
+        List<PersonEntity> listPE = (List<PersonEntity>) personRepository
+                .findByAddressIdStationOrderByAddressIdStation(pStation);
+        coveredPopulation.setCoveredPersons(
+                personMapping.convertToCoveredByStationPerson(listPE));
+        return coveredPopulation;
     }
 
     // OPS #2 ENDPOINT -------------------------------------------------------
@@ -120,8 +108,7 @@ public class OpsPersonService {
     public ChildAlert findListOfChildByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
-        ChildAlert childAlert = childAlertMapping.create(pEntList,
-                address);
+        ChildAlert childAlert = childAlertMapping.create(pEntList, address);
         return childAlert;
     }
 
@@ -136,7 +123,7 @@ public class OpsPersonService {
      */
     public List<String> findAllPhoneListByStation(final String pStation) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
-                .findByAddressIdStation(pStation);
+                .findByAddressIdStationOrderByAddressIdStation(pStation);
         List<String> phoneList = new ArrayList<>();
         for (PersonEntity p : listPE) {
             phoneList.add(p.getPhone());

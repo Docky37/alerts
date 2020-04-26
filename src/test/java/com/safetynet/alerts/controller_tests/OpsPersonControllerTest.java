@@ -24,7 +24,7 @@ import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.OpsPersonController;
 import com.safetynet.alerts.model.PersonFLA;
 import com.safetynet.alerts.model.ChildAlert;
-import com.safetynet.alerts.model.CountOfPersons;
+import com.safetynet.alerts.model.CoveredPopulation;
 import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
@@ -89,7 +89,7 @@ public class OpsPersonControllerTest {
         }
     }
 
-    public static CountOfPersons countOfPersons = new CountOfPersons(8, 3, 11);
+    public static CoveredPopulation coveredPopulation = new CoveredPopulation(8, 3, 11, coveredPersonList);
 
     public static List<String> phoneList = new ArrayList<>();
     static {
@@ -128,27 +128,15 @@ public class OpsPersonControllerTest {
         childAlert.setAdultList(adultList);
     }
 
-    @Test // GET (OPS 1 list of persons covered by the given station)
-    public void ops1a_givenAFireStation_whenGetListOfPersonsCoveredByStation_thenReturnList()
-            throws Exception {
-        LOGGER.info(
-                "Start test: OPS 1 list of persons covered by the given station");
-        given(opsPersonService.findListOfPersonsCoveredByStation(anyString()))
-                .willReturn(coveredPersonList);
-        mockMVC.perform(
-                MockMvcRequestBuilders.get("/firestation/stationNumber/3"))
-                .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
-                        .content().contentType("application/json"));
-    }
 
     @Test // GET (OPS 1 Adult & PersonFLA counts by the given station)
-    public void ops1b_givenAFireStation_whenGetAdultAndChildCountByStation_thenReturnCount()
+    public void ops1_givenAFireStation_whenGetPopulationCoveredByStation_thenReturnCountAndList()
             throws Exception {
         LOGGER.info(
-                "Start test: OPS 1 Adult & PersonFLA counts by the given station");
-        given(opsPersonService.countPersonsCoveredByStation(anyString()))
-                .willReturn(countOfPersons);
-        mockMVC.perform(MockMvcRequestBuilders.get("/firestation/count/3"))
+                "Start test: OPS 1 population covered by the given station");
+        given(opsPersonService.populationCoveredByStation(anyString()))
+                .willReturn(coveredPopulation);
+        mockMVC.perform(MockMvcRequestBuilders.get("/firestation/stationNumber/3"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }

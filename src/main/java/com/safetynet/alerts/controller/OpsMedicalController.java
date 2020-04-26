@@ -61,8 +61,8 @@ public class OpsMedicalController {
      * OPS5 - GET request flood to list the persons group by address covered by
      * a list of station.
      *
-     * @param station - the number of the fire station
-     * @return a List of persons in DB covered by this station
+     * @param stationList - a list of the fire station
+     * @return a List<FloodDTO> object
      */
     @GetMapping(value = "flood/stations/{stationList}")
     public List<FloodDTO> listOfPersonsCoveredByStation(

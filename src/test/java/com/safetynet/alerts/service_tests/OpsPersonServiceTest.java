@@ -2,6 +2,7 @@ package com.safetynet.alerts.service_tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.AddressFireStation;
 import com.safetynet.alerts.model.PersonFLA;
 import com.safetynet.alerts.model.ChildAlert;
-import com.safetynet.alerts.model.CountOfPersons;
+import com.safetynet.alerts.model.CoveredPopulation;
 import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
@@ -126,8 +127,10 @@ public class OpsPersonServiceTest {
     }
 
     public static ChildAlert mappedChildAlert = new ChildAlert();
-    public static PersonFLA child1 = new PersonFLA("Tenley", "Boyd", "8 years old");
-    public static PersonFLA child2 = new PersonFLA("Roger", "Boyd", "19 months old");
+    public static PersonFLA child1 = new PersonFLA("Tenley", "Boyd",
+            "8 years old");
+    public static PersonFLA child2 = new PersonFLA("Roger", "Boyd",
+            "19 months old");
     public static List<PersonFLA> childList = Arrays.asList(child1, child2);
     public static List<String> adultList = Arrays.asList("John Boyd",
             "Jacob Boyd", "Felicia Boyd");
@@ -136,7 +139,6 @@ public class OpsPersonServiceTest {
         mappedChildAlert.setChildList(childList);
         mappedChildAlert.setAdultList(adultList);
     }
-
 
     public static List<PersonEntity> pEnt2List = new ArrayList<>();
 
@@ -160,42 +162,20 @@ public class OpsPersonServiceTest {
                 "1509 Culver St", "841-874-6512"));
     }
 
-    public static CountOfPersons countOfPersons = new CountOfPersons(8, 3, 11);
+    public static CoveredPopulation coveredPopulation = new CoveredPopulation(8,
+            3, 11, coveredPersonList);
 
     @Before
     public void SetUp() {
-        opsPersonService = new OpsPersonService(personRepository,
-                personMapping,childAlertMapping);
+        opsPersonService = new OpsPersonService(personRepository, personMapping,
+                childAlertMapping);
     }
 
     // OPS #1 ENDPOINT -------------------------------------------------------
-    // Find all person covered by the given station.
+    // Find & count all person covered by the given station.
     @Test
-    @Tag("Test1a-PersonListByStation")
-    @DisplayName("A1. Given a fireStation, when findAllPersonsByStation,"
-            + " then returns the list of persons covered by this station.")
-    public void ops1a_givenAStation_whenFindAllPersonByStation_thenReturnList()
-            throws Exception {
-        LOGGER.info(
-                "Start test: OPS #1 list of persons covered by the given station");
-        // GIVEN
-        String station = "3";
-        given(personRepository.findByAddressIdStation(station))
-                .willReturn(pEnt2List);
-        given(personMapping.convertToCoveredByStationPerson(
-                Mockito.<PersonEntity>anyList())).willReturn(coveredPersonList);
-        // WHEN
-        List<CoveredPerson> resultingCoveredPersonList = opsPersonService
-                .findListOfPersonsCoveredByStation(station);
-        // THEN
-        assertThat(resultingCoveredPersonList.size()).isEqualTo(3);
-        assertThat(resultingCoveredPersonList.get(0))
-                .isEqualTo(coveredPersonList.get(0));
-    }
-
-    @Test
-    @Tag("Test1b-PersonListByStation")
-    @DisplayName("A2. Given a fireStation, when countPersonsCoveredByStation,"
+    @Tag("Test1-PersonListByStation")
+    @DisplayName("A. Given a fireStation, when countPersonsCoveredByStation,"
             + " then returns the count of persons covered by this station.")
     public void ops1b_givenAStation_whenCountPersonByStation_thenReturnCount()
             throws Exception {
@@ -208,16 +188,22 @@ public class OpsPersonServiceTest {
                 .willReturn(11L);
         given(personRepository.countAdultsByAddressIdStation(station,
                 compareDate)).willReturn(8L);
+        given(personRepository.findByAddressIdStationOrderByAddressIdStation(anyString()))
+                .willReturn(pEntList);
+        given(personMapping.convertToCoveredByStationPerson(
+                Mockito.<PersonEntity>anyList())).willReturn(coveredPersonList);
         // WHEN
-        CountOfPersons resultingCountOfPersons = opsPersonService
-                .countPersonsCoveredByStation(station);
+        CoveredPopulation population = opsPersonService
+                .populationCoveredByStation(station);
         // THEN
-        assertThat(resultingCountOfPersons.getAdultCount())
-                .isEqualTo(countOfPersons.getAdultCount());
-        assertThat(resultingCountOfPersons.getChildCount())
-                .isEqualTo(countOfPersons.getChildCount());
-        assertThat(resultingCountOfPersons.getTotal())
-                .isEqualTo(countOfPersons.getTotal());
+        assertThat(population.getAdultCount())
+                .isEqualTo(coveredPopulation.getAdultCount());
+        assertThat(population.getChildCount())
+                .isEqualTo(coveredPopulation.getChildCount());
+        assertThat(population.getTotal())
+                .isEqualTo(coveredPopulation.getTotal());
+
+        assertThat(population.getCoveredPersons().size()).isEqualTo(3);
 
     }
 
@@ -255,7 +241,7 @@ public class OpsPersonServiceTest {
         // GIVEN
         String station = "3";
         List<String> phoneList = new ArrayList<>();
-        given(personRepository.findByAddressIdStation(station))
+        given(personRepository.findByAddressIdStationOrderByAddressIdStation(station))
                 .willReturn(pEnt2List);
         // WHEN
         phoneList = opsPersonService.findAllPhoneListByStation(station);

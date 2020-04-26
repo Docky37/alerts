@@ -1,8 +1,9 @@
 package com.safetynet.alerts.model;
 
 /**
- * The class PersonFLA is used to store first name, last name and age of each child
- * in the List<PersonFLA> field of the class ChildAlert (for OPS#2 endpoint).
+ * The class PersonFLA is used to store first name, last name and age of each
+ * child in the List<PersonFLA> field of the class ChildAlert (for OPS#2
+ * endpoint).
  *
  * @author Thierry Schreiner
  */
@@ -11,15 +12,15 @@ public class PersonFLA {
     /**
      * The first name of the person.
      */
-    public String firstName;
+    private String firstName;
     /**
      * The last name of the person.
      */
-    public String lastName;
+    private String lastName;
     /**
      * The age name of the person.
      */
-    public String age;
+    private String age;
 
     /**
      * Empty class constructor.

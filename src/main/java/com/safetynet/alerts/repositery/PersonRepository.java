@@ -60,7 +60,8 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
      * @param pStation - the fire station that we want covered inhabitants phone
      * @return a List<PersonEntity>
      */
-    List<PersonEntity> findByAddressIdStation(String pStation);
+    List<PersonEntity> findByAddressIdStationOrderByAddressIdStation(
+            String pStation);
 
     /**
      * This method use keyword "countBy" associated to repository fields
@@ -73,7 +74,7 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
     long countByAddressIdStation(String pStation);
 
     /**
-     * This method perform an JPQL query to get the count of adults covered by
+     * This method performs an JPQL query to get the count of adults covered by
      * the given station.
      *
      * @param pStation
@@ -86,7 +87,18 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
     long countAdultsByAddressIdStation(@Param("station") String pStation,
             @Param("compareDate") Date compareDate);
 
-    @Query("SELECT p from PersonEntity p RIGHT JOIN p.addressId a" 
-            + " JOIN p.medRecId m ORDER BY a.station, a.address")
-    List<PersonEntity> findAllGroupByAddress(); 
+    /**
+     * The findAllGroupByAddress method performs an JPQL query to get the list
+     * of PersonEntity covered by a fire station list. This list is ordered by
+     * station and address.
+     *
+     * @param pStationList
+     * @return a List<PersonEntity>
+     */
+    @Query("SELECT p from PersonEntity p RIGHT JOIN p.addressId a"
+            + " JOIN p.medRecId m"
+            + " WHERE a.station IN :stationList"
+            + " ORDER BY a.station, a.address")
+    List<PersonEntity> findAllGroupByAddress(
+            @Param("stationList") List<String> pStationList);
 }

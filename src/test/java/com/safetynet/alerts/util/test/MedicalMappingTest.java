@@ -130,6 +130,9 @@ public class MedicalMappingTest {
         // WHEN
         List<FloodDTO> floodList = medicalMapping.mapFlood(p);
         // THEN
-        
+        assertThat(floodList.get(0).getStation()).isEqualTo("1");
+        assertThat(floodList.get(0).getHouseholdList().get(0).getPersonList().get(0).getLastName()).isEqualTo("Boyd");
+        assertThat(floodList.get(0).getHouseholdList().get(1).getPersonList().get(0).getFirstName()).isEqualTo("Tenley");
+        assertThat(floodList.get(0).getHouseholdList().get(1).getPersonList().get(1).getFirstName()).isEqualTo("Roger");
     }
 }

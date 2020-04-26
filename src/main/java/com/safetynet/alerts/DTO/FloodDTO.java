@@ -4,15 +4,27 @@ import java.util.List;
 
 import com.safetynet.alerts.model.Household;
 
+/**
+ * The FloodDTO class is user as data transfer object in the OPS#5 flood
+ * endpoint.
+ *
+ * @author Thierry Schreiner
+ */
 public class FloodDTO {
 
+    /**
+     * The number of the fire station.
+     */
     private String station;
 
+    /**
+     * The list of households covered by the station.
+     */
     private List<Household> householdList;
 
     /**
-     * Getter of station
-     * 
+     * Getter of station.
+     *
      * @return the station
      */
     public String getStation() {
@@ -20,8 +32,8 @@ public class FloodDTO {
     }
 
     /**
-     * Setter of station
-     * 
+     * Setter of station.
+     *
      * @param pStation the station to set
      */
     public void setStation(final String pStation) {
@@ -29,18 +41,19 @@ public class FloodDTO {
     }
 
     /**
-     * Empty class constructor
+     * Empty class constructor.
      */
     public FloodDTO() {
     }
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param pStationString
-     * @param pPersonsAtAddressList
+     * @param pHouseholdList
      */
-    public FloodDTO(final String pStationString, final List<Household> pHouseholdList) {
+    public FloodDTO(final String pStationString,
+            final List<Household> pHouseholdList) {
         station = pStationString;
         householdList = pHouseholdList;
     }

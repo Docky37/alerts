@@ -74,30 +74,33 @@ public class OpsMedicalService {
         LOGGER.info("PersonList: {}", pEntList.toArray());
 
         Household household = medicalMapping.mapFire(pEntList, address);
-        LOGGER.info("Household: {} - {}", household.getAddressFireStation(),household.getPersonList());
-       return household;
-         
+        LOGGER.info("Household: {} - {}", household.getAddressFireStation(),
+                household.getPersonList());
+        return household;
+
     }
 
     // OPS #5 ENDPOINT -------------------------------------------------------
     /**
-     * OPS#5 - Get the list of persons covered by the given station.
+     * OPS#5 - Get the a list of persons covered by the given station list. This
+     * list is ordered by station and address.
      *
-     * @param pStation - the fire station that we want the list of all covered
-     *                 inhabitants
-     * @return a List<String> of persons.
+     * @param pStationList - the list of fire stations that we want the list of
+     *                     all covered inhabitants
+     * @return a List<FloodDTO> object.
      */
-    public List<FloodDTO> floodByStation(List<String> pStationList) {
-        LOGGER.info("--- OpsMedicalService---FLOOD---");
+    public List<FloodDTO> floodByStation(final List<String> pStationList) {
+        LOGGER.info("OPS #5 - flood -");
         List<Integer> stationList = new ArrayList<Integer>();
         for (String station : pStationList) {
             stationList.add(Integer.parseInt(station));
         }
         LOGGER.info(stationList.toString());
-        List<PersonEntity> pEntList = (List<PersonEntity>) personRepository.findAllGroupByAddress();
-        
+        List<PersonEntity> pEntList = (List<PersonEntity>) personRepository
+                .findAllGroupByAddress(pStationList);
+
         List<FloodDTO> floodDTOList = medicalMapping.mapFlood(pEntList);
-        
+
         return floodDTOList;
     }
 

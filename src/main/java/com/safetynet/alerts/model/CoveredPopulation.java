@@ -1,12 +1,14 @@
 package com.safetynet.alerts.model;
 
+import java.util.List;
+
 /**
  * Class of the model used to store the count of children and adults (more than
  * 18 years old).
  *
  * @author Thierry Schreiner
  */
-public class CountOfPersons {
+public class CoveredPopulation {
 
     /**
      * The count of adult (>18 years old).
@@ -22,23 +24,30 @@ public class CountOfPersons {
     private long total;
 
     /**
+     * The list of persons covered by the station.
+     */
+    private List<CoveredPerson> coveredPersons;
+
+    /**
      * Empty class constructor.
      */
-    public CountOfPersons() {
+    public CoveredPopulation() {
     }
 
     /**
-     * CountOfPersons class constructor.
+     * CoveredPopulation class constructor.
      *
      * @param pAdultCount
      * @param pChildCount
      * @param pTotal
+     * @param pCoveredPersons
      */
-    public CountOfPersons(final long pAdultCount, final long pChildCount,
-            final long pTotal) {
-        this.adultCount = pAdultCount;
-        this.childCount = pChildCount;
-        this.total = pTotal;
+    public CoveredPopulation(final long pAdultCount, final long pChildCount,
+            final long pTotal, final List<CoveredPerson> pCoveredPersons) {
+        adultCount = pAdultCount;
+        childCount = pChildCount;
+        total = pTotal;
+        coveredPersons = pCoveredPersons;
     }
 
     /**
@@ -93,6 +102,24 @@ public class CountOfPersons {
      */
     public void setTotal(final long pTotal) {
         total = pTotal;
+    }
+
+    /**
+     * Getter of coveredPersons.
+     *
+     * @return the coveredPersons
+     */
+    public List<CoveredPerson> getCoveredPersons() {
+        return coveredPersons;
+    }
+
+    /**
+     * Setter of coveredPersons.
+     *
+     * @param pCoveredPersons the coveredPersons to set
+     */
+    public void setCoveredPersons(final List<CoveredPerson> pCoveredPersons) {
+        coveredPersons = pCoveredPersons;
     }
 
 }
