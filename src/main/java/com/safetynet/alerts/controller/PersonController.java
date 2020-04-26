@@ -20,7 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.Person;
-import com.safetynet.alerts.service.PersonService;
+import com.safetynet.alerts.service.IPersonService;
 
 /**
  * PersonsController class, used to create administrative endpoints for CRUD
@@ -40,14 +40,14 @@ public class PersonController {
     /**
      * The service class used to manage person administrative CRUD operations.
      */
-    private PersonService personService;
+    private IPersonService personService;
 
     /**
      * Class constructor - Set personService (IoC).
      *
      * @param pPersonService
      */
-    public PersonController(final PersonService pPersonService) {
+    public PersonController(final IPersonService pPersonService) {
         personService = pPersonService;
     }
 

@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alerts.controller.AddressFireStationController;
 import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.service.AddressFireStationService;
+import com.safetynet.alerts.service.IAddressFireStationService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AddressFireStationController.class)
@@ -36,7 +36,7 @@ public class AddressFireStationControllerTest {
     private MockMvc mockMVC;
 
     @MockBean
-    private AddressFireStationService addressFireStationService;
+    private IAddressFireStationService addressFireStationService;
 
     public static List<AddressFireStation> addressFireStationList = new ArrayList<>();
 

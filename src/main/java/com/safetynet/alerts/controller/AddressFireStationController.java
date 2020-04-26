@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.service.AddressFireStationService;
+import com.safetynet.alerts.service.IAddressFireStationService;
 
 /**
  * AddressFireStationController class, used to create administrative endpoints
@@ -31,7 +31,7 @@ public class AddressFireStationController {
      * The service class used to manage address - fire station association CRUD
      * operations.
      */
-    private AddressFireStationService addressFireStationService;
+    private IAddressFireStationService addressFireStationService;
 
     /**
      * Class constructor - Set addressFireStationService (IoC).
@@ -39,7 +39,7 @@ public class AddressFireStationController {
      * @param pFireStationService
      */
     public AddressFireStationController(
-            final AddressFireStationService pFireStationService) {
+            final IAddressFireStationService pFireStationService) {
         addressFireStationService = pFireStationService;
     }
 

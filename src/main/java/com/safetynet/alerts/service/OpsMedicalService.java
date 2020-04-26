@@ -21,7 +21,7 @@ import com.safetynet.alerts.utils.MedicalMapping;
  * @author Thierry Schreiner
  */
 @Service
-public class OpsMedicalService {
+public class OpsMedicalService implements IOpsMedicalService {
 
     /**
      * Create a SLF4J/LOG4J LOGGER instance.
@@ -68,6 +68,7 @@ public class OpsMedicalService {
      * @param address
      * @return a ChildAlert object
      */
+    @Override
     public Household fireByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
@@ -89,6 +90,7 @@ public class OpsMedicalService {
      *                     all covered inhabitants
      * @return a List<FloodDTO> object.
      */
+    @Override
     public List<FloodDTO> floodByStation(final List<String> pStationList) {
         LOGGER.info("OPS #5 - flood -");
         List<Integer> stationList = new ArrayList<Integer>();

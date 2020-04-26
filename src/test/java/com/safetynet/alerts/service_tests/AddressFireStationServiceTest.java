@@ -27,6 +27,7 @@ import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
 import com.safetynet.alerts.model.AddressFireStation;
 import com.safetynet.alerts.repositery.AddressFireStationRepository;
 import com.safetynet.alerts.service.AddressFireStationService;
+import com.safetynet.alerts.service.IAddressFireStationService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AddressFireStationService.class)
@@ -36,7 +37,7 @@ public class AddressFireStationServiceTest {
     @MockBean
     private AddressFireStationRepository addressFireStationRepository;
 
-    private AddressFireStationService addressFireStationService;
+    private IAddressFireStationService addressFireStationService;
 
     public static List<AddressFireStation> addressFireStList = new ArrayList<>();
 

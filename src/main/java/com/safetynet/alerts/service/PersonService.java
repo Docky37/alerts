@@ -20,7 +20,7 @@ import com.safetynet.alerts.utils.PersonMapping;
  * @author Thierry Schreiner
  */
 @Service
-public class PersonService {
+public class PersonService implements IPersonService {
 
     /**
      * Create a SLF4J/LOG4J LOGGER instance.
@@ -59,6 +59,7 @@ public class PersonService {
      * @param pListPerson
      * @return a List<Person> (of created persons)
      */
+    @Override
     public List<Person> addListPersons(final List<Person> pListPerson) {
         List<PersonEntity> listPE = personMapping
                 .convertToPersonEntity(pListPerson);
@@ -74,6 +75,7 @@ public class PersonService {
      *
      * @return a List<Person> (of saved persons)
      */
+    @Override
     public List<Person> findAll() {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findAll();
@@ -90,6 +92,7 @@ public class PersonService {
      * @param pFirstName
      * @return a Person (the found person)
      */
+    @Override
     public Person findByLastNameAndFirstName(final String pLastName,
             final String pFirstName) {
         PersonEntity foundPE = personRepository
@@ -111,6 +114,7 @@ public class PersonService {
      * @param pPerson
      * @return a Person (the added person) or null if person already exists.
      */
+    @Override
     public Person addPerson(final Person pPerson) {
         PersonEntity pEnt = personRepository.findByLastNameAndFirstName(
                 pPerson.getLastName(), pPerson.getFirstName());
@@ -136,6 +140,7 @@ public class PersonService {
      * @return a Person (the updated person) or null if person to update not
      *         found.
      */
+    @Override
     public Person updatePerson(final Person pPerson) {
         PersonEntity pEnt = personRepository.findByLastNameAndFirstName(
                 pPerson.getLastName(), pPerson.getFirstName());
@@ -161,6 +166,7 @@ public class PersonService {
      * @return a Person (the deleted person) or null if person to delete not
      *         found.
      */
+    @Override
     public Person deleteAPerson(final String pLastName,
             final String pFirstName) {
         PersonEntity pEnt = personRepository

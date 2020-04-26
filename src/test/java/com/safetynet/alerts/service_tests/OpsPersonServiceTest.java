@@ -34,6 +34,7 @@ import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
+import com.safetynet.alerts.service.IOpsPersonService;
 import com.safetynet.alerts.service.OpsPersonService;
 import com.safetynet.alerts.utils.ChildAlertMapping;
 import com.safetynet.alerts.utils.PersonMapping;
@@ -58,7 +59,7 @@ public class OpsPersonServiceTest {
     @MockBean
     private ChildAlertMapping childAlertMapping;
 
-    private OpsPersonService opsPersonService;
+    private IOpsPersonService opsPersonService;
 
     public static List<Person> personList = new ArrayList<>();
     static {

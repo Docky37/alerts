@@ -26,6 +26,7 @@ import com.safetynet.alerts.model.AddressFireStation;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
+import com.safetynet.alerts.service.IPersonService;
 import com.safetynet.alerts.service.PersonService;
 import com.safetynet.alerts.utils.PersonMapping;
 
@@ -39,7 +40,7 @@ public class PersonServiceTest {
     @MockBean
     private PersonRepository personRepository;
 
-    private PersonService personService;
+    private IPersonService personService;
 
     public static List<Person> personList = new ArrayList<>();
     static {

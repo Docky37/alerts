@@ -24,7 +24,7 @@ import com.safetynet.alerts.utils.PersonMapping;
  * @author Thierry Schreiner
  */
 @Service
-public class OpsPersonService {
+public class OpsPersonService implements IOpsPersonService {
 
     /**
      * Create a SLF4J/LOG4J LOGGER instance.
@@ -79,6 +79,7 @@ public class OpsPersonService {
      * @param pStation
      * @return a CoveredPopulation object
      */
+    @Override
     public CoveredPopulation populationCoveredByStation(final String pStation) {
         Date compareDate = Date
                 .valueOf(LocalDate.now().minusYears(DIX_HUIT_YEARS));
@@ -105,6 +106,7 @@ public class OpsPersonService {
      * @param address
      * @return a ChildAlert object
      */
+    @Override
     public ChildAlert findListOfChildByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
@@ -121,6 +123,7 @@ public class OpsPersonService {
      *                 covered inhabitants
      * @return a List<String> of phone numbers.
      */
+    @Override
     public List<String> findAllPhoneListByStation(final String pStation) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStationOrderByAddressIdStation(pStation);
@@ -140,6 +143,7 @@ public class OpsPersonService {
      * @return a List<String> - the list of phone number of all inhabitants
      *         covered by the station
      */
+    @Override
     public List<String> findAllMailByCity(final String pCity) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdCity(pCity);

@@ -29,7 +29,7 @@ import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.PersonController;
 import com.safetynet.alerts.controller.PersonNotFoundException;
 import com.safetynet.alerts.model.Person;
-import com.safetynet.alerts.service.PersonService;
+import com.safetynet.alerts.service.IPersonService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(PersonController.class)
@@ -45,7 +45,7 @@ public class PersonControllerTest {
     private MockMvc mockMVC;
 
     @MockBean
-    private PersonService personService;
+    private IPersonService personService;
 
     public static List<Person> personList = new ArrayList<>();
 

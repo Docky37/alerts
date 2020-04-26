@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.model.Household;
-import com.safetynet.alerts.service.OpsMedicalService;
+import com.safetynet.alerts.service.IOpsMedicalService;
 
 /**
  * OpsMedicalController class, used to provide operational endpoints with
@@ -32,14 +32,14 @@ public class OpsMedicalController {
      * The service class used to manage person administrative CRUD operations.
      */
     @Autowired
-    private OpsMedicalService opsMedicalService;
+    private IOpsMedicalService opsMedicalService;
 
     /**
      * Class constructor - Set personService (IoC).
      *
      * @param pOpsMedicalService
      */
-    public OpsMedicalController(final OpsMedicalService pOpsMedicalService) {
+    public OpsMedicalController(final IOpsMedicalService pOpsMedicalService) {
         opsMedicalService = pOpsMedicalService;
     }
 

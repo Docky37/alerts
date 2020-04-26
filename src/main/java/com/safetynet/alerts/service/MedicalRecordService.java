@@ -22,7 +22,7 @@ import com.safetynet.alerts.repositery.PersonRepository;
  * @author Thierry Schreiner
  */
 @Service
-public class MedicalRecordService {
+public class MedicalRecordService implements IMedicalRecordService {
 
     /**
      * Create a SLF4J/LOG4J LOGGER instance.
@@ -61,6 +61,7 @@ public class MedicalRecordService {
      * @param pListMedicalRecord
      * @return a List<MedicalRecord>
      */
+    @Override
     public List<MedicalRecord> addListMedicalRecord(
             final List<MedicalRecord> pListMedicalRecord) {
         List<MedicalRecord> createdList = new ArrayList<MedicalRecord>();
@@ -79,6 +80,7 @@ public class MedicalRecordService {
      *
      * @return a List<MedicalRecord>
      */
+    @Override
     public List<MedicalRecord> findAll() {
         List<MedicalRecord> medicalRecordList;
         medicalRecordList = (List<MedicalRecord>) medicalRecordRepository
@@ -94,6 +96,7 @@ public class MedicalRecordService {
      * @param pMedicalRecord
      * @return a MedicalRecord
      */
+    @Override
     public MedicalRecord addMedicalRecord(final MedicalRecord pMedicalRecord) {
         MedicalRecord foundMedicalRecord = medicalRecordRepository
                 .findByLastNameAndFirstName(pMedicalRecord.getLastName(),
@@ -126,6 +129,7 @@ public class MedicalRecordService {
      * @return a MedicalRecord
      * @throws MedicalRecordNotFoundException
      */
+    @Override
     public MedicalRecord findByLastNameAndFirstName(final String lastName,
             final String firstName) throws MedicalRecordNotFoundException {
         MedicalRecord foundMedicalRecord = medicalRecordRepository
@@ -145,6 +149,7 @@ public class MedicalRecordService {
      * @param pMedicalRecord
      * @return a MedicalRecord
      */
+    @Override
     public MedicalRecord updateMedicalRecord(
             final MedicalRecord pMedicalRecord) {
         MedicalRecord medicalRecordToUpdate = pMedicalRecord;
@@ -173,6 +178,7 @@ public class MedicalRecordService {
      * @param firstName
      * @return a MedicalRecord
      */
+    @Override
     public MedicalRecord deleteAMedicalRecord(final String lastName,
             final String firstName) {
         MedicalRecord medicalRecordToDelete = medicalRecordRepository

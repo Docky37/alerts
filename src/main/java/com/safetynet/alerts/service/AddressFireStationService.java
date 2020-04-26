@@ -15,7 +15,7 @@ import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
  * @author Thierry Schreiner
  */
 @Service
-public class AddressFireStationService {
+public class AddressFireStationService implements IAddressFireStationService {
     /**
      * PersonRepository is an Interface that extends CrudRepository.
      */
@@ -39,6 +39,7 @@ public class AddressFireStationService {
      * @param pListFireStation - a List<AddressFireStation> instance
      * @return a List<AddressFireStation> instance
      */
+    @Override
     public List<AddressFireStation> addListFireStations(
             final List<AddressFireStation> pListFireStation) {
         List<AddressFireStation> createdList;
@@ -54,6 +55,7 @@ public class AddressFireStationService {
      *
      * @return a List<AddressFireStation> instance
      */
+    @Override
     public List<AddressFireStation> findAll() {
         List<AddressFireStation> addressFireStList;
         addressFireStList = (List<AddressFireStation>) addressFireStRepository
@@ -69,6 +71,7 @@ public class AddressFireStationService {
      * @param pAddressFireStation an AddressFireStation instance
      * @return an AddressFireStation instance
      */
+    @Override
     public AddressFireStation addAddressFireStation(
             final AddressFireStation pAddressFireStation) {
         AddressFireStation foundAddressFireSt = addressFireStRepository
@@ -91,6 +94,7 @@ public class AddressFireStationService {
      * @return an AddressFireStation instance
      * @throws AddressFireStationNotFoundException
      */
+    @Override
     public AddressFireStation findByAddress(final String pAddress)
             throws AddressFireStationNotFoundException {
         AddressFireStation foundAddressFireSt = addressFireStRepository
@@ -109,6 +113,7 @@ public class AddressFireStationService {
      * @param pAddressFireStation an AddressFireStation instance
      * @return an AddressFireStation instance
      */
+    @Override
     public AddressFireStation updateAddress(
             final AddressFireStation pAddressFireStation) {
         AddressFireStation addressFireStToUpdate = pAddressFireStation;
@@ -128,6 +133,7 @@ public class AddressFireStationService {
      * @param pAddress a String
      * @return an AddressFireStation instance
      */
+    @Override
     public AddressFireStation deleteAnAddress(final String pAddress) {
         AddressFireStation foundAddressFireSt = addressFireStRepository
                 .findByAddress(pAddress);

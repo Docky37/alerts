@@ -30,6 +30,7 @@ import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.MedicalRecordRepository;
 import com.safetynet.alerts.repositery.PersonRepository;
+import com.safetynet.alerts.service.IMedicalRecordService;
 import com.safetynet.alerts.service.MedicalRecordService;
 
 @RunWith(SpringRunner.class)
@@ -44,7 +45,7 @@ public class MedicalRecordServiceTest {
     PersonRepository personRepository;
 
     @Autowired
-    MedicalRecordService medicalRecordService;
+    IMedicalRecordService medicalRecordService;
 
     public static AddressFireStation addressFireStation = new AddressFireStation(
             1L, "1509 Culver St", "3");

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.safetynet.alerts.model.MedicalRecord;
-import com.safetynet.alerts.service.MedicalRecordService;
+import com.safetynet.alerts.service.IMedicalRecordService;
 
 /**
  * MedicalRecordController class, is used to create administrative endpoints for
@@ -31,7 +31,7 @@ public class MedicalRecordController {
      * The service class used to manage address - fire station association CRUD
      * operations.
      */
-    private MedicalRecordService medicalRecordService;
+    private IMedicalRecordService medicalRecordService;
 
     /**
      * Class constructor - Set addressFireStationService (IoC).
@@ -39,7 +39,7 @@ public class MedicalRecordController {
      * @param pMedicalRecordService
      */
     public MedicalRecordController(
-            final MedicalRecordService pMedicalRecordService) {
+            final IMedicalRecordService pMedicalRecordService) {
         medicalRecordService = pMedicalRecordService;
     }
 

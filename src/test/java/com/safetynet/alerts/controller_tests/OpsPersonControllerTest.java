@@ -23,12 +23,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.OpsPersonController;
 import com.safetynet.alerts.model.PersonFLA;
+import com.safetynet.alerts.service.IOpsPersonService;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CoveredPopulation;
 import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
-import com.safetynet.alerts.service.OpsPersonService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(OpsPersonController.class)
@@ -44,7 +44,7 @@ public class OpsPersonControllerTest {
     private MockMvc mockMVC;
 
     @MockBean
-    private OpsPersonService opsPersonService;
+    private IOpsPersonService opsPersonService;
 
     public static List<Person> personList = new ArrayList<>();
 

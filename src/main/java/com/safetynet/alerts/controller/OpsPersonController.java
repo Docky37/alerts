@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CoveredPopulation;
-import com.safetynet.alerts.service.OpsPersonService;
+import com.safetynet.alerts.service.IOpsPersonService;
 
 /**
  * OpsPersonsController class, used to provide operational endpoints.
@@ -31,14 +31,14 @@ public class OpsPersonController {
      * The service class used to manage person administrative CRUD operations.
      */
     @Autowired
-    private OpsPersonService opsPersonService;
+    private IOpsPersonService opsPersonService;
 
     /**
      * Class constructor - Set personService (IoC).
      *
      * @param pOpsPersonService
      */
-    public OpsPersonController(final OpsPersonService pOpsPersonService) {
+    public OpsPersonController(final IOpsPersonService pOpsPersonService) {
         opsPersonService = pOpsPersonService;
     }
 

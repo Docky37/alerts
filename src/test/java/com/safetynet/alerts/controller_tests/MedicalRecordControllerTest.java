@@ -30,7 +30,7 @@ import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.MedicalRecordController;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
 import com.safetynet.alerts.model.MedicalRecord;
-import com.safetynet.alerts.service.MedicalRecordService;
+import com.safetynet.alerts.service.IMedicalRecordService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MedicalRecordController.class)
@@ -46,7 +46,7 @@ public class MedicalRecordControllerTest {
     private MockMvc mockMVC;
 
     @MockBean
-    private MedicalRecordService medicalRecordService;
+    private IMedicalRecordService medicalRecordService;
 
     static DateTimeFormatter Formatter = DateTimeFormatter
             .ofPattern("dd/MM/yyyy");
