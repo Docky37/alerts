@@ -71,11 +71,11 @@ public class OpsPersonControllerTest {
     public static List<CoveredPerson> coveredPersonList = new ArrayList<>();
 
     static {
-        coveredPersonList.add(new CoveredPerson(1L, "John", "Boyd",
+        coveredPersonList.add(new CoveredPerson("John", "Boyd",
                 "1509 Culver St", "841-874-6512"));
-        coveredPersonList.add(new CoveredPerson(2L, "Johnathan", "Barrack",
+        coveredPersonList.add(new CoveredPerson("Johnathan", "Barrack",
                 "29 15th St", "841-874-6513"));
-        coveredPersonList.add(new CoveredPerson(3L, "Tenley", "Boyd",
+        coveredPersonList.add(new CoveredPerson("Tenley", "Boyd",
                 "1509 Culver St", "841-874-6512"));
     }
 

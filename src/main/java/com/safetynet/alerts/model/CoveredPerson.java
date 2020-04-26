@@ -9,10 +9,6 @@ package com.safetynet.alerts.model;
 public class CoveredPerson {
 
     /**
-     * The id of the person.
-     */
-    private long id;
-    /**
      * The first name of the person.
      */
     private String firstName;
@@ -32,17 +28,13 @@ public class CoveredPerson {
     /**
      * Class constructor.
      *
-     * @param pId
      * @param pFirstName
      * @param pLastName
      * @param pAddress
      * @param pPhone
      */
-    public CoveredPerson(final Long pId, final String pFirstName,
-            final String pLastName, final String pAddress,
-            final String pPhone) {
-        super();
-        id = pId;
+    public CoveredPerson(final String pFirstName, final String pLastName,
+            final String pAddress, final String pPhone) {
         firstName = pFirstName;
         lastName = pLastName;
         address = pAddress;
@@ -55,25 +47,7 @@ public class CoveredPerson {
     public CoveredPerson() {
     }
 
-    /**
-     * Getter of the person id.
-     *
-     * @return an int - the person id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Setter of the person id.
-     *
-     * @param pId - the person id.
-     */
-    public void setId(final Long pId) {
-        id = pId;
-    }
-
-    /**
+   /**
      * Getter of the person first name.
      *
      * @return a String - the person first name
@@ -150,7 +124,7 @@ public class CoveredPerson {
      */
     @Override
     public String toString() {
-        return "Person [id= " + id + ", firstName=" + firstName + ", lastName="
+        return "Person [firstName=" + firstName + ", lastName="
                 + lastName + ", address=" + address + ", phone=" + phone + "]";
     }
 

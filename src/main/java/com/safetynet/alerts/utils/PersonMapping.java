@@ -131,7 +131,6 @@ public class PersonMapping {
      */
     public CoveredPerson convertToCoveredPerson(final PersonEntity pEnt) {
         CoveredPerson coveredPerson = new CoveredPerson();
-        coveredPerson.setId(pEnt.getId());
         coveredPerson.setFirstName(pEnt.getFirstName());
         coveredPerson.setLastName(pEnt.getLastName());
         coveredPerson.setAddress(pEnt.getAddressFireSt().getAddress());

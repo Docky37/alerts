@@ -68,11 +68,11 @@ public class PersonMappingTest {
 
     public static List<CoveredPerson> coveredPersonList = new ArrayList<>();
     static {
-        coveredPersonList.add(new CoveredPerson(1L, "John", "Boyd",
+        coveredPersonList.add(new CoveredPerson("John", "Boyd",
                 "1509 Culver St", "841-874-6512"));
-        coveredPersonList.add(new CoveredPerson(2L, "Johnathan", "Barrack",
+        coveredPersonList.add(new CoveredPerson("Johnathan", "Barrack",
                 "29 15th St", "841-874-6513"));
-        coveredPersonList.add(new CoveredPerson(3L, "Tenley", "Boyd",
+        coveredPersonList.add(new CoveredPerson("Tenley", "Boyd",
                 "1509 Culver St", "841-874-6512"));
     }
 
@@ -115,8 +115,9 @@ public class PersonMappingTest {
                 .isEqualTo(personList.get(1).getFirstName());
     }
 
+    // OPS #1 ENDPOINT -------------------------------------------------------
     @Test
-    public void givenAListOfPersonEntity_whenConvert_thenReturnList()
+    public void givenAListOfPersonEntity_whenConvert_thenReturnCoveredPersonList()
             throws Exception {
         LOGGER.info("Start test: PersonEntityList mapping to Person");
         // GIVEN
