@@ -83,7 +83,7 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
      */
     @Query("SELECT COUNT(p) FROM PersonEntity p RIGHT JOIN p.addressId a"
             + " JOIN p.medRecId m" + " WHERE a.station= :station"
-            + " AND m.birthDate < :compareDate")
+            + " AND m.birthdate < :compareDate")
     long countAdultsByAddressIdStation(@Param("station") String pStation,
             @Param("compareDate") Date compareDate);
 

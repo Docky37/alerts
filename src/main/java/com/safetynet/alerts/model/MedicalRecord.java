@@ -61,8 +61,8 @@ public class MedicalRecord {
     /**
      * The birthday of the medical record owner.
      */
-    @Column(name = "birth_date")
-    private Date birthDate;
+    @Column(name = "birthdate")
+    private Date birthdate;
     /**
      * List of medications taken by the medical record owner.
      */
@@ -80,19 +80,19 @@ public class MedicalRecord {
      * @param pId
      * @param pFirstName
      * @param pLastName
-     * @param pBirthDate
+     * @param pBirthdate
      * @param pMedications
      * @param pAllergies
      */
     public MedicalRecord(final long pId, final String pFirstName,
-            final String pLastName, final String pBirthDate,
+            final String pLastName, final String pBirthdate,
             final String[] pMedications, final String[] pAllergies) {
 
         super();
         id = pId;
         firstName = pFirstName;
         lastName = pLastName;
-        birthDate = Date.valueOf(LocalDate.parse(pBirthDate, formatter));
+        birthdate = Date.valueOf(LocalDate.parse(pBirthdate, formatter));
         medications = pMedications;
         allergies = pAllergies;
     }
@@ -156,16 +156,16 @@ public class MedicalRecord {
      *
      * @return a String
      */
-    public String getBirthDate() {
-        return formatter2.format(birthDate);
+    public String getBirthdate() {
+        return formatter2.format(birthdate);
     }
     /**
      * Setter of medical record owner birthday.
      *
      * @param pBirthDate
      */
-    public void setBirthDate(final String pBirthDate) {
-        birthDate = Date.valueOf(LocalDate.parse(pBirthDate, formatter));
+    public void setBirthdate(final String pBirthDate) {
+        birthdate = Date.valueOf(LocalDate.parse(pBirthDate, formatter));
     }
 
     /**
@@ -210,8 +210,8 @@ public class MedicalRecord {
     @Override
     public String toString() {
         return "MedicalRecord [id= " + id + ", firstName=" + firstName
-                + ", lastName=" + lastName + ", birthDate="
-                + formatter2.format(birthDate) + ", medications="
+                + ", lastName=" + lastName + ", birthdate="
+                + formatter2.format(birthdate) + ", medications="
                 + Arrays.toString(medications) + ", allergies="
                 + Arrays.toString(allergies) + "]";
     }

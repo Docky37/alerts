@@ -232,7 +232,7 @@ public class MedicalRecordServiceTest {
             throws Exception {
         // GIVEN
         MedicalRecord medicalRecordToUpdate = medicalRecordList.get(2);
-        medicalRecordToUpdate.setBirthDate("06/03/1989");
+        medicalRecordToUpdate.setBirthdate("06/03/1989");
         MedicalRecord updatedMedicalRecord = medicalRecordToUpdate;
         given(medicalRecordRepository.findByLastNameAndFirstName(
                 updatedMedicalRecord.getLastName(),
@@ -247,8 +247,8 @@ public class MedicalRecordServiceTest {
         // THEN
         assertThat(updatedMedicalRecord.getFirstName())
                 .isEqualTo(medicalRecordToUpdate.getFirstName());
-        assertThat(updatedMedicalRecord.getBirthDate())
-                .isEqualTo(medicalRecordToUpdate.getBirthDate());
+        assertThat(updatedMedicalRecord.getBirthdate())
+                .isEqualTo(medicalRecordToUpdate.getBirthdate());
     }
 
     @Test // DELETE a MedicalRecord

@@ -62,11 +62,11 @@ public class ChildAlertMapping {
         LOGGER.info("pEntList= {}", pEntList);
 
         for (PersonEntity personEntity : pEntList) {
-            LocalDate birthDate = LocalDate.parse(
-                    personEntity.getMedRecId().getBirthDate(), formatter);
-            LOGGER.info("First Name= {} and Birth Date = {}",
-                    personEntity.getFirstName(), birthDate);
-            dateInterval = birthDate.until(LocalDate.now(), ChronoUnit.YEARS);
+            LocalDate birthdate = LocalDate.parse(
+                    personEntity.getMedRecId().getBirthdate(), formatter);
+            LOGGER.info("First Name= {} and Birthdate = {}",
+                    personEntity.getFirstName(), birthdate);
+            dateInterval = birthdate.until(LocalDate.now(), ChronoUnit.YEARS);
 
             if (dateInterval > DIX_HUIT_YEARS) { // The person is an adult
                 adultList.add(personEntity.getFirstName() + " "
@@ -75,7 +75,7 @@ public class ChildAlertMapping {
 
             } else { // ---------------------------  The person is a child
                 if (dateInterval < 2) {
-                    dateInterval = birthDate.until(LocalDate.now(),
+                    dateInterval = birthdate.until(LocalDate.now(),
                             ChronoUnit.MONTHS);
                     unit = " months old";
                 } else {

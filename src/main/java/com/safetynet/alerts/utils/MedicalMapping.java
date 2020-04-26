@@ -61,7 +61,7 @@ public class MedicalMapping {
 
         for (PersonEntity personEntity : pEntList) {
             String ageString = ageCalculation(
-                    personEntity.getMedRecId().getBirthDate());
+                    personEntity.getMedRecId().getBirthdate());
             personList.add(new PersonInfoDTO(personEntity.getFirstName(),
                     personEntity.getLastName(), ageString,
                     personEntity.getMedRecId().getMedications(),
@@ -95,7 +95,6 @@ public class MedicalMapping {
         List<PersonInfoDTO> personList = new ArrayList<>();
         String currentStation = null;
         AddressFireStation currentAddress = null;
-        int i = 1;
         for (PersonEntity p : pEntList) {
             if (currentStation == null) {
                 currentStation = p.getAddressFireSt().getStation();
@@ -117,7 +116,7 @@ public class MedicalMapping {
                 currentStation = p.getAddressFireSt().getStation();
                 // currentAddress = p.getAddressFireSt();
             }
-            String ageString = ageCalculation(p.getMedRecId().getBirthDate());
+            String ageString = ageCalculation(p.getMedRecId().getBirthdate());
             personList.add(new PersonInfoDTO(p.getFirstName(), p.getLastName(),
                     ageString, p.getMedRecId().getMedications(),
                     p.getMedRecId().getAllergies(), p.getPhone()));
@@ -134,7 +133,7 @@ public class MedicalMapping {
 
     }
 
-    private String ageCalculation(final String pBirthdate) {
+    public String ageCalculation(final String pBirthdate) {
         LocalDate birthdate = LocalDate.parse(pBirthdate, formatter);
         long dateInterval;
         String ageString;
