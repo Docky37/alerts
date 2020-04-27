@@ -1,12 +1,13 @@
-package com.safetynet.alerts.model;
+package com.safetynet.alerts.DTO;
 
 /**
- * CoveredPerson class, used for OPS1 - List of persons covered by a given
- * station.
+ * The class OpsPersonDTO is used to store first name, last name and age of each
+ * child in the List<OpsPersonDTO> field of the class ChildAlert (for OPS#2
+ * endpoint).
  *
- * @author Thierry SCHREINER
+ * @author Thierry Schreiner
  */
-public class CoveredPerson {
+public class OpsPersonDTO {
 
     /**
      * The first name of the person.
@@ -17,70 +18,94 @@ public class CoveredPerson {
      */
     private String lastName;
     /**
+     * The age name of the person.
+     */
+    private String age;
+
+    /**
      * The address of the person.
      */
     private String address;
+
     /**
      * The phone number of the person.
      */
     private String phone;
 
     /**
-     * Class constructor.
-     *
-     * @param pFirstName
-     * @param pLastName
-     * @param pAddress
-     * @param pPhone
+     * Empty class constructor.
      */
-    public CoveredPerson(final String pFirstName, final String pLastName,
-            final String pAddress, final String pPhone) {
-        firstName = pFirstName;
-        lastName = pLastName;
-        address = pAddress;
-        phone = pPhone;
+    public OpsPersonDTO() {
     }
 
     /**
-     * Empty constructor.
+     * @param pFirstName
+     * @param pLastName
+     * @param pAge
+     * @param pAddress
+     * @param pPhone
      */
-    public CoveredPerson() {
+    public OpsPersonDTO(final String pFirstName, final String pLastName,
+            final String pAge, final String pAddress, final String pPhone) {
+        firstName = pFirstName;
+        lastName = pLastName;
+        age = pAge;
+        phone = pPhone;
+        address = pAddress;
     }
 
-   /**
-     * Getter of the person first name.
+    /**
+     * Getter of firstName.
      *
-     * @return a String - the person first name
+     * @return the firstName
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * Setter of the person first name.
+     * setter of firstName.
      *
-     * @param pFirstName - the person first name
+     * @param pFirstName the firstName to set
      */
     public void setFirstName(final String pFirstName) {
         firstName = pFirstName;
     }
 
     /**
-     * Getter of the person last name.
+     * Getter of lastName.
      *
-     * @return a String - the person last name
+     * @return the lastName
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * Setter of the person last name.
+     * Setter of lastName.
      *
-     * @param pLastName - the person last name
+     * @param pLastName the lastName to set
      */
     public void setLastName(final String pLastName) {
         lastName = pLastName;
+    }
+
+    /**
+     * getter of age.
+     *
+     * @return the age
+     */
+    public String getAge() {
+        return age;
+    }
+
+    /**
+     * Setter of age.
+     *
+     * @param pAge the age to set
+     */
+    public void setAge(final String pAge) {
+        age = pAge;
     }
 
     /**
@@ -124,8 +149,7 @@ public class CoveredPerson {
      */
     @Override
     public String toString() {
-        return "Person [firstName=" + firstName + ", lastName="
-                + lastName + ", address=" + address + ", phone=" + phone + "]";
+        return "OpsPersonDTO [firstName=" + firstName + ", lastName=" + lastName
+                + ", age=" + age + ", address=" + address + ", phone=" + phone + "]";
     }
-
 }

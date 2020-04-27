@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.AddressFireStationRepository;
@@ -103,39 +102,4 @@ public class PersonMapping {
         return person;
     }
 
-    /**
-     * For OPS1, this method is used to transform a list of PersonEntity to a
-     * list of CoveredPerson, using the next method to convert each PersonEntity
-     * to CoveredPerson.
-     *
-     * @param listPE - the list of PersonEntity
-     * @return a List<Person> object
-     */
-    public List<CoveredPerson> convertToCoveredByStationPerson(
-            final List<PersonEntity> listPE) {
-        List<CoveredPerson> listPersons = new ArrayList<CoveredPerson>();
-        CoveredPerson coveredPerson;
-        for (PersonEntity pEnt : listPE) {
-            coveredPerson = convertToCoveredPerson(pEnt);
-            listPersons.add(coveredPerson);
-        }
-
-        return (listPersons);
-    }
-
-    /**
-     * For OPS1, this method convert a PersonEntity to a CoveredPerson.
-     *
-     * @param pEnt - the PersonEntity object to convert
-     * @return a Person object
-     */
-    public CoveredPerson convertToCoveredPerson(final PersonEntity pEnt) {
-        CoveredPerson coveredPerson = new CoveredPerson();
-        coveredPerson.setFirstName(pEnt.getFirstName());
-        coveredPerson.setLastName(pEnt.getLastName());
-        coveredPerson.setAddress(pEnt.getAddressFireSt().getAddress());
-        coveredPerson.setPhone(pEnt.getPhone());
-
-        return coveredPerson;
-    }
 }

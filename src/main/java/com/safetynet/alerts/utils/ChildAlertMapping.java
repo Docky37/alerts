@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.safetynet.alerts.AlertsApplication;
-import com.safetynet.alerts.model.PersonFLA;
+import com.safetynet.alerts.DTO.OpsPersonDTO;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.PersonEntity;
 
@@ -55,36 +55,35 @@ public class ChildAlertMapping {
     public ChildAlert create(final List<PersonEntity> pEntList,
             final String address) {
         ChildAlert childAlert = new ChildAlert();
-        long dateInterval;
         String unit;
         List<String> adultList = new ArrayList<>();
-        List<PersonFLA> childList = new ArrayList<>();
+        List<OpsPersonDTO> childList = new ArrayList<>();
         LOGGER.info("pEntList= {}", pEntList);
 
         for (PersonEntity personEntity : pEntList) {
-            LocalDate birthdate = LocalDate.parse(
-                    personEntity.getMedRecId().getBirthdate(), formatter);
-            LOGGER.info("First Name= {} and Birthdate = {}",
-                    personEntity.getFirstName(), birthdate);
-            dateInterval = birthdate.until(LocalDate.now(), ChronoUnit.YEARS);
+            int age = ageCalculation(personEntity.getMedRecId().getBirthdate());
 
-            if (dateInterval > DIX_HUIT_YEARS) { // The person is an adult
+            LOGGER.info("First Name= {} and age = {}",
+                    personEntity.getFirstName(), age);
+
+            if (age > DIX_HUIT_YEARS) { // The person is an adult
                 adultList.add(personEntity.getFirstName() + " "
                         + personEntity.getLastName());
                 LOGGER.info("Adult list = {}", adultList);
 
-            } else { // ---------------------------  The person is a child
-                if (dateInterval < 2) {
-                    dateInterval = birthdate.until(LocalDate.now(),
-                            ChronoUnit.MONTHS);
+            } else { // --------------------------- The person is a child
+                if (age < 2) {
+                    age = ageCalculationInMonth(
+                            personEntity.getMedRecId().getBirthdate());
                     unit = " months old";
                 } else {
                     unit = " years old";
                 }
-                childList.add(new PersonFLA(personEntity.getFirstName(),
-                        personEntity.getLastName(),
-                        Long.toString(dateInterval) + unit));
-                LOGGER.info("PersonFLA list = {}", childList.toString());
+                childList.add(new OpsPersonDTO(personEntity.getFirstName(),
+                        personEntity.getLastName(), Long.toString(age) + unit,
+                        personEntity.getAddressFireSt().getAddress(),
+                        personEntity.getPhone()));
+                LOGGER.info("OpsPersonDTO list = {}", childList.toString());
             }
         }
         childAlert.setAddress(address);
@@ -92,6 +91,83 @@ public class ChildAlertMapping {
         childAlert.setAdultList(adultList);
         LOGGER.info("ChildAlert = {}", childAlert.toString());
         return childAlert;
+    }
+
+
+    /**
+     * For OPS1, this method is used to transform a list of PersonEntity to a
+     * list of OpsPersonDTO, using the next method to convert each PersonEntity
+     * to OpsPersonDTO.
+     *
+     * @param listPE - the list of PersonEntity
+     * @return a List<OpsPersonDTO> object
+     */
+    public List<OpsPersonDTO> convertToCoveredByStationPerson(
+            final List<PersonEntity> listPE) {
+        List<OpsPersonDTO> listPersons = new ArrayList<OpsPersonDTO>();
+        OpsPersonDTO coveredPerson;
+        for (PersonEntity pEnt : listPE) {
+            coveredPerson = convertToCoveredPerson(pEnt);
+            listPersons.add(coveredPerson);
+        }
+
+        return (listPersons);
+    }
+
+    /**
+     * For OPS1, this method convert a PersonEntity to a OpsPersonDTO.
+     *
+     * @param pEnt - the PersonEntity object to convert
+     * @return a OpsPersonDTO object
+     */
+    public OpsPersonDTO convertToCoveredPerson(final PersonEntity pEnt) {
+        OpsPersonDTO coveredPerson = new OpsPersonDTO();
+        String unit;
+        coveredPerson.setFirstName(pEnt.getFirstName());
+        coveredPerson.setLastName(pEnt.getLastName());
+        int age = ageCalculation(pEnt.getMedRecId().getBirthdate());
+        if (age < 2) {
+            age = ageCalculationInMonth(
+                    pEnt.getMedRecId().getBirthdate());
+            unit = " months old";
+        } else {
+            unit = " years old";
+        }
+        coveredPerson.setAge(Long.toString(age) + unit);
+        coveredPerson.setAddress(pEnt.getAddressFireSt().getAddress());
+        coveredPerson.setPhone(pEnt.getPhone());
+
+        return coveredPerson;
+    }
+    
+    /**
+     * 
+     * The ageCalculation method calculate age in full years between the
+     * birthdate and today.
+     *
+     * @param pBirthdate
+     * @return a int value
+     */
+    private int ageCalculation(final String pBirthdate) {
+        LocalDate birthdate = LocalDate.parse(pBirthdate, formatter);
+        long dateInterval;
+        dateInterval = birthdate.until(LocalDate.now(), ChronoUnit.YEARS);
+        return (int) dateInterval;
+    }
+
+    /**
+     * 
+     * The ageCalculationInMonth method calculate age in full months between the
+     * birthdate and today.
+     *
+     * @param pBirthdate
+     * @return a int value
+     */
+    private int ageCalculationInMonth(final String pBirthdate) {
+        LocalDate birthdate = LocalDate.parse(pBirthdate, formatter);
+        long dateInterval;
+        dateInterval = birthdate.until(LocalDate.now(), ChronoUnit.MONTHS);
+        return (int) dateInterval;
     }
 
 }

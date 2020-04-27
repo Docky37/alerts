@@ -16,7 +16,6 @@ import com.safetynet.alerts.model.CoveredPopulation;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.utils.ChildAlertMapping;
-import com.safetynet.alerts.utils.PersonMapping;
 
 /**
  * OpsPersonService is the class in charge of the OPSperson business work.
@@ -51,11 +50,6 @@ public class OpsPersonService implements IOpsPersonService {
      */
     @Autowired
     private ChildAlertMapping childAlertMapping;
-    /**
-     * PersonMapping instance is used.
-     */
-    @Autowired
-    private PersonMapping personMapping;
 
     /**
      * Class constructor - Set personRepository & personMapping (IoC).
@@ -65,10 +59,8 @@ public class OpsPersonService implements IOpsPersonService {
      * @param pChildAlertMapping
      */
     public OpsPersonService(final PersonRepository pPersonRepos,
-            final PersonMapping pPersonMapping,
             final ChildAlertMapping pChildAlertMapping) {
         personRepository = pPersonRepos;
-        personMapping = pPersonMapping;
         childAlertMapping = pChildAlertMapping;
     }
 
@@ -94,7 +86,7 @@ public class OpsPersonService implements IOpsPersonService {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStationOrderByAddressIdStation(pStation);
         coveredPopulation.setCoveredPersons(
-                personMapping.convertToCoveredByStationPerson(listPE));
+                childAlertMapping.convertToCoveredByStationPerson(listPE));
         return coveredPopulation;
     }
 

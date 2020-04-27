@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.AddressFireStationRepository;
@@ -66,16 +65,6 @@ public class PersonMappingTest {
                         "841-874-6512", "tenz@email.com", null));
     }
 
-    public static List<CoveredPerson> coveredPersonList = new ArrayList<>();
-    static {
-        coveredPersonList.add(new CoveredPerson("John", "Boyd",
-                "1509 Culver St", "841-874-6512"));
-        coveredPersonList.add(new CoveredPerson("Johnathan", "Barrack",
-                "29 15th St", "841-874-6513"));
-        coveredPersonList.add(new CoveredPerson("Tenley", "Boyd",
-                "1509 Culver St", "841-874-6512"));
-    }
-
     @Test
     public void givenAListOfPerson_whenConvert_thenReturnPersonEntityList()
             throws Exception {
@@ -115,23 +104,4 @@ public class PersonMappingTest {
                 .isEqualTo(personList.get(1).getFirstName());
     }
 
-    // OPS #1 ENDPOINT -------------------------------------------------------
-    @Test
-    public void givenAListOfPersonEntity_whenConvert_thenReturnCoveredPersonList()
-            throws Exception {
-        LOGGER.info("Start test: PersonEntityList mapping to Person");
-        // GIVEN
-        // WHEN
-        List<CoveredPerson> mappedList = personMapping
-                .convertToCoveredByStationPerson(pEntList);
-        // THEN
-        assertThat(mappedList.get(0).getAddress())
-                .isEqualTo(personList.get(0).getAddress());
-        assertThat(mappedList.get(0).getFirstName())
-                .isEqualTo(personList.get(0).getFirstName());
-        assertThat(mappedList.get(1).getAddress())
-                .isEqualTo(personList.get(1).getAddress());
-        assertThat(mappedList.get(1).getFirstName())
-                .isEqualTo(personList.get(1).getFirstName());
-    }
 }

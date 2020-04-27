@@ -2,6 +2,8 @@ package com.safetynet.alerts.model;
 
 import java.util.List;
 
+import com.safetynet.alerts.DTO.OpsPersonDTO;
+
 /**
  * The class ChildAlert is used in OPS#2 endpoint to store the list of chidren
  * and a list of adults leaving at a given address.
@@ -17,7 +19,7 @@ public class ChildAlert {
     /**
      * The list of child living at the address.
      */
-    private List<PersonFLA> childList;
+    private List<OpsPersonDTO> childList;
     /**
      * The list of adults living at the address.
      */
@@ -48,7 +50,7 @@ public class ChildAlert {
      *
      * @return the childList
      */
-    public List<PersonFLA> getChildList() {
+    public List<OpsPersonDTO> getChildList() {
         return childList;
     }
 
@@ -57,7 +59,7 @@ public class ChildAlert {
      *
      * @param pChildList the childList to set
      */
-    public void setChildList(final List<PersonFLA> pChildList) {
+    public void setChildList(final List<OpsPersonDTO> pChildList) {
         childList = pChildList;
     }
 
@@ -86,7 +88,7 @@ public class ChildAlert {
      * @param pChildList
      * @param pAdultList
      */
-    public ChildAlert(final String pAddress, final List<PersonFLA> pChildList,
+    public ChildAlert(final String pAddress, final List<OpsPersonDTO> pChildList,
             final List<String> pAdultList) {
         address = pAddress;
         childList = pChildList;

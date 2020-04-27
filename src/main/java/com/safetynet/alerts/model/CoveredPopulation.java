@@ -2,6 +2,8 @@ package com.safetynet.alerts.model;
 
 import java.util.List;
 
+import com.safetynet.alerts.DTO.OpsPersonDTO;
+
 /**
  * Class of the model used to store the count of children and adults (more than
  * 18 years old).
@@ -26,7 +28,7 @@ public class CoveredPopulation {
     /**
      * The list of persons covered by the station.
      */
-    private List<CoveredPerson> coveredPersons;
+    private List<OpsPersonDTO> coveredPersons;
 
     /**
      * Empty class constructor.
@@ -43,7 +45,7 @@ public class CoveredPopulation {
      * @param pCoveredPersons
      */
     public CoveredPopulation(final long pAdultCount, final long pChildCount,
-            final long pTotal, final List<CoveredPerson> pCoveredPersons) {
+            final long pTotal, final List<OpsPersonDTO> pCoveredPersons) {
         adultCount = pAdultCount;
         childCount = pChildCount;
         total = pTotal;
@@ -109,7 +111,7 @@ public class CoveredPopulation {
      *
      * @return the coveredPersons
      */
-    public List<CoveredPerson> getCoveredPersons() {
+    public List<OpsPersonDTO> getCoveredPersons() {
         return coveredPersons;
     }
 
@@ -118,7 +120,7 @@ public class CoveredPopulation {
      *
      * @param pCoveredPersons the coveredPersons to set
      */
-    public void setCoveredPersons(final List<CoveredPerson> pCoveredPersons) {
+    public void setCoveredPersons(final List<OpsPersonDTO> pCoveredPersons) {
         coveredPersons = pCoveredPersons;
     }
 

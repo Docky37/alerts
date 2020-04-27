@@ -15,8 +15,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.OpsPersonDTO;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.model.PersonFLA;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.PersonEntity;
@@ -73,9 +73,9 @@ public class ChilAlertMappingTest {
     }
 
     public static ChildAlert childAlert = new ChildAlert();
-    public static PersonFLA child1 = new PersonFLA("Tenley", "Boyd", "8 years old");
-    public static PersonFLA child2 = new PersonFLA("Roger", "Boyd", "19 months old");
-    public static List<PersonFLA> childList = Arrays.asList(child1, child2);
+    public static OpsPersonDTO child1 = new OpsPersonDTO("Tenley", "Boyd", "8 years old", "1509 Culver St","841-874-6512");
+    public static OpsPersonDTO child2 = new OpsPersonDTO("Roger", "Boyd", "19 months old", "1509 Culver St","841-874-6512");
+    public static List<OpsPersonDTO> childList = Arrays.asList(child1, child2);
     public static List<String> adultList = Arrays.asList("John Boyd",
             "Jacob Boyd", "Felicia Boyd");
     static {
@@ -93,8 +93,10 @@ public class ChilAlertMappingTest {
         ChildAlert mappedChildAlert = childAlertMapping
                 .create(pEntList, "1509 Culver St");
         // THEN
-        assertThat(mappedChildAlert.toString())
-                .isEqualTo(childAlert.toString());
-    }
+        assertThat(mappedChildAlert.getAddress()).isEqualTo("1509 Culver St");
+        assertThat(mappedChildAlert.getAdultList()).isEqualTo(adultList);
+        assertThat(mappedChildAlert.getChildList().get(0).getAge()).isEqualTo("8 years old");
+        assertThat(mappedChildAlert.getChildList().get(1).getAge()).isEqualTo("19 months old");
+        }
 
 }

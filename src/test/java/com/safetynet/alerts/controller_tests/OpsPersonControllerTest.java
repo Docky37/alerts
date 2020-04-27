@@ -21,12 +21,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.OpsPersonDTO;
 import com.safetynet.alerts.controller.OpsPersonController;
-import com.safetynet.alerts.model.PersonFLA;
 import com.safetynet.alerts.service.IOpsPersonService;
 import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.CoveredPopulation;
-import com.safetynet.alerts.model.CoveredPerson;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.Person;
 
@@ -68,14 +67,14 @@ public class OpsPersonControllerTest {
                 "Culver", "97451", "841-874-6544", "jaboyd@email.com"));
     }
 
-    public static List<CoveredPerson> coveredPersonList = new ArrayList<>();
+    public static List<OpsPersonDTO> coveredPersonList = new ArrayList<>();
 
     static {
-        coveredPersonList.add(new CoveredPerson("John", "Boyd",
+        coveredPersonList.add(new OpsPersonDTO("John", "Boyd", "36 years old",
                 "1509 Culver St", "841-874-6512"));
-        coveredPersonList.add(new CoveredPerson("Johnathan", "Barrack",
+        coveredPersonList.add(new OpsPersonDTO("Johnathan", "Marrack", "31 years old", 
                 "29 15th St", "841-874-6513"));
-        coveredPersonList.add(new CoveredPerson("Tenley", "Boyd",
+        coveredPersonList.add(new OpsPersonDTO("Tenley", "Boyd", "8 years old",
                 "1509 Culver St", "841-874-6512"));
     }
 
@@ -118,9 +117,9 @@ public class OpsPersonControllerTest {
                 new String[] { "xilliathal" }));
     }
     public static ChildAlert childAlert = new ChildAlert();
-    public static PersonFLA child1 = new PersonFLA("Tenley", "Boyd", "8");
-    public static PersonFLA child2 = new PersonFLA("Roger", "Boyd", "2");
-    public static List<PersonFLA> childList = Arrays.asList(child1, child2);
+    public static OpsPersonDTO child1 = new OpsPersonDTO("Tenley", "Boyd", "8 years old","1509 Culver St","841-874-6512");
+    public static OpsPersonDTO child2 = new OpsPersonDTO("Roger", "Boyd", "19 months old ", "1509 Culver St","841-874-6512");
+    public static List<OpsPersonDTO> childList = Arrays.asList(child1, child2);
     public static List<String> adultList = Arrays.asList("John Boyd",
             "Jacob Boyd", "Felicia Boyd");
     static {
@@ -129,7 +128,7 @@ public class OpsPersonControllerTest {
     }
 
 
-    @Test // GET (OPS 1 Adult & PersonFLA counts by the given station)
+    @Test // GET (OPS 1 Adult & OpsPersonDTO counts by the given station)
     public void ops1_givenAFireStation_whenGetPopulationCoveredByStation_thenReturnCountAndList()
             throws Exception {
         LOGGER.info(
