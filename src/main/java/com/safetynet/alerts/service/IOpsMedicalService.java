@@ -4,13 +4,14 @@ import java.util.List;
 
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
+import com.safetynet.alerts.DTO.PersonInfoDTO;
 
 public interface IOpsMedicalService {
 
     // OPS #4 ENDPOINT -------------------------------------------------------
     /**
-     * OPS#4 - ChildDTO: the list of children (with age) and adults living in
-     * a given address.
+     * OPS#4 - ChildDTO: the list of children (with age) and adults living in a
+     * given address.
      *
      * @param address
      * @return a ChildDTO object
@@ -28,4 +29,14 @@ public interface IOpsMedicalService {
      */
     List<FloodDTO> floodByStation(List<String> pStationList);
 
+    // OPS #6 ENDPOINT -------------------------------------------------------
+    /**
+     * OPS6 - GET request "personInfo" that gives . Contains medical
+     * confidential data.
+     *
+     * @param lastName
+     * @param firstName
+     * @return a List<PersonInfoDTO>
+     */
+    List<PersonInfoDTO> personInfo(String lastName, String firstName);
 }

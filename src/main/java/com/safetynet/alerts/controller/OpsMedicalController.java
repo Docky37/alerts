@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
+import com.safetynet.alerts.DTO.PersonInfoDTO;
 import com.safetynet.alerts.service.IOpsMedicalService;
 
 /**
@@ -68,6 +69,21 @@ public class OpsMedicalController {
     public List<FloodDTO> listOfPersonsCoveredByStation(
             @PathVariable final List<String> stationList) {
         return opsMedicalService.floodByStation(stationList);
+    }
+
+    // OPS #6 ENDPOINT -------------------------------------------------------
+    /**
+     * OPS6 - GET request "personInfo" that gives . Contains
+     * medical confidential data.
+     *
+     * @param lastName
+     * @param firstName
+     * @return a List<PersonInfoDTO>
+     */
+    @GetMapping(value = "personInfo/{lastName}/{firstName}")
+    public List<PersonInfoDTO> personInfo(@PathVariable final String lastName,
+            @PathVariable final String firstName) {
+        return opsMedicalService.personInfo(lastName, firstName);
     }
 
 }

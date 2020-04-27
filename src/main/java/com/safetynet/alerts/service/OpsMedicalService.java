@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
+import com.safetynet.alerts.DTO.PersonInfoDTO;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.utils.MedicalMapping;
@@ -61,8 +62,10 @@ public class OpsMedicalService implements IOpsMedicalService {
 
     // OPS #4 ENDPOINT -------------------------------------------------------
     /**
-     * OPS#4 - ChildDTO: the list of children (with age) and adults living in a
-     * given address.
+     * OPS#4 fire returns a ChildDTO class that contains the list of children
+     * (with age) and adults living in a given address. Each children is an
+     * PersonInfoDTO object, so the List<PersonInfoDTO> is mapped in OPS#6
+     * mapping method
      *
      * @param address
      * @return a ChildDTO object
@@ -99,6 +102,26 @@ public class OpsMedicalService implements IOpsMedicalService {
         List<FloodDTO> floodDTOList = medicalMapping.mapFlood(pEntList);
 
         return floodDTOList;
+    }
+
+    // OPS #6 ENDPOINT -------------------------------------------------------
+    /**
+     * OPS6 - GET request "personInfo" that gives . Contains medical
+     * confidential data.
+     *
+     * @param pLastName
+     * @param pFirstName
+     * @return a List<PersonInfoDTO>
+     */
+    @Override
+    public List<PersonInfoDTO> personInfo(final String pFirstName,
+            final String pLastName) {
+        LOGGER.info("OPS #6 - personInfo -");
+        List<PersonEntity> pEntList = (List<PersonEntity>) personRepository
+                .findByFirstNameAndLastName(pFirstName, pLastName);
+        List<PersonInfoDTO> personInfoDTOList = medicalMapping
+                .mapPersonInfoList(pEntList);
+        return personInfoDTOList;
     }
 
 }

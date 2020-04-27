@@ -217,15 +217,4 @@ public class PersonDTO {
         email = pEmail;
     }
 
-    /**
-     * Serialization toString method.
-     */
-    @Override
-    public String toString() {
-        return "PersonDTO [id= " + id + ", firstName=" + firstName
-                + ", lastName=" + lastName + ", address=" + address + ", city="
-                + city + ", zip=" + zip + ", phone=" + phone + ", email="
-                + email + "]";
-    }
-
 }

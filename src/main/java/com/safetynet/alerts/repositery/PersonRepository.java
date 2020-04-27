@@ -101,4 +101,16 @@ public interface PersonRepository extends CrudRepository<PersonEntity, Long> {
             + " ORDER BY a.station, a.address")
     List<PersonEntity> findAllGroupByAddress(
             @Param("stationList") List<String> pStationList);
+
+    /**
+     * This method use keyword "findBy" associated to repository fields lastName
+     * and firstName, so it is easily resolved by the CrudRepository.
+     *
+     * @param pLastName
+     * @param pFirstName
+     * @return a List<PersonEntity>
+     */
+    List<PersonEntity> findByFirstNameAndLastName(String pLastName,
+            String pFirstName);
+
 }
