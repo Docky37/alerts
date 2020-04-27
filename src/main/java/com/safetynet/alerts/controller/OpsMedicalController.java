@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
-import com.safetynet.alerts.model.Household;
+import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.service.IOpsMedicalService;
 
 /**
@@ -52,7 +52,7 @@ public class OpsMedicalController {
      * @return a FireList object
      */
     @GetMapping(value = "fire/{address}")
-    public Household fireByAddress(@PathVariable final String address) {
+    public HouseholdDTO fireByAddress(@PathVariable final String address) {
         return opsMedicalService.fireByAddress(address);
     }
 

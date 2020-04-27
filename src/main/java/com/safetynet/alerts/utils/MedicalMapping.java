@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
+import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.model.Household;
 import com.safetynet.alerts.model.PersonEntity;
 
 /**
  * This class performs data mapping of a List of PersonEntity to create a
- * Household object.
+ * HouseholdDTO object.
  *
  * * @author Thierry Schreiner
  */
@@ -45,17 +45,17 @@ public class MedicalMapping {
 
     // OPS #4 - FIRE ALERT ---------------------------------------------------
     /**
-     * The Household method loop the given List of PersonEntity to create a new
-     * Household object and sets its fields with the given address and the list
-     * of PersonInfoDTO covered, before it returns the Household.
+     * The HouseholdDTO method loop the given List of PersonEntity to create a
+     * new HouseholdDTO object and sets its fields with the given address and
+     * the list of PersonInfoDTO covered, before it returns the HouseholdDTO.
      *
      * @param pEntList
      * @param address
-     * @return a Household object
+     * @return a HouseholdDTO object
      */
-    public Household mapFire(final List<PersonEntity> pEntList,
+    public HouseholdDTO mapFire(final List<PersonEntity> pEntList,
             final String address) {
-        Household household = new Household();
+        HouseholdDTO householdDTO = new HouseholdDTO();
         List<PersonInfoDTO> personList = new ArrayList<>();
         LOGGER.info("pEntList= {}", pEntList);
 
@@ -70,28 +70,29 @@ public class MedicalMapping {
 
             LOGGER.info("PersonInfo list = {}", personList.toString());
         }
-        household.setAddressFireStation(pEntList.get(0).getAddressFireSt());
-        household.setPersonList(personList);
+        householdDTO.setAddressFireStation(pEntList.get(0).getAddressFireSt());
+        householdDTO.setPersonList(personList);
 
-        LOGGER.info("Household = {} - {}", household.getAddressFireStation(),
-                household.getPersonList().toArray());
-        return household;
+        LOGGER.info("HouseholdDTO = {} - {}",
+                householdDTO.getAddressFireStation(),
+                householdDTO.getPersonList().toArray());
+        return householdDTO;
     }
 
     // OPS #5 - FLOOD ALERT ---------------------------------------------------
     /**
      * The mapFlood method loop the given ordered list of PersonEntity to create
-     * the covered Household list of each station.
+     * the covered HouseholdDTO list of each station.
      *
      * @param pEntList
      * @return a List<FloodDTO> object
      */
     public List<FloodDTO> mapFlood(final List<PersonEntity> pEntList) {
         List<FloodDTO> floodDTOList = new ArrayList<>();
-        List<Household> householdList = new ArrayList<>();
+        List<HouseholdDTO> householdList = new ArrayList<>();
         LOGGER.info("FLOOD---pEntList= {}", pEntList);
         // for (String station : orderedStationList) {
-        Household household = new Household();
+        HouseholdDTO householdDTO = new HouseholdDTO();
         List<PersonInfoDTO> personList = new ArrayList<>();
         String currentStation = null;
         AddressFireStation currentAddress = null;
@@ -103,11 +104,11 @@ public class MedicalMapping {
                 currentAddress = p.getAddressFireSt();
             }
             if (p.getAddressFireSt() != currentAddress) {
-                household.setAddressFireStation(currentAddress);
-                household.setPersonList(personList);
+                householdDTO.setAddressFireStation(currentAddress);
+                householdDTO.setPersonList(personList);
                 personList = new ArrayList<>();
-                householdList.add(household);
-                household = new Household();
+                householdList.add(householdDTO);
+                householdDTO = new HouseholdDTO();
                 currentAddress = p.getAddressFireSt();
             }
             if (p.getAddressFireSt().getStation() != currentStation) {
@@ -122,17 +123,25 @@ public class MedicalMapping {
                     p.getMedRecId().getAllergies(), p.getPhone()));
 
         }
-        household.setAddressFireStation(currentAddress);
-        household.setPersonList(personList);
-        householdList.add(household);
+        householdDTO.setAddressFireStation(currentAddress);
+        householdDTO.setPersonList(personList);
+        householdList.add(householdDTO);
         floodDTOList.add(new FloodDTO(currentStation, householdList));
 
-        LOGGER.info("FloodAlert = {}", household.toString());
+        LOGGER.info("FloodAlert = {}", householdDTO.toString());
         // }
         return floodDTOList;
 
     }
 
+    /**
+     *
+     * The ageCalculation method calculate age in full years between the
+     * birthdate and today.
+     *
+     * @param pBirthdate
+     * @return a int value
+     */
     public String ageCalculation(final String pBirthdate) {
         LocalDate birthdate = LocalDate.parse(pBirthdate, formatter);
         long dateInterval;

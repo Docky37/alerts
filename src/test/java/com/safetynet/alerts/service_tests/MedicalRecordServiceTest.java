@@ -76,7 +76,7 @@ public class MedicalRecordServiceTest {
                 personRepository);
     }
 
-    // POST >>> CREATE (Add a list of Person)
+    // POST >>> CREATE (Add a list of PersonDTO)
     @Test
     @Tag("TestA-CreateAListOfMedicalRecords")
     @DisplayName("A. Given a list of MedicalRecord to Add, when POST list,"
@@ -111,7 +111,7 @@ public class MedicalRecordServiceTest {
         assertThat(foundList.get(2).getFirstName()).isEqualTo("Tenley");
     }
 
-    // GET ("/medicalRecord/{lastName}/{FirstName}") >>> READ (Find a Person)
+    // GET ("/medicalRecord/{lastName}/{FirstName}") >>> READ (Find a PersonDTO)
     @Test
     @Tag("TestC-FindAMedicalRecord")
     @DisplayName("3.Given a MedicalRecord to find, when search MedicalRecord by last name & firstname,"

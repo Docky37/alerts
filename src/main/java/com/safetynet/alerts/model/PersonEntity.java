@@ -220,10 +220,10 @@ public class PersonEntity {
      */
     @Override
     public String toString() {
-        return "Person [id= " + id + ", firstName=" + firstName + ", lastName="
-                + lastName + ", address=" + addressId.getAddress() + ", phone="
-                + phone + ", email=" + email + ", medicalRecord= " + medRecId
-                + "]";
+        return "PersonDTO [id= " + id + ", firstName=" + firstName
+                + ", lastName=" + lastName + ", address="
+                + addressId.getAddress() + ", phone=" + phone + ", email="
+                + email + ", medicalRecord= " + medRecId + "]";
     }
 
 }

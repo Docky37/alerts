@@ -83,7 +83,7 @@ public class MedicalRecordControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
-                .andExpect(jsonPath("$.birthDate").value("03/06/1984"))
+                .andExpect(jsonPath("$.birthdate").value("03/06/1984"))
                 .andExpect(jsonPath("$.firstName").value("John"));
 
     }

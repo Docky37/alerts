@@ -17,8 +17,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.AddressFireStationRepository;
 import com.safetynet.alerts.utils.PersonMapping;
@@ -39,11 +39,11 @@ public class PersonMappingTest {
     @MockBean
     private AddressFireStationRepository addressFireStationRepository;
 
-    public static List<Person> personList = new ArrayList<>();
+    public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(3L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(3L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
@@ -68,7 +68,7 @@ public class PersonMappingTest {
     @Test
     public void givenAListOfPerson_whenConvert_thenReturnPersonEntityList()
             throws Exception {
-        LOGGER.info("Start test: Person list mapping to PersonneEntity list");
+        LOGGER.info("Start test: PersonDTO list mapping to PersonneEntity list");
         // GIVEN
         given(addressFireStationRepository.findByAddress(anyString()))
                 .willReturn(addressFireStList.get(0));
@@ -89,10 +89,10 @@ public class PersonMappingTest {
     @Test
     public void givenAListOfPersonEntity_whenConvert_thenReturnPersonList()
             throws Exception {
-        LOGGER.info("Start test: PersonEntityList mapping to Person");
+        LOGGER.info("Start test: PersonEntityList mapping to PersonDTO");
         // GIVEN
         // WHEN
-        List<Person> mappedList = personMapping.convertToPerson(pEntList);
+        List<PersonDTO> mappedList = personMapping.convertToPerson(pEntList);
         // THEN
         assertThat(mappedList.get(0).getAddress())
                 .isEqualTo(personList.get(0).getAddress());

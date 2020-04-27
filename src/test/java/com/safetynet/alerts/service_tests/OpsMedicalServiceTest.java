@@ -2,6 +2,7 @@ package com.safetynet.alerts.service_tests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.FloodDTO;
+import com.safetynet.alerts.DTO.HouseholdDTO;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.model.Household;
 import com.safetynet.alerts.model.MedicalRecord;
-import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.IOpsMedicalService;
@@ -54,22 +56,22 @@ public class OpsMedicalServiceTest {
 
     private IOpsMedicalService OpsMedicalService;
 
-    public static List<Person> personList = new ArrayList<>();
+    public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(2L, "Johnathan", "Barrack", "29 15th St",
+        personList.add(new PersonDTO(2L, "Johnathan", "Barrack", "29 15th St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(3L, "Doc", "Spring",
+        personList.add(new PersonDTO(3L, "Doc", "Spring",
                 "1515 Java St - Beverly Hills", "Los Angeles", "90211",
                 "123-456-7890", "Doc.Spring@email.com"));
-        personList.add(new Person(4L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(4L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6515", "tenz@email.com"));
-        personList.add(new Person(5L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(5L, "Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(6L, "Roger", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(6L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(7L, "Felicia", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(7L, "Felicia", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6544", "jaboyd@email.com"));
     }
 
@@ -115,7 +117,7 @@ public class OpsMedicalServiceTest {
                 "841-874-6544", "jaboyd@email.com", medicalRecordList.get(4)));
     }
 
-    public static Household mappedFireAlert = new Household();
+    public static HouseholdDTO mappedFireAlert = new HouseholdDTO();
     public static List<PersonInfoDTO> myFireList = new ArrayList<>();
     static {
         myFireList.add(new PersonInfoDTO(p.get(0).getFirstName(),
@@ -135,6 +137,12 @@ public class OpsMedicalServiceTest {
         mappedFireAlert.setAddressFireStation(addressFireStList.get(0));
         mappedFireAlert.setPersonList(myFireList);
     }
+    
+    static List<String> stationList = new ArrayList<>();
+    static {
+        stationList.add("3");
+        stationList.add("2");
+    }
 
     @Before
     public void SetUp() {
@@ -146,22 +154,40 @@ public class OpsMedicalServiceTest {
     @Test
     @Tag("Test-Fire Alert")
     @DisplayName("Given an Address, when search a list of Persons by address,"
-            + " then returns the Household object.")
+            + " then returns the HouseholdDTO object.")
     public void ops4_givenAnAddress_WhenFindFireListByaddress_thenReturnFireAlertObject()
             throws Exception {
         LOGGER.info("Start test: OPS #4 Fire Alert");
         // GIVEN
         String address = "1509 Culver St";
-        Household household = new Household();
+        HouseholdDTO householdDTO = new HouseholdDTO();
         given(personRepository.findByAddressIdAddress(address)).willReturn(p);
         given(medicalMapping.mapFire(p, address)).willReturn(mappedFireAlert);
         // WHEN
-        household = OpsMedicalService.fireByAddress(address);
+        householdDTO = OpsMedicalService.fireByAddress(address);
         // THEN
-        assertThat(household.getAddressFireStation().toString()).isEqualTo(
+        assertThat(householdDTO.getAddressFireStation().toString()).isEqualTo(
                 "FireStations [id=1, address=1509 Culver St, city=Culver, zip code=97451, station=3]");
-        assertThat(household.getPersonList().toString()).isEqualTo(
+        assertThat(householdDTO.getPersonList().toString()).isEqualTo(
                 "[PersonInfoDTO [firstName=John, lastName=Boyd, age=36 years old, medications=[aznol:350mg, hydrapermazol:100mg], allergies=[nillacilan], phone=841-874-6512], PersonInfoDTO [firstName=Jacob, lastName=Boyd, age=31 years old, medications=[pharmacol:5000mg, terazine:10mg, noznazol:250mg], allergies=[], phone=841-874-6513], PersonInfoDTO [firstName=Tenley, lastName=Boyd, age=31 years old, medications=[], allergies=[peanut], phone=841-874-6512]]");
     }
 
+    // OPS #5 - FlOOD  ---------------------------------------------------
+    @Test
+    @Tag("Test-Flood")
+    @DisplayName("Given a Stion List, when search a list of Persons by address,"
+            + " then returns the HouseholdDTO object.")
+    public void ops5_givenAStationList_WhenFindFireListByaddress_thenReturnFireAlertObject()
+            throws Exception {
+        LOGGER.info("Start test: OPS #4 Fire Alert");
+        // GIVEN
+        List<FloodDTO> floodDTOList = new ArrayList<>();
+        given(personRepository.findAllGroupByAddress(stationList)).willReturn(p);
+        given(medicalMapping.mapFlood(p)).willReturn(floodDTOList);
+        // WHEN
+        floodDTOList = OpsMedicalService.floodByStation(stationList);
+        // THEN
+        verify(personRepository).findAllGroupByAddress(stationList);
+        verify(medicalMapping).mapFlood(p);
+    }
 }

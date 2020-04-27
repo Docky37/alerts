@@ -1,12 +1,11 @@
-package com.safetynet.alerts.model;
-
+package com.safetynet.alerts.DTO;
 
 /**
- * Person class, used to contain inhabitant data.
+ * PersonDTO class, used to contain inhabitant data.
  *
  * @author Thierry SCHREINER
  */
-public class Person {
+public class PersonDTO {
 
     /**
      * The id of the person.
@@ -54,7 +53,7 @@ public class Person {
      * @param pPhone
      * @param pEmail
      */
-    public Person(final Long pId, final String pFirstName,
+    public PersonDTO(final Long pId, final String pFirstName,
             final String pLastName, final String pAddress, final String pCity,
             final String pZip, final String pPhone, final String pEmail) {
         super();
@@ -71,7 +70,7 @@ public class Person {
     /**
      * Empty constructor.
      */
-    public Person() {
+    public PersonDTO() {
     }
 
     /**
@@ -223,10 +222,10 @@ public class Person {
      */
     @Override
     public String toString() {
-        return "Person [id= " + id + ", firstName=" + firstName + ", lastName="
-                + lastName + ", address=" + address + ", city=" + city
-                + ", zip=" + zip + ", phone=" + phone + ", email=" + email
-                + "]";
+        return "PersonDTO [id= " + id + ", firstName=" + firstName
+                + ", lastName=" + lastName + ", address=" + address + ", city="
+                + city + ", zip=" + zip + ", phone=" + phone + ", email="
+                + email + "]";
     }
 
 }

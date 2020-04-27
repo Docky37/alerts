@@ -1,6 +1,5 @@
 package com.safetynet.alerts.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
-import com.safetynet.alerts.model.Household;
+import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.utils.MedicalMapping;
@@ -43,7 +42,7 @@ public class OpsMedicalService implements IOpsMedicalService {
 
     /**
      * The MedicalMapping class performs data mapping of a List of PersonEntity
-     * to create a Household object.
+     * to create a HouseholdDTO object.
      */
     @Autowired
     private MedicalMapping medicalMapping;
@@ -62,22 +61,23 @@ public class OpsMedicalService implements IOpsMedicalService {
 
     // OPS #4 ENDPOINT -------------------------------------------------------
     /**
-     * OPS#4 - ChildAlert: the list of children (with age) and adults living in
-     * a given address.
+     * OPS#4 - ChildDTO: the list of children (with age) and adults living in a
+     * given address.
      *
      * @param address
-     * @return a ChildAlert object
+     * @return a ChildDTO object
      */
     @Override
-    public Household fireByAddress(final String address) {
+    public HouseholdDTO fireByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
         LOGGER.info("PersonList: {}", pEntList.toArray());
 
-        Household household = medicalMapping.mapFire(pEntList, address);
-        LOGGER.info("Household: {} - {}", household.getAddressFireStation(),
-                household.getPersonList());
-        return household;
+        HouseholdDTO householdDTO = medicalMapping.mapFire(pEntList, address);
+        LOGGER.info("HouseholdDTO: {} - {}",
+                householdDTO.getAddressFireStation(),
+                householdDTO.getPersonList());
+        return householdDTO;
 
     }
 
@@ -93,11 +93,6 @@ public class OpsMedicalService implements IOpsMedicalService {
     @Override
     public List<FloodDTO> floodByStation(final List<String> pStationList) {
         LOGGER.info("OPS #5 - flood -");
-        List<Integer> stationList = new ArrayList<Integer>();
-        for (String station : pStationList) {
-            stationList.add(Integer.parseInt(station));
-        }
-        LOGGER.info(stationList.toString());
         List<PersonEntity> pEntList = (List<PersonEntity>) personRepository
                 .findAllGroupByAddress(pStationList);
 

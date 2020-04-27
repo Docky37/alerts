@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.safetynet.alerts.AlertsApplication;
-import com.safetynet.alerts.model.Person;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.service.IPersonService;
 
 /**
@@ -60,9 +60,9 @@ public class PersonController {
     @PostMapping(value = "persons")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(
-            @RequestBody final List<Person> pListPerson) {
+            @RequestBody final List<PersonDTO> pListPerson) {
 
-        List<Person> listPersonAdded = personService
+        List<PersonDTO> listPersonAdded = personService
                 .addListPersons(pListPerson);
 
         if (listPersonAdded == null) {
@@ -84,19 +84,19 @@ public class PersonController {
      * @return a List of all persons in DB
      */
     @GetMapping(value = "person")
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
         return personService.findAll();
     }
 
     /**
-     * GET request to find one Person by lastName and firstName.
+     * GET request to find one PersonDTO by lastName and firstName.
      *
      * @param lastName
      * @param firstName
-     * @return a Person
+     * @return a PersonDTO
      */
     @GetMapping(value = "person/{lastName}/{firstName}")
-    public Person findPersonByName(@PathVariable final String lastName,
+    public PersonDTO findPersonByName(@PathVariable final String lastName,
             @PathVariable final String firstName) {
         return personService.findByLastNameAndFirstName(lastName, firstName);
     }
@@ -115,9 +115,9 @@ public class PersonController {
      */
     @PostMapping(value = "person")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@RequestBody final Person pPerson) {
+    public ResponseEntity<Void> create(@RequestBody final PersonDTO pPerson) {
 
-        Person personAdded = personService.addPerson(pPerson);
+        PersonDTO personAdded = personService.addPerson(pPerson);
 
         if (personAdded == null) {
             return ResponseEntity.noContent().build();
@@ -139,9 +139,9 @@ public class PersonController {
      */
     @PutMapping(value = "person/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> update(@RequestBody final Person pPerson) {
+    public ResponseEntity<Void> update(@RequestBody final PersonDTO pPerson) {
 
-        Person personUpdated = personService.updatePerson(pPerson);
+        PersonDTO personUpdated = personService.updatePerson(pPerson);
 
         if (personUpdated != null) {
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -167,7 +167,7 @@ public class PersonController {
     public ResponseEntity<Void> deletePerson(
             @PathVariable final String lastName,
             @PathVariable final String firstName) {
-        Person personToDelete = null;
+        PersonDTO personToDelete = null;
         personToDelete = personService.deleteAPerson(lastName, firstName);
         if (personToDelete == null) {
             return ResponseEntity.notFound().build();

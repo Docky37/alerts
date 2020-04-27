@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.safetynet.alerts.model.Person;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.AddressFireStationRepository;
 
 /**
- * This class is in charge of conversion between Person and PersonEntity
+ * This class is in charge of conversion between PersonDTO and PersonEntity
  * classes.
  *
  * @author Thierry Schreiner
@@ -27,19 +27,19 @@ public class PersonMapping {
     private AddressFireStationRepository addressFireStationRepository;
 
     /**
-     * This method convertToPersonEntity(List<Person> pListPerson) convert a
-     * list of Person to a list of PersonEntity, using the next method
-     * convertToPersonEntity(Person pPerson) as a sub-method to convert each
+     * This method convertToPersonEntity(List<PersonDTO> pListPerson) convert a
+     * list of PersonDTO to a list of PersonEntity, using the next method
+     * convertToPersonEntity(PersonDTO pPerson) as a sub-method to convert each
      * person of the list to a personEntity.
      *
-     * @param pListPerson - a list of Person objects
+     * @param pListPerson - a list of PersonDTO objects
      * @return a list of PersonEntity objects
      */
     public List<PersonEntity> convertToPersonEntity(
-            final List<Person> pListPerson) {
+            final List<PersonDTO> pListPerson) {
         List<PersonEntity> listPE = new ArrayList<PersonEntity>();
         PersonEntity pEnt;
-        for (Person p : pListPerson) {
+        for (PersonDTO p : pListPerson) {
             pEnt = convertToPersonEntity(p);
             listPE.add(pEnt);
         }
@@ -47,12 +47,12 @@ public class PersonMapping {
     }
 
     /**
-     * This method convert a Person to PersonEntity.
+     * This method convert a PersonDTO to PersonEntity.
      *
-     * @param pPerson - the Person object to convert
+     * @param pPerson - the PersonDTO object to convert
      * @return a PersonEntity object
      */
-    public PersonEntity convertToPersonEntity(final Person pPerson) {
+    public PersonEntity convertToPersonEntity(final PersonDTO pPerson) {
         PersonEntity pEnt = new PersonEntity();
         pEnt.setFirstName(pPerson.getFirstName());
         pEnt.setLastName(pPerson.getLastName());
@@ -66,40 +66,41 @@ public class PersonMapping {
 
     /**
      * This method is used to transform a list of PersonEntity to a list of
-     * Person, using the next method to convert each PersonEntity to Person.
+     * PersonDTO, using the next method to convert each PersonEntity to
+     * PersonDTO.
      *
      * @param listPE - the list of PersonEntity
-     * @return a List<Person> object
+     * @return a List<PersonDTO> object
      */
-    public List<Person> convertToPerson(final List<PersonEntity> listPE) {
-        List<Person> listPersons = new ArrayList<Person>();
-        Person person;
+    public List<PersonDTO> convertToPerson(final List<PersonEntity> listPE) {
+        List<PersonDTO> listPersons = new ArrayList<PersonDTO>();
+        PersonDTO personDTO;
         for (PersonEntity pEnt : listPE) {
-            person = convertToPerson(pEnt);
-            listPersons.add(person);
+            personDTO = convertToPerson(pEnt);
+            listPersons.add(personDTO);
         }
 
         return (listPersons);
     }
 
     /**
-     * This method convert a PersonEntity to a Person.
+     * This method convert a PersonEntity to a PersonDTO.
      *
      * @param pEnt - the PersonEntity object to convert
-     * @return a Person object
+     * @return a PersonDTO object
      */
-    public Person convertToPerson(final PersonEntity pEnt) {
-        Person person = new Person();
-        person.setId(pEnt.getId());
-        person.setFirstName(pEnt.getFirstName());
-        person.setLastName(pEnt.getLastName());
-        person.setAddress(pEnt.getAddressFireSt().getAddress());
-        person.setCity(pEnt.getAddressFireSt().getCity());
-        person.setZip(pEnt.getAddressFireSt().getZip());
-        person.setPhone(pEnt.getPhone());
-        person.setEmail(pEnt.getEmail());
+    public PersonDTO convertToPerson(final PersonEntity pEnt) {
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setId(pEnt.getId());
+        personDTO.setFirstName(pEnt.getFirstName());
+        personDTO.setLastName(pEnt.getLastName());
+        personDTO.setAddress(pEnt.getAddressFireSt().getAddress());
+        personDTO.setCity(pEnt.getAddressFireSt().getCity());
+        personDTO.setZip(pEnt.getAddressFireSt().getZip());
+        personDTO.setPhone(pEnt.getPhone());
+        personDTO.setEmail(pEnt.getEmail());
 
-        return person;
+        return personDTO;
     }
 
 }

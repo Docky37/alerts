@@ -1,18 +1,18 @@
-package com.safetynet.alerts.model;
+package com.safetynet.alerts.DTO;
 
 import java.util.List;
 
-import com.safetynet.alerts.DTO.PersonInfoDTO;
+import com.safetynet.alerts.model.AddressFireStation;
 
 /**
- * The Household class is used for OPS4 fire endpoint. It provides a list of the
- * person living at a given address. Its a List<PersonInfoDTO> with firstName,
- * lastName, age, medications[], allergies[] completed with the number of the
- * covering station.
+ * The HouseholdDTO class is used for OPS4 fire endpoint. It provides a list of
+ * the person living at a given address. Its a List<PersonInfoDTO> with
+ * firstName, lastName, age, medications[], allergies[] completed with the
+ * number of the covering station.
  *
  * @author Thierry Schreiner
  */
-public class Household {
+public class HouseholdDTO {
 
     /**
      * The AddressFireStation that corresponds to the given address.
@@ -27,7 +27,7 @@ public class Household {
     /**
      * Empty class constructor.
      */
-    public Household() {
+    public HouseholdDTO() {
     }
 
     /**
@@ -36,7 +36,7 @@ public class Household {
      * @param pAddressFireStation
      * @param pPersonList
      */
-    public Household(final AddressFireStation pAddressFireStation,
+    public HouseholdDTO(final AddressFireStation pAddressFireStation,
             final List<PersonInfoDTO> pPersonList) {
         addressFireStation = pAddressFireStation;
         personList = pPersonList;
@@ -84,8 +84,9 @@ public class Household {
      */
     @Override
     public String toString() {
-        return "Household [addressFireStation=" + addressFireStation.toString()
-                + ", personList=" + personList.toString() + "]";
+        return "HouseholdDTO [addressFireStation="
+                + addressFireStation.toString() + ", personList="
+                + personList.toString() + "]";
     }
 
 }

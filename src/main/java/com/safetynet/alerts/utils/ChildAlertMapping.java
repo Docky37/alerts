@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.ChildDTO;
 import com.safetynet.alerts.DTO.OpsPersonDTO;
-import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.PersonEntity;
 
 /**
  * This class performs data mapping of a List of PersonEntity to create a
- * ChildAlert object.
+ * ChildDTO object.
  *
  * * @author Thierry Schreiner
  */
@@ -46,15 +46,15 @@ public class ChildAlertMapping {
      * all children in a child list (with firstName, lastName and age) and list
      * all adults in a simple String list ( only with firstName +" "+ lastName).
      * Then it create a new ChilAlert object and sets its fields with the given
-     * address and the two previous list, before it returns the ChildAlert.
+     * address and the two previous list, before it returns the ChildDTO.
      *
      * @param pEntList
      * @param address
-     * @return a ChildAlert object
+     * @return a ChildDTO object
      */
-    public ChildAlert create(final List<PersonEntity> pEntList,
+    public ChildDTO create(final List<PersonEntity> pEntList,
             final String address) {
-        ChildAlert childAlert = new ChildAlert();
+        ChildDTO childDTO = new ChildDTO();
         String unit;
         List<String> adultList = new ArrayList<>();
         List<OpsPersonDTO> childList = new ArrayList<>();
@@ -86,13 +86,12 @@ public class ChildAlertMapping {
                 LOGGER.info("OpsPersonDTO list = {}", childList.toString());
             }
         }
-        childAlert.setAddress(address);
-        childAlert.setChildList(childList);
-        childAlert.setAdultList(adultList);
-        LOGGER.info("ChildAlert = {}", childAlert.toString());
-        return childAlert;
+        childDTO.setAddress(address);
+        childDTO.setChildList(childList);
+        childDTO.setAdultList(adultList);
+        LOGGER.info("ChildDTO = {}", childDTO.toString());
+        return childDTO;
     }
-
 
     /**
      * For OPS1, this method is used to transform a list of PersonEntity to a
@@ -127,8 +126,7 @@ public class ChildAlertMapping {
         coveredPerson.setLastName(pEnt.getLastName());
         int age = ageCalculation(pEnt.getMedRecId().getBirthdate());
         if (age < 2) {
-            age = ageCalculationInMonth(
-                    pEnt.getMedRecId().getBirthdate());
+            age = ageCalculationInMonth(pEnt.getMedRecId().getBirthdate());
             unit = " months old";
         } else {
             unit = " years old";
@@ -139,9 +137,9 @@ public class ChildAlertMapping {
 
         return coveredPerson;
     }
-    
+
     /**
-     * 
+     *
      * The ageCalculation method calculate age in full years between the
      * birthdate and today.
      *
@@ -156,7 +154,6 @@ public class ChildAlertMapping {
     }
 
     /**
-     * 
      * The ageCalculationInMonth method calculate age in full months between the
      * birthdate and today.
      *

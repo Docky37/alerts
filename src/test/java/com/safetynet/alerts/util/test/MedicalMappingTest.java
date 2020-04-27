@@ -15,11 +15,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
+import com.safetynet.alerts.DTO.HouseholdDTO;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.model.Household;
 import com.safetynet.alerts.model.MedicalRecord;
-import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.utils.MedicalMapping;
 
@@ -36,11 +36,11 @@ public class MedicalMappingTest {
     @Autowired
     private MedicalMapping medicalMapping;
 
-    public static List<Person> personList = new ArrayList<>();
+    public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(3L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(3L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
@@ -87,7 +87,7 @@ public class MedicalMappingTest {
                 "841-874-6544", "jaboyd@email.com", medicalRecordList.get(4)));
     }
 
-    public static Household mappedFireAlert = new Household();
+    public static HouseholdDTO mappedFireAlert = new HouseholdDTO();
     public static List<PersonInfoDTO> myFireList = new ArrayList<>();
     static {
         myFireList.add(new PersonInfoDTO(p.get(0).getFirstName(),
@@ -111,13 +111,13 @@ public class MedicalMappingTest {
     @Test
     public void givenAListOfPerson_whenMapFire_thenReturnPersonEntityList()
             throws Exception {
-        LOGGER.info("Start test: Person list mapping to FireAlertt");
+        LOGGER.info("Start test: PersonDTO list mapping to FireAlertt");
         // GIVEN
         String address = addressFireStList.get(0).getAddress();
         // WHEN
-        Household household = medicalMapping.mapFire(p, address);
+        HouseholdDTO householdDTO = medicalMapping.mapFire(p, address);
         // THEN
-        assertThat(household.getAddressFireStation()).isEqualTo(
+        assertThat(householdDTO.getAddressFireStation()).isEqualTo(
                 mappedFireAlert.getAddressFireStation());
     }
 
@@ -125,7 +125,7 @@ public class MedicalMappingTest {
     @Test
     public void givenAListOfPerson_whenMapFlood_thenReturnPersonEntityList()
             throws Exception {
-        LOGGER.info("Start test: Person list mapping to PersonneEntity list");
+        LOGGER.info("Start test: PersonDTO list mapping to PersonneEntity list");
         // GIVEN
         // WHEN
         List<FloodDTO> floodList = medicalMapping.mapFlood(p);

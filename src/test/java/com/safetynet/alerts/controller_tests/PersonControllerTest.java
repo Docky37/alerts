@@ -26,9 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.controller.PersonController;
 import com.safetynet.alerts.controller.PersonNotFoundException;
-import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.service.IPersonService;
 
 @RunWith(SpringRunner.class)
@@ -47,23 +47,23 @@ public class PersonControllerTest {
     @MockBean
     private IPersonService personService;
 
-    public static List<Person> personList = new ArrayList<>();
+    public static List<PersonDTO> personList = new ArrayList<>();
 
     static {
-        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(2L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(2L, "Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(3L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(3L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
     @Test // POST
     public void givenAPersonListToAdd_whenPostList_thenReturnIsCreated()
             throws Exception {
-        LOGGER.info("Start test: POST - Add a list of Person");
+        LOGGER.info("Start test: POST - Add a list of PersonDTO");
         ObjectMapper mapper = new ObjectMapper();
-        given(personService.addListPersons(Mockito.<Person>anyList()))
+        given(personService.addListPersons(Mockito.<PersonDTO>anyList()))
                 .willReturn(personList);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/persons")
@@ -76,9 +76,9 @@ public class PersonControllerTest {
     @Test // POST
     public void givenAPersonListToAdd_whenPostList_thenReturnNoContent()
             throws Exception {
-        LOGGER.info("Start test: POST - Add a list of Person");
+        LOGGER.info("Start test: POST - Add a list of PersonDTO");
         ObjectMapper mapper = new ObjectMapper();
-        given(personService.addListPersons(Mockito.<Person>anyList()))
+        given(personService.addListPersons(Mockito.<PersonDTO>anyList()))
                 .willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/persons")
@@ -92,7 +92,7 @@ public class PersonControllerTest {
         LOGGER.info("Start test: GET - findByLastNameAndFirstName");
         given(personService.findByLastNameAndFirstName(anyString(),
                 anyString()))
-                        .willReturn(new Person(1L, "John", "Boyd",
+                        .willReturn(new PersonDTO(1L, "John", "Boyd",
                                 "1509 Culver St", "Culver", "97451",
                                 "841-874-6512", "jaboyd@email.com"));
 
@@ -135,9 +135,9 @@ public class PersonControllerTest {
             throws Exception {
         LOGGER.info("Start test: POST - Add one person");
         ObjectMapper mapper = new ObjectMapper();
-        Person personToAdd = new Person(4L, "Roger", "Boyd", "1509 Culver St",
+        PersonDTO personToAdd = new PersonDTO(4L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com");
-        given(personService.addPerson(any(Person.class)))
+        given(personService.addPerson(any(PersonDTO.class)))
                 .willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/person")
@@ -151,9 +151,9 @@ public class PersonControllerTest {
             throws Exception {
         LOGGER.info("Start test: POST - Add one person");
         ObjectMapper mapper = new ObjectMapper();
-        Person personToAdd = new Person(4L, "Roger", "Boyd", "1509 Culver St",
+        PersonDTO personToAdd = new PersonDTO(4L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com");
-        given(personService.addPerson(any(Person.class)))
+        given(personService.addPerson(any(PersonDTO.class)))
                 .willReturn(personToAdd);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/person")
@@ -167,10 +167,10 @@ public class PersonControllerTest {
             throws Exception {
         LOGGER.info("Start test: PUT - Update a person");
         ObjectMapper mapper = new ObjectMapper();
-        Person personToUpdate = personList.get(2);
+        PersonDTO personToUpdate = personList.get(2);
         personToUpdate.setEmail("updated@email.com");
         personToUpdate.setPhone("0123456789");
-        given(personService.updatePerson(any(Person.class)))
+        given(personService.updatePerson(any(PersonDTO.class)))
                 .willReturn(personToUpdate);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
@@ -183,7 +183,7 @@ public class PersonControllerTest {
         mockMVC.perform(builder)
                 .andExpect(MockMvcResultMatchers.status().isCreated());
         // .andExpect(MockMvcResultMatchers.content()
-        // .string("Person updated."))
+        // .string("PersonDTO updated."))
         // .andDo(MockMvcResultHandlers.print())
     }
 
@@ -192,10 +192,10 @@ public class PersonControllerTest {
             throws Exception {
         LOGGER.info("Start test: PUT - Update a person");
         ObjectMapper mapper = new ObjectMapper();
-        Person personToUpdate = personList.get(2);
+        PersonDTO personToUpdate = personList.get(2);
         personToUpdate.setEmail("updated@email.com");
         personToUpdate.setPhone("0123456789");
-        given(personService.updatePerson(any(Person.class)))
+        given(personService.updatePerson(any(PersonDTO.class)))
                 .willReturn(null);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
@@ -208,7 +208,7 @@ public class PersonControllerTest {
         mockMVC.perform(builder)
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
         // .andExpect(MockMvcResultMatchers.content()
-        // .string("Person updated."))
+        // .string("PersonDTO updated."))
         // .andDo(MockMvcResultHandlers.print())
     }
 
@@ -216,7 +216,7 @@ public class PersonControllerTest {
     public void givenAPersonToDelete_whenDeletePerson_thenReturnIsOk()
             throws Exception {
         LOGGER.info("Start test: DELETE - Remove one person");
-        Person personToDelete = personList.get(2);
+        PersonDTO personToDelete = personList.get(2);
         given(personService.deleteAPerson(anyString(), anyString()))
                 .willReturn(personToDelete);
 
@@ -230,7 +230,7 @@ public class PersonControllerTest {
     public void givenAnUnknownToDelete_whenDeletePerson_thenReturnNotFound()
             throws Exception {
         LOGGER.info("Start test: DELETE - Remove unknown person");
-        Person personToDelete = personList.get(2);
+        PersonDTO personToDelete = personList.get(2);
         given(personService.deleteAPerson(anyString(), anyString()))
                 .willReturn(null);
 

@@ -1,16 +1,14 @@
-package com.safetynet.alerts.model;
+package com.safetynet.alerts.DTO;
 
 import java.util.List;
 
-import com.safetynet.alerts.DTO.OpsPersonDTO;
-
 /**
- * The class ChildAlert is used in OPS#2 endpoint to store the list of chidren
+ * The class ChildDTO is used in OPS#2 endpoint to store the list of chidren
  * and a list of adults leaving at a given address.
  *
  * @author Thierry Schreiner
  */
-public class ChildAlert {
+public class ChildDTO {
 
     /**
      * The given address.
@@ -28,7 +26,7 @@ public class ChildAlert {
     /**
      * Empty class constructor.
      */
-    public ChildAlert() {
+    public ChildDTO() {
     }
 
     /**
@@ -88,7 +86,8 @@ public class ChildAlert {
      * @param pChildList
      * @param pAdultList
      */
-    public ChildAlert(final String pAddress, final List<OpsPersonDTO> pChildList,
+    public ChildDTO(final String pAddress,
+            final List<OpsPersonDTO> pChildList,
             final List<String> pAdultList) {
         address = pAddress;
         childList = pChildList;
@@ -100,7 +99,7 @@ public class ChildAlert {
      */
     @Override
     public String toString() {
-        return "ChildAlert [address=" + address + " childList=" + childList
+        return "ChildDTO [address=" + address + " childList=" + childList
                 + ", adultList=" + adultList + "]";
     }
 }

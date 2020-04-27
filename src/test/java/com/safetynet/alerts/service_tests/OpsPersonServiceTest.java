@@ -25,12 +25,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.ChildDTO;
+import com.safetynet.alerts.DTO.CoveredPopulationDTO;
 import com.safetynet.alerts.DTO.OpsPersonDTO;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.model.ChildAlert;
-import com.safetynet.alerts.model.CoveredPopulation;
 import com.safetynet.alerts.model.MedicalRecord;
-import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.IOpsPersonService;
@@ -60,22 +60,22 @@ public class OpsPersonServiceTest {
 
     private IOpsPersonService opsPersonService;
 
-    public static List<Person> personList = new ArrayList<>();
+    public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(2L, "Johnathan", "Barrack", "29 15th St",
+        personList.add(new PersonDTO(2L, "Johnathan", "Barrack", "29 15th St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(3L, "Doc", "Spring",
+        personList.add(new PersonDTO(3L, "Doc", "Spring",
                 "1515 Java St - Beverly Hills", "Los Angeles", "90211",
                 "123-456-7890", "Doc.Spring@email.com"));
-        personList.add(new Person(4L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(4L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6515", "tenz@email.com"));
-        personList.add(new Person(5L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(5L, "Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(6L, "Roger", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(6L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(7L, "Felicia", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(7L, "Felicia", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6544", "jaboyd@email.com"));
     }
 
@@ -126,7 +126,7 @@ public class OpsPersonServiceTest {
                 medicalRecordList.get(4)));
     }
 
-    public static ChildAlert mappedChildAlert = new ChildAlert();
+    public static ChildDTO mappedChildAlert = new ChildDTO();
     public static OpsPersonDTO child1 = new OpsPersonDTO("Tenley", "Boyd",
             "8 years old", "1509 Culver St", "841-874-6512");
     public static OpsPersonDTO child2 = new OpsPersonDTO("Roger", "Boyd",
@@ -162,7 +162,7 @@ public class OpsPersonServiceTest {
                 "8 years old", "841-874-6512"));
     }
 
-    public static CoveredPopulation coveredPopulation = new CoveredPopulation(8,
+    public static CoveredPopulationDTO coveredPopulationDTO = new CoveredPopulationDTO(8,
             3, 11, coveredPersonList);
 
     @Before
@@ -194,15 +194,15 @@ public class OpsPersonServiceTest {
         given(childAlertMapping.convertToCoveredByStationPerson(
                 Mockito.<PersonEntity>anyList())).willReturn(coveredPersonList);
         // WHEN
-        CoveredPopulation population = opsPersonService
+        CoveredPopulationDTO population = opsPersonService
                 .populationCoveredByStation(station);
         // THEN
         assertThat(population.getAdultCount())
-                .isEqualTo(coveredPopulation.getAdultCount());
+                .isEqualTo(coveredPopulationDTO.getAdultCount());
         assertThat(population.getChildCount())
-                .isEqualTo(coveredPopulation.getChildCount());
+                .isEqualTo(coveredPopulationDTO.getChildCount());
         assertThat(population.getTotal())
-                .isEqualTo(coveredPopulation.getTotal());
+                .isEqualTo(coveredPopulationDTO.getTotal());
 
         assertThat(population.getCoveredPersons().size()).isEqualTo(3);
 
@@ -212,26 +212,26 @@ public class OpsPersonServiceTest {
     @Test
     @Tag("Test-OpsPersonDTO Alert")
     @DisplayName("Given an Address, when search a list of OpsPersonDTO by address,"
-            + " then returns the ChildAlert object.")
+            + " then returns the ChildDTO object.")
     public void ops2_givenAnAddress_WhenFindListOfChildByaddress_thenReturnChildAlertObject()
             throws Exception {
         LOGGER.info("Start test: OPS #2 OpsPersonDTO Alert");
         // GIVEN
         String address = "1509 Culver St";
-        ChildAlert childAlert = new ChildAlert();
+        ChildDTO childDTO = new ChildDTO();
         given(personRepository.findByAddressIdAddress(address))
                 .willReturn(pEntList);
         given(childAlertMapping.create(pEntList, address))
                 .willReturn(mappedChildAlert);
         // WHEN
-        childAlert = opsPersonService.findListOfChildByAddress(address);
+        childDTO = opsPersonService.findListOfChildByAddress(address);
         // THEN
-        assertThat(childAlert.getAdultList().toString())
+        assertThat(childDTO.getAdultList().toString())
                 .isEqualTo("[John Boyd, Jacob Boyd, Felicia Boyd]");
-        assertThat(childAlert.getAddress()).isEqualTo("1509 Culver St");
-        assertThat(childAlert.getChildList().get(0).getFirstName())
+        assertThat(childDTO.getAddress()).isEqualTo("1509 Culver St");
+        assertThat(childDTO.getChildList().get(0).getFirstName())
                 .isEqualTo("Tenley");
-        assertThat(childAlert.getChildList().get(1).getFirstName())
+        assertThat(childDTO.getChildList().get(1).getFirstName())
                 .isEqualTo("Roger");
     }
 

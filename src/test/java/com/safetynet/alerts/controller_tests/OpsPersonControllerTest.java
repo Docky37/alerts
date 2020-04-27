@@ -21,13 +21,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.ChildDTO;
+import com.safetynet.alerts.DTO.CoveredPopulationDTO;
 import com.safetynet.alerts.DTO.OpsPersonDTO;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.controller.OpsPersonController;
 import com.safetynet.alerts.service.IOpsPersonService;
-import com.safetynet.alerts.model.ChildAlert;
-import com.safetynet.alerts.model.CoveredPopulation;
 import com.safetynet.alerts.model.MedicalRecord;
-import com.safetynet.alerts.model.Person;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(OpsPersonController.class)
@@ -45,25 +45,25 @@ public class OpsPersonControllerTest {
     @MockBean
     private IOpsPersonService opsPersonService;
 
-    public static List<Person> personList = new ArrayList<>();
+    public static List<PersonDTO> personList = new ArrayList<>();
 
     static {
-        personList.add(new Person(1L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(2L, "Johnathan", "Barrack", "29 15th St",
+        personList.add(new PersonDTO(2L, "Johnathan", "Barrack", "29 15th St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(3L, "Doc", "Spring",
+        personList.add(new PersonDTO(3L, "Doc", "Spring",
                 "1515 Java St - Beverly Hills", "Los Angeles", "90211",
                 "123-456-7890", "Doc.Spring@email.com"));
-        personList.add(new Person(4L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(4L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
-        personList.add(new Person(4L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(4L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6515", "tenz@email.com"));
-        personList.add(new Person(5L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(5L, "Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(6L, "Roger", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(6L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(7L, "Felicia", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(7L, "Felicia", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6544", "jaboyd@email.com"));
     }
 
@@ -81,18 +81,18 @@ public class OpsPersonControllerTest {
     public static List<String> eMailList = new ArrayList<>();
 
     static {
-        for (Person person : personList) {
+        for (PersonDTO person : personList) {
             if (person.getCity() == "Culver") {
                 eMailList.add(person.getEmail());
             }
         }
     }
 
-    public static CoveredPopulation coveredPopulation = new CoveredPopulation(8, 3, 11, coveredPersonList);
+    public static CoveredPopulationDTO coveredPopulationDTO = new CoveredPopulationDTO(8, 3, 11, coveredPersonList);
 
     public static List<String> phoneList = new ArrayList<>();
     static {
-        for (Person person : personList) {
+        for (PersonDTO person : personList) {
             if (person.getCity() == "Culver") {
                 eMailList.add(person.getEmail());
             }
@@ -116,15 +116,15 @@ public class OpsPersonControllerTest {
                 "01/08/1986", new String[] { "tetracyclaz:650mg" },
                 new String[] { "xilliathal" }));
     }
-    public static ChildAlert childAlert = new ChildAlert();
+    public static ChildDTO childDTO = new ChildDTO();
     public static OpsPersonDTO child1 = new OpsPersonDTO("Tenley", "Boyd", "8 years old","1509 Culver St","841-874-6512");
     public static OpsPersonDTO child2 = new OpsPersonDTO("Roger", "Boyd", "19 months old ", "1509 Culver St","841-874-6512");
     public static List<OpsPersonDTO> childList = Arrays.asList(child1, child2);
     public static List<String> adultList = Arrays.asList("John Boyd",
             "Jacob Boyd", "Felicia Boyd");
     static {
-        childAlert.setChildList(childList);
-        childAlert.setAdultList(adultList);
+        childDTO.setChildList(childList);
+        childDTO.setAdultList(adultList);
     }
 
 
@@ -134,18 +134,18 @@ public class OpsPersonControllerTest {
         LOGGER.info(
                 "Start test: OPS 1 population covered by the given station");
         given(opsPersonService.populationCoveredByStation(anyString()))
-                .willReturn(coveredPopulation);
+                .willReturn(coveredPopulationDTO);
         mockMVC.perform(MockMvcRequestBuilders.get("/firestation/stationNumber/3"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
 
-    @Test // GET (OPS 2 childAlert)
+    @Test // GET (OPS 2 childDTO)
     public void ops2_givenAnAddress_whenGetChildAlert_thenReturnChilAlertObject()
             throws Exception {
         LOGGER.info("Start test: OPS 3 chidAlert by address");
         given(opsPersonService.findListOfChildByAddress(anyString()))
-                .willReturn(childAlert);
+                .willReturn(childDTO);
         mockMVC.perform(MockMvcRequestBuilders.get("/childAlert/address"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.alerts.AlertsApplication;
-import com.safetynet.alerts.model.ChildAlert;
-import com.safetynet.alerts.model.CoveredPopulation;
+import com.safetynet.alerts.DTO.ChildDTO;
+import com.safetynet.alerts.DTO.CoveredPopulationDTO;
 import com.safetynet.alerts.service.IOpsPersonService;
 
 /**
@@ -47,10 +47,10 @@ public class OpsPersonController {
      * the station.
      *
      * @param station
-     * @return a CoveredPopulation object
+     * @return a CoveredPopulationDTO object
      */
     @GetMapping(value = "firestation/stationNumber/{station}")
-    public CoveredPopulation adultAndChildCountByStation(
+    public CoveredPopulationDTO adultAndChildCountByStation(
             @PathVariable final String station) {
         return opsPersonService.populationCoveredByStation(station);
     }
@@ -60,10 +60,10 @@ public class OpsPersonController {
      * OPS2 - GET request to list the child.
      *
      * @param address - the given address
-     * @return a ChildAlert object
+     * @return a ChildDTO object
      */
     @GetMapping(value = "childAlert/{address}")
-    public ChildAlert childAlertByAddress(
+    public ChildDTO childAlertByAddress(
             @PathVariable final String address) {
         return opsPersonService.findListOfChildByAddress(address);
     }

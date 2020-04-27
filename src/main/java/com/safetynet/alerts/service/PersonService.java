@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.controller.PersonNotFoundException;
-import com.safetynet.alerts.model.Person;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.utils.PersonMapping;
@@ -36,7 +36,7 @@ public class PersonService implements IPersonService {
 
     /**
      * PersonMapping is an utility that provides bidirectional conversion
-     * between Person and PersoonEntity.
+     * between PersonDTO and PersoonEntity.
      */
     @Autowired
     private PersonMapping personMapping;
@@ -57,10 +57,10 @@ public class PersonService implements IPersonService {
      * The addListPersons method allows user to save a list of persons in DB.
      *
      * @param pListPerson
-     * @return a List<Person> (of created persons)
+     * @return a List<PersonDTO> (of created persons)
      */
     @Override
-    public List<Person> addListPersons(final List<Person> pListPerson) {
+    public List<PersonDTO> addListPersons(final List<PersonDTO> pListPerson) {
         List<PersonEntity> listPE = personMapping
                 .convertToPersonEntity(pListPerson);
 
@@ -73,13 +73,13 @@ public class PersonService implements IPersonService {
     /**
      * The find all method allows user to get a list of all persons saved in DB.
      *
-     * @return a List<Person> (of saved persons)
+     * @return a List<PersonDTO> (of saved persons)
      */
     @Override
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findAll();
-        List<Person> personList = personMapping.convertToPerson(listPE);
+        List<PersonDTO> personList = personMapping.convertToPerson(listPE);
 
         return personList;
     }
@@ -90,17 +90,17 @@ public class PersonService implements IPersonService {
      *
      * @param pLastName
      * @param pFirstName
-     * @return a Person (the found person)
+     * @return a PersonDTO (the found person)
      */
     @Override
-    public Person findByLastNameAndFirstName(final String pLastName,
+    public PersonDTO findByLastNameAndFirstName(final String pLastName,
             final String pFirstName) {
         PersonEntity foundPE = personRepository
                 .findByLastNameAndFirstName(pLastName, pFirstName);
         if (foundPE == null) {
             throw new PersonNotFoundException();
         }
-        Person foundPerson = personMapping.convertToPerson(foundPE);
+        PersonDTO foundPerson = personMapping.convertToPerson(foundPE);
         return foundPerson;
     }
 
@@ -112,10 +112,10 @@ public class PersonService implements IPersonService {
      * PersonEntity returned with the save method of CrudRepository.
      *
      * @param pPerson
-     * @return a Person (the added person) or null if person already exists.
+     * @return a PersonDTO (the added person) or null if person already exists.
      */
     @Override
-    public Person addPerson(final Person pPerson) {
+    public PersonDTO addPerson(final PersonDTO pPerson) {
         PersonEntity pEnt = personRepository.findByLastNameAndFirstName(
                 pPerson.getLastName(), pPerson.getFirstName());
         if (pEnt == null) {
@@ -137,11 +137,11 @@ public class PersonService implements IPersonService {
      * the personRepository.save method.
      *
      * @param pPerson - the person to update
-     * @return a Person (the updated person) or null if person to update not
+     * @return a PersonDTO (the updated person) or null if person to update not
      *         found.
      */
     @Override
-    public Person updatePerson(final Person pPerson) {
+    public PersonDTO updatePerson(final PersonDTO pPerson) {
         PersonEntity pEnt = personRepository.findByLastNameAndFirstName(
                 pPerson.getLastName(), pPerson.getFirstName());
         if (pEnt != null
@@ -158,16 +158,16 @@ public class PersonService implements IPersonService {
 
     /**
      * Delete method that uses first findByLastNameAndFirstName to find the
-     * Person to delete in DB and get its id to invokes the deleteById method of
-     * CrudRepository.
+     * PersonDTO to delete in DB and get its id to invokes the deleteById method
+     * of CrudRepository.
      *
      * @param pLastName
      * @param pFirstName
-     * @return a Person (the deleted person) or null if person to delete not
+     * @return a PersonDTO (the deleted person) or null if person to delete not
      *         found.
      */
     @Override
-    public Person deleteAPerson(final String pLastName,
+    public PersonDTO deleteAPerson(final String pLastName,
             final String pFirstName) {
         PersonEntity pEnt = personRepository
                 .findByLastNameAndFirstName(pLastName, pFirstName);

@@ -15,9 +15,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.ChildDTO;
 import com.safetynet.alerts.DTO.OpsPersonDTO;
 import com.safetynet.alerts.model.AddressFireStation;
-import com.safetynet.alerts.model.ChildAlert;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.utils.ChildAlertMapping;
@@ -72,25 +72,25 @@ public class ChilAlertMappingTest {
                 "841-874-6544", "jaboyd@email.com", medicalRecordList.get(4)));
     }
 
-    public static ChildAlert childAlert = new ChildAlert();
+    public static ChildDTO childDTO = new ChildDTO();
     public static OpsPersonDTO child1 = new OpsPersonDTO("Tenley", "Boyd", "8 years old", "1509 Culver St","841-874-6512");
     public static OpsPersonDTO child2 = new OpsPersonDTO("Roger", "Boyd", "19 months old", "1509 Culver St","841-874-6512");
     public static List<OpsPersonDTO> childList = Arrays.asList(child1, child2);
     public static List<String> adultList = Arrays.asList("John Boyd",
             "Jacob Boyd", "Felicia Boyd");
     static {
-        childAlert.setAddress("1509 Culver St");
-        childAlert.setChildList(childList);
-        childAlert.setAdultList(adultList);
+        childDTO.setAddress("1509 Culver St");
+        childDTO.setChildList(childList);
+        childDTO.setAdultList(adultList);
     }
 
     @Test
     public void givenTheListOfPersonsOfAnAddress_whenConvert_thenReturnChilAlert()
             throws Exception {
-        LOGGER.info("Start test: ChildAlert mapping");
+        LOGGER.info("Start test: ChildDTO mapping");
         // GIVEN
         // WHEN
-        ChildAlert mappedChildAlert = childAlertMapping
+        ChildDTO mappedChildAlert = childAlertMapping
                 .create(pEntList, "1509 Culver St");
         // THEN
         assertThat(mappedChildAlert.getAddress()).isEqualTo("1509 Culver St");

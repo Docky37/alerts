@@ -27,9 +27,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.model.AddressFireStation;
 import com.safetynet.alerts.model.MedicalRecord;
-import com.safetynet.alerts.model.Person;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -61,13 +61,13 @@ public class AdminEndpointsIT {
                 .add(new AddressFireStation(3L, "834 Binoc Ave", "3"));
     }
     // PERSONS ------------------------------------------------------
-    public static List<Person> personList = new ArrayList<>();
+    public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new Person(0L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(0L, "John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new Person(0L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(0L, "Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new Person(0L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO(0L, "Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
     // MEDICAL RECORDS -----------------------------------------------
@@ -178,7 +178,7 @@ public class AdminEndpointsIT {
     public void givenAPersonToAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Person personToAdd = new Person(0L, "Roger", "Boyd", "1509 Culver St",
+        PersonDTO personToAdd = new PersonDTO(0L, "Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com");
         mockMvc.perform(MockMvcRequestBuilders.post("/person")
                 .contentType(MediaType.APPLICATION_JSON)

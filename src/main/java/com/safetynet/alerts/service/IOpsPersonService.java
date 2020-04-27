@@ -2,8 +2,8 @@ package com.safetynet.alerts.service;
 
 import java.util.List;
 
-import com.safetynet.alerts.model.ChildAlert;
-import com.safetynet.alerts.model.CoveredPopulation;
+import com.safetynet.alerts.DTO.ChildDTO;
+import com.safetynet.alerts.DTO.CoveredPopulationDTO;
 
 public interface IOpsPersonService {
 
@@ -12,19 +12,19 @@ public interface IOpsPersonService {
      * covered by the given station.
      *
      * @param pStation
-     * @return a CoveredPopulation object
+     * @return a CoveredPopulationDTO object
      */
-    CoveredPopulation populationCoveredByStation(String pStation);
+    CoveredPopulationDTO populationCoveredByStation(String pStation);
 
     // OPS #2 ENDPOINT -------------------------------------------------------
     /**
-     * OPS#2 - ChildAlert: the list of children (with age) and adults living in
+     * OPS#2 - ChildDTO: the list of children (with age) and adults living in
      * a given address.
      *
      * @param address
-     * @return a ChildAlert object
+     * @return a ChildDTO object
      */
-    ChildAlert findListOfChildByAddress(String address);
+    ChildDTO findListOfChildByAddress(String address);
 
     // OPS #3 ENDPOINT -------------------------------------------------------
     /**

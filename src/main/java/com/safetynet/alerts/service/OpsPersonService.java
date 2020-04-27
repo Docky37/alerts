@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.AlertsApplication;
-import com.safetynet.alerts.model.ChildAlert;
-import com.safetynet.alerts.model.CoveredPopulation;
+import com.safetynet.alerts.DTO.ChildDTO;
+import com.safetynet.alerts.DTO.CoveredPopulationDTO;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.utils.ChildAlertMapping;
@@ -55,7 +55,6 @@ public class OpsPersonService implements IOpsPersonService {
      * Class constructor - Set personRepository & personMapping (IoC).
      *
      * @param pPersonRepos
-     * @param pPersonMapping
      * @param pChildAlertMapping
      */
     public OpsPersonService(final PersonRepository pPersonRepos,
@@ -69,41 +68,42 @@ public class OpsPersonService implements IOpsPersonService {
      * covered by the given station.
      *
      * @param pStation
-     * @return a CoveredPopulation object
+     * @return a CoveredPopulationDTO object
      */
     @Override
-    public CoveredPopulation populationCoveredByStation(final String pStation) {
+    public CoveredPopulationDTO populationCoveredByStation(
+            final String pStation) {
         Date compareDate = Date
                 .valueOf(LocalDate.now().minusYears(DIX_HUIT_YEARS));
-        CoveredPopulation coveredPopulation = new CoveredPopulation();
-        coveredPopulation
+        CoveredPopulationDTO coveredPopulationDTO = new CoveredPopulationDTO();
+        coveredPopulationDTO
                 .setTotal(personRepository.countByAddressIdStation(pStation));
-        coveredPopulation.setAdultCount(personRepository
+        coveredPopulationDTO.setAdultCount(personRepository
                 .countAdultsByAddressIdStation(pStation, compareDate));
-        coveredPopulation.setChildCount(coveredPopulation.getTotal()
-                - coveredPopulation.getAdultCount());
+        coveredPopulationDTO.setChildCount(coveredPopulationDTO.getTotal()
+                - coveredPopulationDTO.getAdultCount());
 
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStationOrderByAddressIdStation(pStation);
-        coveredPopulation.setCoveredPersons(
+        coveredPopulationDTO.setCoveredPersons(
                 childAlertMapping.convertToCoveredByStationPerson(listPE));
-        return coveredPopulation;
+        return coveredPopulationDTO;
     }
 
     // OPS #2 ENDPOINT -------------------------------------------------------
     /**
-     * OPS#2 - ChildAlert: the list of children (with age) and adults living in
-     * a given address.
+     * OPS#2 - ChildDTO: the list of children (with age) and adults living in a
+     * given address.
      *
      * @param address
-     * @return a ChildAlert object
+     * @return a ChildDTO object
      */
     @Override
-    public ChildAlert findListOfChildByAddress(final String address) {
+    public ChildDTO findListOfChildByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
-        ChildAlert childAlert = childAlertMapping.create(pEntList, address);
-        return childAlert;
+        ChildDTO childDTO = childAlertMapping.create(pEntList, address);
+        return childDTO;
     }
 
     // OPS #3 ENDPOINT -------------------------------------------------------

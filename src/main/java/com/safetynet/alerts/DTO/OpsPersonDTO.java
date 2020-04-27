@@ -2,7 +2,7 @@ package com.safetynet.alerts.DTO;
 
 /**
  * The class OpsPersonDTO is used to store first name, last name and age of each
- * child in the List<OpsPersonDTO> field of the class ChildAlert (for OPS#2
+ * child in the List<OpsPersonDTO> field of the class ChildDTO (for OPS#2
  * endpoint).
  *
  * @author Thierry Schreiner
@@ -150,6 +150,7 @@ public class OpsPersonDTO {
     @Override
     public String toString() {
         return "OpsPersonDTO [firstName=" + firstName + ", lastName=" + lastName
-                + ", age=" + age + ", address=" + address + ", phone=" + phone + "]";
+                + ", age=" + age + ", address=" + address + ", phone=" + phone
+                + "]";
     }
 }
