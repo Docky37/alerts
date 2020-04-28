@@ -15,7 +15,7 @@ import com.safetynet.alerts.DTO.ChildDTO;
 import com.safetynet.alerts.DTO.CoveredPopulationDTO;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
-import com.safetynet.alerts.utils.ChildAlertMapping;
+import com.safetynet.alerts.utils.OpsPersonMapping;
 
 /**
  * OpsPersonService is the class in charge of the OPSperson business work.
@@ -44,23 +44,23 @@ public class OpsPersonService implements IOpsPersonService {
     private PersonRepository personRepository;
 
     /**
-     * The ChildAlertMapping class performs data mapping of a List of
+     * The OpsPersonMapping class performs data mapping of a List of
      * PersonEntity to create aChildAlert object.
      *
      */
     @Autowired
-    private ChildAlertMapping childAlertMapping;
+    private OpsPersonMapping opsPersonMapping;
 
     /**
      * Class constructor - Set personRepository & personMapping (IoC).
      *
      * @param pPersonRepos
-     * @param pChildAlertMapping
+     * @param pOpsPersonMapping
      */
     public OpsPersonService(final PersonRepository pPersonRepos,
-            final ChildAlertMapping pChildAlertMapping) {
+            final OpsPersonMapping pOpsPersonMapping) {
         personRepository = pPersonRepos;
-        childAlertMapping = pChildAlertMapping;
+        opsPersonMapping = pOpsPersonMapping;
     }
 
     /**
@@ -86,7 +86,7 @@ public class OpsPersonService implements IOpsPersonService {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStationOrderByAddressIdStation(pStation);
         coveredPopulationDTO.setCoveredPersons(
-                childAlertMapping.convertToCoveredByStationPerson(listPE));
+                opsPersonMapping.convertToCoveredByStationPerson(listPE));
         return coveredPopulationDTO;
     }
 
@@ -102,7 +102,7 @@ public class OpsPersonService implements IOpsPersonService {
     public ChildDTO findListOfChildByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
-        ChildDTO childDTO = childAlertMapping.create(pEntList, address);
+        ChildDTO childDTO = opsPersonMapping.create(pEntList, address);
         return childDTO;
     }
 

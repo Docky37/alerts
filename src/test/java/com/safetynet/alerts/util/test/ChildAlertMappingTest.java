@@ -20,11 +20,11 @@ import com.safetynet.alerts.DTO.OpsPersonDTO;
 import com.safetynet.alerts.model.AddressFireStation;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.PersonEntity;
-import com.safetynet.alerts.utils.ChildAlertMapping;
+import com.safetynet.alerts.utils.OpsPersonMapping;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(ChildAlertMapping.class)
-public class ChilAlertMappingTest {
+@WebMvcTest(OpsPersonMapping.class)
+public class ChildAlertMappingTest {
 
     /**
      * Create a SLF4J/LOG4J LOGGER instance.
@@ -33,7 +33,7 @@ public class ChilAlertMappingTest {
             .getLogger(AlertsApplication.class);
 
     @Autowired
-    private ChildAlertMapping childAlertMapping;
+    private OpsPersonMapping opsPersonMapping;
 
     public static AddressFireStation addressFireStation = new AddressFireStation(
             1L, "1509 Culver St", "3");
@@ -73,8 +73,10 @@ public class ChilAlertMappingTest {
     }
 
     public static ChildDTO childDTO = new ChildDTO();
-    public static OpsPersonDTO child1 = new OpsPersonDTO("Tenley", "Boyd", "8 years old", "1509 Culver St","841-874-6512");
-    public static OpsPersonDTO child2 = new OpsPersonDTO("Roger", "Boyd", "19 months old", "1509 Culver St","841-874-6512");
+    public static OpsPersonDTO child1 = new OpsPersonDTO("Tenley", "Boyd",
+            "8 years old", "1509 Culver St", "841-874-6512");
+    public static OpsPersonDTO child2 = new OpsPersonDTO("Roger", "Boyd",
+            "19 months old", "1509 Culver St", "841-874-6512");
     public static List<OpsPersonDTO> childList = Arrays.asList(child1, child2);
     public static List<String> adultList = Arrays.asList("John Boyd",
             "Jacob Boyd", "Felicia Boyd");
@@ -84,19 +86,44 @@ public class ChilAlertMappingTest {
         childDTO.setAdultList(adultList);
     }
 
+    /**
+     * OPS#1 FIRESTATION ------------------------------------------------
+     *
+     * @throws Exception
+     */
+    @Test
+    public void givenAPersonEntityList_whenConvert_thenReturnCoveredByStationPersonLisr()
+            throws Exception {
+        LOGGER.info("Start test: OPS#1 firestation mapping");
+        // GIVEN
+        // WHEN
+        List<OpsPersonDTO> opsPersonDTOs = opsPersonMapping.convertToCoveredByStationPerson(pEntList);
+        // THEN
+        assertThat(opsPersonDTOs.get(3).getFirstName()).isEqualTo("Roger");
+        assertThat(opsPersonDTOs.get(3).getAge()).isEqualTo("19 months old");
+    }
+
+    /**
+     * OPS#2 CHILD ALERT
+     * ---------------------------------------------------------
+     *
+     * @throws Exception
+     */
     @Test
     public void givenTheListOfPersonsOfAnAddress_whenConvert_thenReturnChilAlert()
             throws Exception {
         LOGGER.info("Start test: ChildDTO mapping");
         // GIVEN
         // WHEN
-        ChildDTO mappedChildAlert = childAlertMapping
-                .create(pEntList, "1509 Culver St");
+        ChildDTO mappedChildAlert = opsPersonMapping.create(pEntList,
+                "1509 Culver St");
         // THEN
         assertThat(mappedChildAlert.getAddress()).isEqualTo("1509 Culver St");
         assertThat(mappedChildAlert.getAdultList()).isEqualTo(adultList);
-        assertThat(mappedChildAlert.getChildList().get(0).getAge()).isEqualTo("8 years old");
-        assertThat(mappedChildAlert.getChildList().get(1).getAge()).isEqualTo("19 months old");
-        }
+        assertThat(mappedChildAlert.getChildList().get(0).getAge())
+                .isEqualTo("8 years old");
+        assertThat(mappedChildAlert.getChildList().get(1).getAge())
+                .isEqualTo("19 months old");
+    }
 
 }

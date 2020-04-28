@@ -35,7 +35,7 @@ import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.IOpsPersonService;
 import com.safetynet.alerts.service.OpsPersonService;
-import com.safetynet.alerts.utils.ChildAlertMapping;
+import com.safetynet.alerts.utils.OpsPersonMapping;
 import com.safetynet.alerts.utils.PersonMapping;
 
 @RunWith(SpringRunner.class)
@@ -56,7 +56,7 @@ public class OpsPersonServiceTest {
     private PersonMapping personMapping;
 
     @MockBean
-    private ChildAlertMapping childAlertMapping;
+    private OpsPersonMapping opsPersonMapping;
 
     private IOpsPersonService opsPersonService;
 
@@ -168,7 +168,7 @@ public class OpsPersonServiceTest {
     @Before
     public void SetUp() {
         opsPersonService = new OpsPersonService(personRepository,
-                childAlertMapping);
+                opsPersonMapping);
     }
 
     // OPS #1 ENDPOINT -------------------------------------------------------
@@ -191,7 +191,7 @@ public class OpsPersonServiceTest {
         given(personRepository
                 .findByAddressIdStationOrderByAddressIdStation(anyString()))
                         .willReturn(pEntList);
-        given(childAlertMapping.convertToCoveredByStationPerson(
+        given(opsPersonMapping.convertToCoveredByStationPerson(
                 Mockito.<PersonEntity>anyList())).willReturn(coveredPersonList);
         // WHEN
         CoveredPopulationDTO population = opsPersonService
@@ -221,7 +221,7 @@ public class OpsPersonServiceTest {
         ChildDTO childDTO = new ChildDTO();
         given(personRepository.findByAddressIdAddress(address))
                 .willReturn(pEntList);
-        given(childAlertMapping.create(pEntList, address))
+        given(opsPersonMapping.create(pEntList, address))
                 .willReturn(mappedChildAlert);
         // WHEN
         childDTO = opsPersonService.findListOfChildByAddress(address);
