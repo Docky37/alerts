@@ -97,25 +97,37 @@ public class OpsMedicalControllerTest {
         mappedFireAlert.setPersonList(myFireList);
     }
 
-    @Test // OPS 4 Fire
+    @Test // OPS 4 FIRE
     public void ops4_givenAnAddress_whenGetFire_thenReturnHouseHoldDTO()
             throws Exception {
         LOGGER.info("Start test: OPS #4 fire by address");
         given(opsMedicalService.fireByAddress(anyString()))
                 .willReturn(mappedFireAlert);
-        mockMVC.perform(MockMvcRequestBuilders.get("/fire/address"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/fire?address=1509 Culver St"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
 
-    @Test // OPS 5 Flood
+    @Test // OPS 5 FLOOD
     public void ops5_givenAStationList_whenGetFlood_thenReturnAFloodDTO()
             throws Exception {
         LOGGER.info("Start test: OPS #5 flood by stationList");
         List<FloodDTO> floodDTOList = new ArrayList<>();
         given(opsMedicalService.floodByStation(Mockito.<String>anyList()))
                 .willReturn(floodDTOList);
-        mockMVC.perform(MockMvcRequestBuilders.get("/flood/stations/3"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/flood/stations?stationList=3"))
+                .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
+                        .content().contentType("application/json"));
+    }
+
+    @Test // OPS 6 PERSON INFO
+    public void ops6_givenAName_whenGetPersonInfo_thenReturnAPersonInfoDTOList()
+            throws Exception {
+        LOGGER.info("Start test: OPS #6 personInfoList by stationList");
+        List<PersonInfoDTO> personInfoDTOList = new ArrayList<>();
+        given(opsMedicalService.personInfo(anyString(), anyString()))
+                .willReturn(personInfoDTOList);
+        mockMVC.perform(MockMvcRequestBuilders.get("/personInfo?firstName=firstName&lastName=lastName"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
