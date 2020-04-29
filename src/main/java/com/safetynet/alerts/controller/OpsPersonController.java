@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.alerts.AlertsApplication;
@@ -42,17 +42,18 @@ public class OpsPersonController {
         opsPersonService = pOpsPersonService;
     }
 
+    // OPS #1 ENDPOINT -------------------------------------------------------
     /**
      * OPS1 - GET request to count the number of children & adults covered by
      * the station.
      *
-     * @param station
+     * @param stationNumber
      * @return a CoveredPopulationDTO object
      */
-    @GetMapping(value = "firestation/stationNumber/{station}")
+    @GetMapping(value = "/firestation/stationNumber")
     public CoveredPopulationDTO adultAndChildCountByStation(
-            @PathVariable final String station) {
-        return opsPersonService.populationCoveredByStation(station);
+            @RequestParam final String stationNumber) {
+        return opsPersonService.populationCoveredByStation(stationNumber);
     }
 
     // OPS #2 ENDPOINT -------------------------------------------------------
@@ -62,9 +63,8 @@ public class OpsPersonController {
      * @param address - the given address
      * @return a ChildDTO object
      */
-    @GetMapping(value = "childAlert/{address}")
-    public ChildDTO childAlertByAddress(
-            @PathVariable final String address) {
+    @GetMapping(value = "/childAlert")
+    public ChildDTO childAlertByAddress(@RequestParam final String address) {
         return opsPersonService.findListOfChildByAddress(address);
     }
 
@@ -76,9 +76,9 @@ public class OpsPersonController {
      * @param station - the number of the fire station
      * @return a List of persons in DB covered by this station
      */
-    @GetMapping(value = "phoneAlert/{station}")
+    @GetMapping(value = "/phoneAlert")
     public List<String> getPhoneListByStation(
-            @PathVariable final String station) {
+            @RequestParam final String station) {
         return opsPersonService.findAllPhoneListByStation(station);
     }
 
@@ -89,8 +89,8 @@ public class OpsPersonController {
      * @param city - the city that we want e-mail address off all inhabitants
      * @return a List<String> - list of e-mail of all persons of the city
      */
-    @GetMapping(value = "communityEmail/{city}")
-    public List<String> getEmailListByCity(@PathVariable final String city) {
+    @GetMapping(value = "/communityEmail")
+    public List<String> getEmailListByCity(@RequestParam final String city) {
         return opsPersonService.findAllMailByCity(city);
     }
 

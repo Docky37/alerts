@@ -135,7 +135,7 @@ public class OpsPersonControllerTest {
                 "Start test: OPS 1 population covered by the given station");
         given(opsPersonService.populationCoveredByStation(anyString()))
                 .willReturn(coveredPopulationDTO);
-        mockMVC.perform(MockMvcRequestBuilders.get("/firestation/stationNumber/3"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/firestation/stationNumber?stationNumber=3"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
@@ -146,7 +146,7 @@ public class OpsPersonControllerTest {
         LOGGER.info("Start test: OPS 3 chidAlert by address");
         given(opsPersonService.findListOfChildByAddress(anyString()))
                 .willReturn(childDTO);
-        mockMVC.perform(MockMvcRequestBuilders.get("/childAlert/address"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/childAlert?address=1509 Culver St"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
@@ -157,7 +157,7 @@ public class OpsPersonControllerTest {
         LOGGER.info("Start test: OPS 3 phoneAlert by station");
         given(opsPersonService.findAllPhoneListByStation(anyString()))
                 .willReturn(phoneList);
-        mockMVC.perform(MockMvcRequestBuilders.get("/phoneAlert/station"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/phoneAlert?station=3"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
@@ -168,7 +168,7 @@ public class OpsPersonControllerTest {
         LOGGER.info("Start test: OPS 7 communityEmail by city");
         given(opsPersonService.findAllMailByCity(anyString()))
                 .willReturn(eMailList);
-        mockMVC.perform(MockMvcRequestBuilders.get("/communityEmail/city"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/communityEmail?city=Culver"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
