@@ -21,7 +21,11 @@ public class AlertsApplication {
      */
     public static void main(final String[] args) {
         SpringApplication.run(AlertsApplication.class, args);
-        LOGGER.info("Alerts application is running...");
+        LOGGER.trace("LOG TEST - Alerts application is running...");
+        LOGGER.debug("LOG TEST - Alerts application is running...");
+        LOGGER.info("LOG TEST - Alerts application is running...");
+        LOGGER.warn("LOG TEST - Alerts application is running...");
+        LOGGER.error("LOG TEST - Alerts application is running...");
     }
 
     /**
