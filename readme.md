@@ -1,15 +1,14 @@
-# SafetyNet - Alerts v1.5 release
+# SafetyNet - Alerts v1.6 release
 
 ### Infos
 author: 		Thierry 'Docky' SCHREINER   -   DA Java student - Open ClassRooms
 
 mentored by:	Yann 'Monsieur Plus' IRRILO	
 
-release date:	28/04/2020
+release date:	30/04/2020
 
 ### Content
-This tenth release v1.5 adds OPS#6 'personInfo/{firstName}/{lastName} endpoints and refactors a great part of project classes.
-OPS#6 **returns a list of PersonInfoDTO** instead of a single PersonInfoDTO, to be able to deal with with namesakes.    
+This eleventh release v1.6 modifies the seven OPS requests using @RequestParam instead of @PathVariables. It also adds a slf4j - log4j logger and performs info and debug logs to console & file for each OPS request.   
 
 Previous releases contains : 
 
@@ -30,6 +29,9 @@ Previous releases contains :
 - a bugfix in update methods of person and medicalRecord administrative endpoints (v1.3.1);
 
 - a rewrited OPS#1 'firestation' endpoint, and improvement of OPS#2 'chilAlert' and added OPS#4 'fire' and OPS#5 'flood' endpoints (v1.4);
+
+- the OPS#6 'personInfo/{firstName}/{lastName} endpoints and refactors a great part of project classes.
+OPS#6 **returns a list of PersonInfoDTO** instead of a single PersonInfoDTO, to be able to deal with with namesakes (since v1.5).
 
 It also contains actuators (health, info & metrics).
 
@@ -335,7 +337,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
   
 ### OPS endpoints
 
-**OPS#1: GET - http://localhost:8080/firestation/stationNumber/{station}**   >>> returns the list of persons covered by the given fire station number.  Use the same OpsPersonDTO class that is used in OPS#2.
+**OPS#1: GET - http://localhost:8080/firestation/stationNumber?stationNumber=<stationNumber>**   >>> returns the list of persons covered by the given fire station number.  Use the same OpsPersonDTO class that is used in OPS#2.
 
 	{
 	    "adultCount": 8,
@@ -371,7 +373,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		]
 	}
 	
-**OPS#2: GET - http://localhost:8080/childAlert/{address}**   >>> returns the list of children (first name, last name, age) and a list of adults living at a given address. Use the same OpsPersonDTO class that is used in OPS#1.
+**OPS#2: GET - http://localhost:8080/childAlert?address=<address>**   >>> returns the list of children (first name, last name, age) and a list of adults living at a given address. Use the same OpsPersonDTO class that is used in OPS#1.
 
 	{
 	    "address": "1509 Culver St",
@@ -398,7 +400,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    ]
 	}
 
-**OPS#3: GET - http://localhost:8080/phoneAlert/{station}**   >>> returns the list of phone numbers of inhabitants covered by the given fire station number.
+**OPS#3: GET - http://localhost:8080/phoneAlert?station=<station>**   >>> returns the list of phone numbers of inhabitants covered by the given fire station number.
 
 	[
 	    "841-874-6512",
@@ -414,7 +416,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    "841-874-9888"
 	]
 
-**OPS#4: GET - http://localhost:8080/fire/{address}**   >>> returns the household list of persons for a given address and the covering fire station number. Use the same OpsPersonInfoDTO class that is used in OPS#5 & #6.
+**OPS#4: GET - http://localhost:8080/fire?address=<address>**   >>> returns the household list of persons for a given address and the covering fire station number. Use the same OpsPersonInfoDTO class that is used in OPS#5 & #6.
 
 	{
 	    "addressFireStation": {
@@ -454,7 +456,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    ]
 	}
 
-**OPS#5: GET - http://localhost:8080/flood/{stationList}**   >>> returns the list of household covered by the given list of fire station number. Use the same OpsPersonInfoDTO class that is used in OPS#4 & #6.
+**OPS#5: GET - http://localhost:8080/flood?stations=<stationList>**   >>> returns the list of household covered by the given list of fire station number. Use the same OpsPersonInfoDTO class that is used in OPS#4 & #6.
 
 	[
 	    {
@@ -508,7 +510,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    }
 	]
 
-**OPS#6: GET - http://localhost:8080/personInfo/{firstName}/{lastName}**   >>> returns the PersonInfoDTO list of person(s) that have this firstName and lastName (a list to be able to deal with with namesake, more than a single PersonInfoDTO). 
+**OPS#6: GET - http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>**   >>> returns the PersonInfoDTO list of person(s) that have this firstName and lastName (a list to be able to deal with with namesake, more than a single PersonInfoDTO). 
 
 This example show the response if John Boyd'son is first named John like his father (instead of Roger).
 
@@ -537,7 +539,7 @@ This example show the response if John Boyd'son is first named John like his fat
 	]
 	        
 	        
-**OPS#7: GET - http://localhost:8080/communityEmail/{city}**   >>> returns the list of eMail address of inhabitants of the given city.
+**OPS#7: GET - http://localhost:8080/communityEmail?city=<city>**   >>> returns the list of eMail address of inhabitants of the given city.
 
 	[
 	    "jaboyd@email.com",
