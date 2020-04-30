@@ -122,4 +122,14 @@ public class CoveredPopulationDTO {
         coveredPersons = pCoveredPersons;
     }
 
+    /**
+     * Serialization method.
+     */
+    @Override
+    public String toString() {
+        return "CoveredPopulationDTO [adultCount=" + adultCount
+                + ", childCount=" + childCount + ", total=" + total
+                + ", coveredPersons=" + coveredPersons + "]";
+    }
+
 }

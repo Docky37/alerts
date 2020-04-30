@@ -53,6 +53,10 @@ public class OpsPersonController {
     @GetMapping(value = "/firestation/stationNumber")
     public CoveredPopulationDTO adultAndChildCountByStation(
             @RequestParam final String stationNumber) {
+        LOGGER.info("NEW HTML REQUEST OPS#1 firestation/stationNumber");
+        LOGGER.info(
+                "OpsPersonController OPS#1 >>> RequestParam: stationNumber= {}",
+                stationNumber);
         return opsPersonService.populationCoveredByStation(stationNumber);
     }
 
@@ -65,6 +69,9 @@ public class OpsPersonController {
      */
     @GetMapping(value = "/childAlert")
     public ChildDTO childAlertByAddress(@RequestParam final String address) {
+        LOGGER.info("NEW HTML REQUEST OPS#2 chilAlert");
+        LOGGER.info("OpsPersonController OPS#2 >>> RequestParam: address= {}",
+                address);
         return opsPersonService.findListOfChildByAddress(address);
     }
 
@@ -79,6 +86,9 @@ public class OpsPersonController {
     @GetMapping(value = "/phoneAlert")
     public List<String> getPhoneListByStation(
             @RequestParam final String station) {
+        LOGGER.info("NEW HTML REQUEST OPS#3 phoneAlert");
+        LOGGER.info("OpsPersonController OPS#3 >>> RequestParam: station= {}",
+                station);
         return opsPersonService.findAllPhoneListByStation(station);
     }
 
@@ -91,6 +101,9 @@ public class OpsPersonController {
      */
     @GetMapping(value = "/communityEmail")
     public List<String> getEmailListByCity(@RequestParam final String city) {
+        LOGGER.info("NEW HTML REQUEST OPS#7 communityEmail");
+        LOGGER.info("OpsPersonController OPS#7 >>> RequestParam: city = {}",
+                city);
         return opsPersonService.findAllMailByCity(city);
     }
 

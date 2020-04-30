@@ -51,6 +51,8 @@ public class OpsPersonMapping {
             coveredPerson = convertToCoveredPerson(pEnt);
             listPersons.add(coveredPerson);
         }
+        LOGGER.debug("OpsPersonMapping OPS#1 >>> OpsPersonDTO list: {}",
+                listPersons.toString());
 
         return (listPersons);
     }
@@ -104,19 +106,13 @@ public class OpsPersonMapping {
         String unit;
         List<String> adultList = new ArrayList<>();
         List<OpsPersonDTO> childList = new ArrayList<>();
-        LOGGER.info("pEntList= {}", pEntList);
 
         for (PersonEntity personEntity : pEntList) {
             int age = ageCalculation(personEntity.getMedRecId().getBirthdate());
 
-            LOGGER.info("First Name= {} and age = {}",
-                    personEntity.getFirstName(), age);
-
             if (age > DIX_HUIT_YEARS) { // The person is an adult
                 adultList.add(personEntity.getFirstName() + " "
                         + personEntity.getLastName());
-                LOGGER.info("Adult list = {}", adultList);
-
             } else { // --------------------------- The person is a child
                 if (age < 2) {
                     age = ageCalculationInMonth(
@@ -129,13 +125,16 @@ public class OpsPersonMapping {
                         personEntity.getLastName(), Long.toString(age) + unit,
                         personEntity.getAddressFireSt().getAddress(),
                         personEntity.getPhone()));
-                LOGGER.info("OpsPersonDTO list = {}", childList.toString());
             }
         }
+        LOGGER.debug("OpsPersonMapping OPS#2 >>> Address = {}", address);
+        LOGGER.debug("OpsPersonMapping OPS#2 >>> OpsPersonDTO list = {}",
+                childList.toString());
+        LOGGER.debug("OpsPersonMapping OPS#2 >>> Adult list = {}", adultList);
+
         childDTO.setAddress(address);
         childDTO.setChildList(childList);
         childDTO.setAdultList(adultList);
-        LOGGER.info("ChildDTO = {}", childDTO.toString());
         return childDTO;
     }
 

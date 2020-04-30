@@ -82,11 +82,23 @@ public class OpsPersonService implements IOpsPersonService {
                 .countAdultsByAddressIdStation(pStation, compareDate));
         coveredPopulationDTO.setChildCount(coveredPopulationDTO.getTotal()
                 - coveredPopulationDTO.getAdultCount());
+        LOGGER.debug(
+                "OpsPersonService OPS#1 >>> Covered population: {} children"
+                        + " + {} Adults = {}",
+                coveredPopulationDTO.getChildCount(),
+                coveredPopulationDTO.getAdultCount(),
+                coveredPopulationDTO.getTotal());
 
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStationOrderByAddressIdStation(pStation);
+        LOGGER.debug("OpsPersonService OPS#1 >>> Covered Person list: {}",
+                listPE.toString());
+
         coveredPopulationDTO.setCoveredPersons(
                 opsPersonMapping.convertToCoveredByStationPerson(listPE));
+        LOGGER.debug("OpsPersonService OPS#1 >>> coveredPopulationDTO: {}",
+                coveredPopulationDTO.toString());
+
         return coveredPopulationDTO;
     }
 
@@ -102,7 +114,12 @@ public class OpsPersonService implements IOpsPersonService {
     public ChildDTO findListOfChildByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
+        LOGGER.debug("OpsPersonService OPS#2 >>> PersonEntity list = {}",
+                pEntList.toString());
         ChildDTO childDTO = opsPersonMapping.create(pEntList, address);
+        LOGGER.debug("OpsPersonService OPS#2 >>> ChildDTO = {}",
+                childDTO.toString());
+
         return childDTO;
     }
 
@@ -119,10 +136,14 @@ public class OpsPersonService implements IOpsPersonService {
     public List<String> findAllPhoneListByStation(final String pStation) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStationOrderByAddressIdStation(pStation);
+        LOGGER.debug("OpsPersonService OPS#3 >>> PersonEntity list = {}",
+                listPE.toString());
         List<String> phoneList = new ArrayList<>();
         for (PersonEntity p : listPE) {
             phoneList.add(p.getPhone());
         }
+        LOGGER.debug("OpsPersonService OPS#3 >>> Phone list = {}",
+                phoneList.toString());
 
         return phoneList;
     }
@@ -139,10 +160,14 @@ public class OpsPersonService implements IOpsPersonService {
     public List<String> findAllMailByCity(final String pCity) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdCity(pCity);
+        LOGGER.debug("OpsPersonService OPS#7 >>> PersonEntity list = {}",
+                listPE.toString());
         List<String> eMailList = new ArrayList<>();
         for (PersonEntity p : listPE) {
             eMailList.add(p.getEmail());
         }
+        LOGGER.debug("OpsPersonService OPS#7 >>> eMail list = {}",
+                eMailList.toString());
         return eMailList;
     }
 
