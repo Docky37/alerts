@@ -59,10 +59,12 @@ public class MedicalMapping {
             final String address) {
         HouseholdDTO householdDTO = new HouseholdDTO();
         List<PersonInfoDTO> personList = mapPersonInfoList(pEntList);
+        LOGGER.debug("MedicalMapping OPS#4 >>> PersonInfoDTO list: {}",
+                personList.toString());
         householdDTO.setAddressFireStation(pEntList.get(0).getAddressFireSt());
         householdDTO.setPersonList(personList);
 
-        LOGGER.info("HouseholdDTO = {} - {}",
+        LOGGER.info("MedicalMapping OPS#4 >>> HouseholdDTO = {} - {}",
                 householdDTO.getAddressFireStation(),
                 householdDTO.getPersonList().toArray());
         return householdDTO;
@@ -79,8 +81,6 @@ public class MedicalMapping {
     public List<FloodDTO> mapFlood(final List<PersonEntity> pEntList) {
         List<FloodDTO> floodDTOList = new ArrayList<>();
         List<HouseholdDTO> householdList = new ArrayList<>();
-        LOGGER.info("FLOOD---pEntList= {}", pEntList);
-        // for (String station : orderedStationList) {
         HouseholdDTO householdDTO = new HouseholdDTO();
         List<PersonInfoDTO> personList = new ArrayList<>();
         String currentStation = null;
@@ -112,12 +112,14 @@ public class MedicalMapping {
                     p.getMedRecId().getAllergies(), p.getPhone()));
 
         }
+
         householdDTO.setAddressFireStation(currentAddress);
         householdDTO.setPersonList(personList);
         householdList.add(householdDTO);
         floodDTOList.add(new FloodDTO(currentStation, householdList));
 
-        LOGGER.info("FloodAlert = {}", householdDTO.toString());
+        LOGGER.info("MedicalMapping OPS#5 >>> FloodAlert = {}",
+                householdDTO.toString());
         // }
         return floodDTOList;
 
@@ -136,7 +138,6 @@ public class MedicalMapping {
     public List<PersonInfoDTO> mapPersonInfoList(
             final List<PersonEntity> pEntList) {
         List<PersonInfoDTO> personInfoList = new ArrayList<>();
-        LOGGER.info("pEntList= {}", pEntList);
 
         for (PersonEntity personEntity : pEntList) {
             String ageString = ageCalculation(
@@ -147,8 +148,9 @@ public class MedicalMapping {
                     personEntity.getMedRecId().getAllergies(),
                     personEntity.getPhone()));
 
-            LOGGER.info("PersonInfo list = {}", personInfoList.toString());
         }
+        LOGGER.info("MedicalMapping OPS#6 >>> PersonInfo list = {}",
+                personInfoList.toString());
 
         return personInfoList;
     }

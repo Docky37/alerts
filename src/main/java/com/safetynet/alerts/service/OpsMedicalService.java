@@ -74,10 +74,11 @@ public class OpsMedicalService implements IOpsMedicalService {
     public HouseholdDTO fireByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
-        LOGGER.info("PersonList: {}", pEntList.toArray());
+        LOGGER.debug("OpsMedicalService OPS#4 >>> PersonList: {}",
+                pEntList.toString());
 
         HouseholdDTO householdDTO = medicalMapping.mapFire(pEntList, address);
-        LOGGER.info("HouseholdDTO: {} - {}",
+        LOGGER.info("OpsMedicalService OPS#4 >>> HouseholdDTO: {} - {}",
                 householdDTO.getAddressFireStation(),
                 householdDTO.getPersonList());
         return householdDTO;
@@ -95,11 +96,14 @@ public class OpsMedicalService implements IOpsMedicalService {
      */
     @Override
     public List<FloodDTO> floodByStation(final List<String> pStationList) {
-        LOGGER.info("OPS #5 - flood -");
         List<PersonEntity> pEntList = (List<PersonEntity>) personRepository
                 .findAllGroupByAddress(pStationList);
+        LOGGER.debug("OpsMedicalService OPS#5 >>> PersonList: {}",
+                pEntList.toString());
 
         List<FloodDTO> floodDTOList = medicalMapping.mapFlood(pEntList);
+        LOGGER.debug("OpsMedicalService OPS#5 >>> FloodDTO list: {}",
+                floodDTOList.toString());
 
         return floodDTOList;
     }
@@ -116,7 +120,7 @@ public class OpsMedicalService implements IOpsMedicalService {
     @Override
     public List<PersonInfoDTO> personInfo(final String pFirstName,
             final String pLastName) {
-        LOGGER.info("OPS #6 - personInfo -");
+        LOGGER.info("OpsMedicalService OPS #6 >>> personInfo -");
         List<PersonEntity> pEntList = (List<PersonEntity>) personRepository
                 .findByFirstNameAndLastName(pFirstName, pLastName);
         List<PersonInfoDTO> personInfoDTOList = medicalMapping

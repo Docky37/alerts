@@ -54,6 +54,8 @@ public class OpsMedicalController {
      */
     @GetMapping(value = "/fire")
     public HouseholdDTO fireByAddress(@RequestParam final String address) {
+        LOGGER.info("NEW HTML REQUEST OPS#4 fire");
+        LOGGER.info("OpsMedicalController OPS#4 >>> RequestParam: {}", address);
         return opsMedicalService.fireByAddress(address);
     }
 
@@ -68,6 +70,9 @@ public class OpsMedicalController {
     @GetMapping(value = "/flood/stations")
     public List<FloodDTO> listOfPersonsCoveredByStation(
             @RequestParam final List<String> stationList) {
+        LOGGER.info("NEW HTML REQUEST OPS#5 flood");
+        LOGGER.info("OpsMedicalController OPS#5 >>> RequestParam: {}",
+                stationList);
         return opsMedicalService.floodByStation(stationList);
     }
 
@@ -83,6 +88,9 @@ public class OpsMedicalController {
     @GetMapping(value = "/personInfo")
     public List<PersonInfoDTO> personInfo(@RequestParam final String firstName,
             @RequestParam final String lastName) {
+        LOGGER.info("NEW HTML REQUEST OPS#6 personInfo");
+        LOGGER.info("OpsMedicalController OPS#5 >>> RequestParam: {}& {}",
+                firstName, lastName);
         return opsMedicalService.personInfo(firstName, lastName);
     }
 
