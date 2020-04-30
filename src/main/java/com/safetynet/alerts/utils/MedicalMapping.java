@@ -92,7 +92,8 @@ public class MedicalMapping {
             if (currentAddress == null) {
                 currentAddress = p.getAddressFireSt();
             }
-            if (p.getAddressFireSt() != currentAddress) {
+            if (!p.getAddressFireSt().getAddress()
+                    .equals(currentAddress.getAddress())) {
                 householdDTO.setAddressFireStation(currentAddress);
                 householdDTO.setPersonList(personList);
                 personList = new ArrayList<>();
@@ -100,7 +101,7 @@ public class MedicalMapping {
                 householdDTO = new HouseholdDTO();
                 currentAddress = p.getAddressFireSt();
             }
-            if (p.getAddressFireSt().getStation() != currentStation) {
+            if (!p.getAddressFireSt().getStation().equals(currentStation)) {
                 floodDTOList.add(new FloodDTO(currentStation, householdList));
                 householdList = new ArrayList<>();
                 currentStation = p.getAddressFireSt().getStation();

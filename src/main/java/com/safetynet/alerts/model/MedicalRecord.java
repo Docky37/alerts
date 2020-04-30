@@ -88,13 +88,12 @@ public class MedicalRecord {
             final String pLastName, final String pBirthdate,
             final String[] pMedications, final String[] pAllergies) {
 
-        super();
         id = pId;
         firstName = pFirstName;
         lastName = pLastName;
         birthdate = Date.valueOf(LocalDate.parse(pBirthdate, formatter));
-        medications = pMedications;
-        allergies = pAllergies;
+        medications = pMedications.clone();
+        allergies = pAllergies.clone();
     }
 
     /**
@@ -174,7 +173,8 @@ public class MedicalRecord {
      * @return a String
      */
     public String[] getMedications() {
-        return medications;
+        String[] medic = medications;
+        return medic;
     }
 
     /**
@@ -183,7 +183,7 @@ public class MedicalRecord {
      * @param pMedications
      */
     public void setMedications(final String[] pMedications) {
-        this.medications = pMedications;
+        medications = pMedications.clone();
     }
 
     /**
@@ -192,7 +192,8 @@ public class MedicalRecord {
      * @return a String
      */
     public String[] getAllergies() {
-        return allergies;
+        String[] allerg = allergies;
+        return allerg;
     }
 
     /**
@@ -201,7 +202,7 @@ public class MedicalRecord {
      * @param pAllergies
      */
     public void setAllergies(final String[] pAllergies) {
-        this.allergies = pAllergies;
+        allergies = pAllergies.clone();
     }
 
     /**

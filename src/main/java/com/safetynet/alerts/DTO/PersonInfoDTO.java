@@ -58,8 +58,8 @@ public class PersonInfoDTO {
         firstName = pFirstName;
         lastName = pLastName;
         age = pAge;
-        medications = pMedications;
-        allergies = pAllergies;
+        medications = pMedications.clone();
+        allergies = pAllergies.clone();
         phone = pPhone;
     }
 
@@ -123,7 +123,8 @@ public class PersonInfoDTO {
      * @return a String
      */
     public String[] getMedications() {
-        return medications;
+        String[] medic = medications;
+        return medic;
     }
 
     /**
@@ -132,7 +133,7 @@ public class PersonInfoDTO {
      * @param pMedications
      */
     public void setMedications(final String[] pMedications) {
-        medications = pMedications;
+        medications = pMedications.clone();
     }
 
     /**
@@ -141,7 +142,8 @@ public class PersonInfoDTO {
      * @return a String
      */
     public String[] getAllergies() {
-        return allergies;
+        String[] allerg = allergies;
+        return allerg;
     }
 
     /**
@@ -150,7 +152,7 @@ public class PersonInfoDTO {
      * @param pAllergies
      */
     public void setAllergies(final String[] pAllergies) {
-        allergies = pAllergies;
+        allergies = pAllergies.clone();
     }
 
     /**

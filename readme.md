@@ -1,4 +1,4 @@
-# SafetyNet - Alerts v1.6 release
+# SafetyNet - Alerts v1.6.1 release
 
 ### Infos
 author: 		Thierry 'Docky' SCHREINER   -   DA Java student - Open ClassRooms
@@ -8,7 +8,7 @@ mentored by:	Yann 'Monsieur Plus' IRRILO
 release date:	30/04/2020
 
 ### Content
-This eleventh release v1.6 modifies the seven OPS requests using @RequestParam instead of @PathVariables. It also adds a slf4j - log4j logger and performs info and debug logs to console & file for each OPS request.   
+This twelve release v1.6.1 modifies setter, getter & constructor of PersonInfoDTO & MedicalRecord to avoid the exposition of internal representation by returning reference to mutable object and replaces bad practices (!= comparison in MedicalMapping).
 
 Previous releases contains : 
 
@@ -32,6 +32,8 @@ Previous releases contains :
 
 - the OPS#6 'personInfo/{firstName}/{lastName} endpoints and refactors a great part of project classes.
 OPS#6 **returns a list of PersonInfoDTO** instead of a single PersonInfoDTO, to be able to deal with with namesakes (since v1.5).
+
+- the modification of the seven OPS requests using @RequestParam instead of @PathVariables, and the addition of a slf4j - log4j logger that performs info and debug logs to console & file for each OPS request (since 1.6). 
 
 It also contains actuators (health, info & metrics).
 
@@ -482,8 +484,39 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	                        "phone": "841-874-6512"
 	                    }
 	                ]
-	            }
-	        ...
+	            },
+	            {
+	                "addressFireStation": {
+	                    "id": 9,
+	                    "address": "908 73rd St",
+	                    "city": "Culver",
+	                    "zip": "97451",
+	                    "station": "1"
+	                },
+	                "personList": [
+	                    {
+	                        "firstName": "Reginold",
+	                        "lastName": "Walker",
+	                        "age": "40 years old",
+	                        "medications": [
+	                            "thradox:700mg"
+	                        ],
+	                        "allergies": [
+	                            "illisoxian"
+	                        ],
+	                        "phone": "841-874-8547"
+	                    },
+	                    {
+	                        "firstName": "Jamie",
+	                        "lastName": "Peters",
+	                        "age": "38 years old",
+	                        "medications": [],
+	                        "allergies": [],
+	                        "phone": "841-874-7462"
+	                    }
+	                ]
+	            },
+            ...
 	    {
 	        "station": "4",
 	        "householdList": [
