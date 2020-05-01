@@ -4,7 +4,6 @@ import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
 import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 /**
  * Application configuration class.
@@ -12,15 +11,14 @@ import org.springframework.context.annotation.Profile;
  * @author Thierry Schreiner
  */
 @Configuration
-@Profile("actuator-endpoints")
 class AppConfig {
 
     /**
-     * Method needed by htmltrace actuator.
+     * Method needed by httptrace actuator.
      * @return InMemoryHttpTraceRepository()
      */
     @Bean
-    protected final HttpTraceRepository htttpTraceRepository() {
+    protected HttpTraceRepository htttpTraceRepository() {
         return new InMemoryHttpTraceRepository();
     }
 
