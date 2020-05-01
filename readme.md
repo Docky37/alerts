@@ -1,14 +1,17 @@
-# SafetyNet - Alerts v1.6.1 release
+# SafetyNet - Alerts v1.6.2 release
 
 ### Infos
 author: 		Thierry 'Docky' SCHREINER   -   DA Java student - Open ClassRooms
 
 mentored by:	Yann 'Monsieur Plus' IRRILO	
 
-release date:	30/04/2020
+release date:	01/05/2020
 
 ### Content
-This twelve release v1.6.1 modifies setter, getter & constructor of PersonInfoDTO & MedicalRecord to avoid the exposition of internal representation by returning reference to mutable object and replaces bad practices (!= comparison in MedicalMapping).
+This thirteenth release v1.6.2 fix the inactive httptrace actuator bug and adds details in health one.
+
+The twelfth one v1.6.1 modifies v1.6.2 setter, getter & constructor of PersonInfoDTO & MedicalRecord to avoid the exposition of internal representation by returning reference to mutable object and replaces bad practices (!= comparison in MedicalMapping).
+
 
 Previous releases contains : 
 
