@@ -26,18 +26,18 @@ import static org.mockito.Mockito.verify;
 import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
 import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.repositery.AddressRepository;
-import com.safetynet.alerts.service.AddressFireStationService;
-import com.safetynet.alerts.service.IAddressFireStationService;
+import com.safetynet.alerts.service.AddressService;
+import com.safetynet.alerts.service.IAddressService;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(AddressFireStationService.class)
+@WebMvcTest(AddressService.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AddressFireStationServiceTest {
 
     @MockBean
     private AddressRepository addressRepository;
 
-    private IAddressFireStationService addressFireStationService;
+    private IAddressService addressService;
 
     public static List<AddressEntity> addressFireStList = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class AddressFireStationServiceTest {
 
     @Before
     public void SetUp() {
-        addressFireStationService = new AddressFireStationService(
+        addressService = new AddressService(
                 addressRepository);
     }
 
@@ -66,7 +66,7 @@ public class AddressFireStationServiceTest {
                 .saveAll(Mockito.<AddressEntity>anyList()))
                         .willReturn(addressFireStList);
         // WHEN
-        List<AddressEntity> addedList = addressFireStationService
+        List<AddressEntity> addedList = addressService
                 .addListFireStations(addressFireStList);
         // THEN
         assertThat(addedList.size()).isEqualTo(3);
@@ -84,7 +84,7 @@ public class AddressFireStationServiceTest {
         given(addressRepository.findAll())
                 .willReturn(addressFireStList);
         // WHEN
-        List<AddressEntity> foundList = addressFireStationService
+        List<AddressEntity> foundList = addressService
                 .findAll();
         // THEN
         assertThat(foundList.get(0).getAddress()).isEqualTo("1509 Culver St");
@@ -102,7 +102,7 @@ public class AddressFireStationServiceTest {
         given(addressRepository.findByAddress(anyString()))
                 .willReturn(addressFireStList.get(2));
 
-        AddressEntity addressEntity = addressFireStationService
+        AddressEntity addressEntity = addressService
                 .findByAddress(addressFireStList.get(2).getAddress());
         assertThat(addressEntity.getAddress()).isEqualTo("834 Binoc Ave");
         assertThat(addressEntity.getStation()).isEqualTo("3");
@@ -122,7 +122,7 @@ public class AddressFireStationServiceTest {
         given(addressRepository.findByAddress(anyString()))
                 .willReturn(null);
         // WHEN
-        AddressEntity addressEntity = addressFireStationService
+        AddressEntity addressEntity = addressService
                 .findByAddress("3rd Unknow Ave");
         // THEN
         assertThat(addressEntity).isNull();
@@ -144,7 +144,7 @@ public class AddressFireStationServiceTest {
         given(addressRepository.save(any(AddressEntity.class)))
                 .willReturn(addressFireStationToAdd);
         // WHEN
-        AddressEntity addedAddressFireStation = addressFireStationService
+        AddressEntity addedAddressFireStation = addressService
                 .addAddressFireStation(addressFireStationToAdd);
         // THEN
         assertThat(addedAddressFireStation.getId()).isEqualTo(4);
@@ -165,7 +165,7 @@ public class AddressFireStationServiceTest {
         given(addressRepository.findByAddress(anyString()))
                 .willReturn(addedAddressFireStation);
         // WHEN
-        addedAddressFireStation = addressFireStationService
+        addedAddressFireStation = addressService
                 .addAddressFireStation(addedAddressFireStation);
         // THEN
         verify(addressRepository,never()).save(any(AddressEntity.class));
@@ -188,7 +188,7 @@ public class AddressFireStationServiceTest {
                 .willReturn(updatedAddressFireStation);
 
         // WHEN
-        updatedAddressFireStation = addressFireStationService
+        updatedAddressFireStation = addressService
                 .updateAddress(addressFireStToUpdate);
         // THEN
         assertThat(updatedAddressFireStation.getAddress())
@@ -208,7 +208,7 @@ public class AddressFireStationServiceTest {
         given(addressRepository.findByAddress(anyString()))
                 .willReturn(addressFireStList.get(2));
         // WHEN
-        addressFireStationService.deleteAnAddress(
+        addressService.deleteAnAddress(
                 addressFireStToDelete.getAddress());
         // THEN
         verify(addressRepository).findByAddress(
@@ -226,7 +226,7 @@ public class AddressFireStationServiceTest {
         given(addressRepository.findByAddress(anyString()))
                 .willReturn(null);
         // WHEN
-        addressFireStationService.deleteAnAddress(
+        addressService.deleteAnAddress(
                 addressFireStToDelete.getAddress());
         // THEN
         verify(addressRepository).findByAddress(

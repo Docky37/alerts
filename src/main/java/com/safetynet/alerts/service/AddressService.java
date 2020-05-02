@@ -9,13 +9,13 @@ import com.safetynet.alerts.repositery.AddressRepository;
 import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
 
 /**
- * AddressFireStationService is the class in charge of the business work about
+ * AddressService is the class in charge of the business work about
  * adress - fire station association.
  *
  * @author Thierry Schreiner
  */
 @Service
-public class AddressFireStationService implements IAddressFireStationService {
+public class AddressService implements IAddressService {
     /**
      * PersonRepository is an Interface that extends CrudRepository.
      */
@@ -26,7 +26,7 @@ public class AddressFireStationService implements IAddressFireStationService {
      *
      * @param pAddressFireStRepositery
      */
-    public AddressFireStationService(
+    public AddressService(
             final AddressRepository pAddressFireStRepositery) {
         addressFireStRepository = pAddressFireStRepositery;
     }

@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alerts.controller.AddressFireStationController;
 import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
 import com.safetynet.alerts.model.AddressEntity;
-import com.safetynet.alerts.service.IAddressFireStationService;
+import com.safetynet.alerts.service.IAddressService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AddressFireStationController.class)
@@ -36,7 +36,7 @@ public class AddressFireStationControllerTest {
     private MockMvc mockMVC;
 
     @MockBean
-    private IAddressFireStationService addressFireStationService;
+    private IAddressService addressService;
 
     public static List<AddressEntity> addressFireStationList = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class AddressFireStationControllerTest {
             throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
-        given(addressFireStationService.addListFireStations(Mockito.<AddressEntity>anyList()))
+        given(addressService.addListFireStations(Mockito.<AddressEntity>anyList()))
                         .willReturn(addressFireStationList);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/firestations")
@@ -68,7 +68,7 @@ public class AddressFireStationControllerTest {
             throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
-        given(addressFireStationService.addListFireStations(Mockito.<AddressEntity>anyList()))
+        given(addressService.addListFireStations(Mockito.<AddressEntity>anyList()))
                         .willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/firestations")
@@ -84,7 +84,7 @@ public class AddressFireStationControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         AddressEntity addressFireStToAdd = new AddressEntity(4L,
                 "644 Gershwin Cir", "1");
-        given(addressFireStationService
+        given(addressService
                 .addAddressFireStation(any(AddressEntity.class)))
                         .willReturn(addressFireStToAdd);
 
@@ -101,7 +101,7 @@ public class AddressFireStationControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         AddressEntity addressFireStToAdd = new AddressEntity(4L,
                 "644 Gershwin Cir", "1");
-        given(addressFireStationService
+        given(addressService
                 .addAddressFireStation(any(AddressEntity.class)))
                         .willReturn(null);
 
@@ -114,7 +114,7 @@ public class AddressFireStationControllerTest {
     @Test // GET
     public void givenAnAddressFireStToFind_whenGet_thenReturnsTheAddressFireStation()
             throws Exception, AddressFireStationNotFoundException {
-        given(addressFireStationService.findByAddress(anyString())).willReturn(
+        given(addressService.findByAddress(anyString())).willReturn(
                 new AddressEntity(4L, "644 Gershwin Cir", "1"));
 
         mockMVC.perform(MockMvcRequestBuilders.get("/firestation/address"))
@@ -129,7 +129,7 @@ public class AddressFireStationControllerTest {
     @Test // GET
     public void givenUnknownAddress_whenGet_thenNotFoundException()
             throws Exception, AddressFireStationNotFoundException {
-        given(addressFireStationService.findByAddress(anyString()))
+        given(addressService.findByAddress(anyString()))
                 .willThrow(new AddressFireStationNotFoundException());
 
         mockMVC.perform(MockMvcRequestBuilders.get("/firestation/address"))
@@ -140,7 +140,7 @@ public class AddressFireStationControllerTest {
     @Test // GET
     public void givenAllAddressFireStationToFind_whenFindAll_thenReturnsListOfAll()
             throws Exception {
-        given(addressFireStationService.findAll())
+        given(addressService.findAll())
                 .willReturn(addressFireStationList);
         mockMVC.perform(MockMvcRequestBuilders.get("/firestation"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
@@ -155,7 +155,7 @@ public class AddressFireStationControllerTest {
         AddressEntity addressFireStToUpdate = addressFireStationList
                 .get(2);
         addressFireStToUpdate.setStation("4");
-        given(addressFireStationService
+        given(addressService
                 .updateAddress(any(AddressEntity.class)))
                         .willReturn(addressFireStToUpdate);
 
@@ -175,7 +175,7 @@ public class AddressFireStationControllerTest {
             throws Exception {
         AddressEntity addressFireStToDelete = addressFireStationList
                 .get(1);
-        given(addressFireStationService.deleteAnAddress(anyString()))
+        given(addressService.deleteAnAddress(anyString()))
                 .willReturn(addressFireStToDelete);
 
         mockMVC.perform(MockMvcRequestBuilders
@@ -188,7 +188,7 @@ public class AddressFireStationControllerTest {
             throws Exception {
         AddressEntity addressFireStToDelete = addressFireStationList
                 .get(1);
-        given(addressFireStationService.deleteAnAddress(anyString()))
+        given(addressService.deleteAnAddress(anyString()))
                 .willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders

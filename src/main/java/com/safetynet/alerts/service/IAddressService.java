@@ -5,7 +5,7 @@ import java.util.List;
 import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
 import com.safetynet.alerts.model.AddressEntity;
 
-public interface IAddressFireStationService {
+public interface IAddressService {
 
     /**
      * The addListFireStations method is used to add a list of addresses (with
