@@ -14,7 +14,7 @@ import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
-import com.safetynet.alerts.model.AddressFireStation;
+import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.model.PersonEntity;
 
 /**
@@ -84,7 +84,7 @@ public class MedicalMapping {
         HouseholdDTO householdDTO = new HouseholdDTO();
         List<PersonInfoDTO> personList = new ArrayList<>();
         String currentStation = null;
-        AddressFireStation currentAddress = null;
+        AddressEntity currentAddress = null;
         for (PersonEntity p : pEntList) {
             if (currentStation == null) {
                 currentStation = p.getAddressFireSt().getStation();

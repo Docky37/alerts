@@ -28,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alerts.DTO.PersonDTO;
-import com.safetynet.alerts.model.AddressFireStation;
+import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.model.MedicalRecord;
 
 @ExtendWith(SpringExtension.class)
@@ -51,14 +51,14 @@ public class AdminEndpointsIT {
 
     // Data creation for tests
     // ADDRESSES ----------------------------------------------------
-    public static List<AddressFireStation> addressFireStationList = new ArrayList<>();
+    public static List<AddressEntity> addressFireStationList = new ArrayList<>();
     static {
         addressFireStationList
-                .add(new AddressFireStation(1L, "1509 Culver St", "3"));
+                .add(new AddressEntity(1L, "1509 Culver St", "3"));
         addressFireStationList
-                .add(new AddressFireStation(2L, "29 15th St", "2"));
+                .add(new AddressEntity(2L, "29 15th St", "2"));
         addressFireStationList
-                .add(new AddressFireStation(3L, "834 Binoc Ave", "3"));
+                .add(new AddressEntity(3L, "834 Binoc Ave", "3"));
     }
     // PERSONS ------------------------------------------------------
     public static List<PersonDTO> personList = new ArrayList<>();
@@ -122,7 +122,7 @@ public class AdminEndpointsIT {
     public void givenAnAddressFireStationToAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        AddressFireStation addressFireStToAdd = new AddressFireStation();
+        AddressEntity addressFireStToAdd = new AddressEntity();
         addressFireStToAdd.setAddress("644 Gershwin Cir");
         addressFireStToAdd.setStation("1");
         mockMvc.perform(MockMvcRequestBuilders.post("/firestation")
@@ -214,7 +214,7 @@ public class AdminEndpointsIT {
     }
 
     @Test // GET
-    @Tag("Test_FindAllPersons")
+    @Tag("Test_FindAllMedicalRecords")
     @Order(10)
     @Rollback(false)
     public void givenMedicalRecordExists_whenGetAll_thenReturnsAll()
@@ -223,7 +223,7 @@ public class AdminEndpointsIT {
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "[{\"id\":1,\"firstName\":\"John\",\"lastName\":\"Boyd\",\"birthDate\":\"03/06/1984\",\"medications\":[\"aznol:350mg\",\"hydrapermazol:100mg\"],\"allergies\":[\"nillacilan\"]},{\"id\":2,\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"birthDate\":\"03/06/1989\",\"medications\":[\"pharmacol:5000mg\",\"terazine:10mg\",\"noznazol:250mg\"],\"allergies\":[]},{\"id\":3,\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"birthDate\":\"03/06/1989\",\"medications\":[],\"allergies\":[\"peanut\"]}]"))
+                        "[{\"id\":1,\"firstName\":\"John\",\"lastName\":\"Boyd\",\"birthdate\":\"03/06/1984\",\"medications\":[\"aznol:350mg\",\"hydrapermazol:100mg\"],\"allergies\":[\"nillacilan\"]},{\"id\":2,\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"birthdate\":\"03/06/1989\",\"medications\":[\"pharmacol:5000mg\",\"terazine:10mg\",\"noznazol:250mg\"],\"allergies\":[]},{\"id\":3,\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"birthdate\":\"03/06/1989\",\"medications\":[],\"allergies\":[\"peanut\"]}]"))
                 .andExpect(status().isOk());
     }
 
@@ -252,7 +252,7 @@ public class AdminEndpointsIT {
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "{\"id\":4,\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"birthDate\":\"09/06/2017\",\"medications\":[],\"allergies\":[\"Peanuts\"]}"))
+                        "{\"id\":4,\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"birthdate\":\"09/06/2017\",\"medications\":[],\"allergies\":[\"Peanuts\"]}"))
                 .andExpect(status().isOk());
     }
 

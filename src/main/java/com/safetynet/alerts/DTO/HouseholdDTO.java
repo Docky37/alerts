@@ -2,7 +2,7 @@ package com.safetynet.alerts.DTO;
 
 import java.util.List;
 
-import com.safetynet.alerts.model.AddressFireStation;
+import com.safetynet.alerts.model.AddressEntity;
 
 /**
  * The HouseholdDTO class is used for OPS4 fire endpoint. It provides a list of
@@ -15,9 +15,9 @@ import com.safetynet.alerts.model.AddressFireStation;
 public class HouseholdDTO {
 
     /**
-     * The AddressFireStation that corresponds to the given address.
+     * The AddressEntity that corresponds to the given address.
      */
-    private AddressFireStation addressFireStation;
+    private AddressEntity addressEntity;
 
     /**
      * The list of person leaving at the given address.
@@ -36,29 +36,29 @@ public class HouseholdDTO {
      * @param pAddressFireStation
      * @param pPersonList
      */
-    public HouseholdDTO(final AddressFireStation pAddressFireStation,
+    public HouseholdDTO(final AddressEntity pAddressFireStation,
             final List<PersonInfoDTO> pPersonList) {
-        addressFireStation = pAddressFireStation;
+        addressEntity = pAddressFireStation;
         personList = pPersonList;
     }
 
     /**
-     * Getter of addressFireStation.
+     * Getter of addressEntity.
      *
-     * @return the addressFireStation
+     * @return the addressEntity
      */
-    public AddressFireStation getAddressFireStation() {
-        return addressFireStation;
+    public AddressEntity getAddressFireStation() {
+        return addressEntity;
     }
 
     /**
-     * Setter of addressFireStation.
+     * Setter of addressEntity.
      *
-     * @param pAddressFireStation the addressFireStation to set
+     * @param pAddressFireStation the addressEntity to set
      */
     public void setAddressFireStation(
-            final AddressFireStation pAddressFireStation) {
-        addressFireStation = pAddressFireStation;
+            final AddressEntity pAddressFireStation) {
+        addressEntity = pAddressFireStation;
     }
 
     /**
@@ -84,8 +84,8 @@ public class HouseholdDTO {
      */
     @Override
     public String toString() {
-        return "HouseholdDTO [addressFireStation="
-                + addressFireStation.toString() + ", personList="
+        return "HouseholdDTO [addressEntity="
+                + addressEntity.toString() + ", personList="
                 + personList.toString() + "]";
     }
 

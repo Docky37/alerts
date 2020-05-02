@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.ChildDTO;
 import com.safetynet.alerts.DTO.OpsPersonDTO;
-import com.safetynet.alerts.model.AddressFireStation;
+import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.utils.OpsPersonMapping;
@@ -35,7 +35,7 @@ public class ChildAlertMappingTest {
     @Autowired
     private OpsPersonMapping opsPersonMapping;
 
-    public static AddressFireStation addressFireStation = new AddressFireStation(
+    public static AddressEntity addressEntity = new AddressEntity(
             1L, "1509 Culver St", "3");
 
     public static List<MedicalRecord> medicalRecordList = new ArrayList<>();
@@ -60,15 +60,15 @@ public class ChildAlertMappingTest {
     public static List<PersonEntity> pEntList = new ArrayList<>();
 
     static {
-        pEntList.add(new PersonEntity(1L, "John", "Boyd", addressFireStation,
+        pEntList.add(new PersonEntity(1L, "John", "Boyd", addressEntity,
                 "841-874-6512", "jaboyd@email.com", medicalRecordList.get(0)));
-        pEntList.add(new PersonEntity(2L, "Jacob", "Boyd", addressFireStation,
+        pEntList.add(new PersonEntity(2L, "Jacob", "Boyd", addressEntity,
                 "841-874-6513", "drk@email.com", medicalRecordList.get(1)));
-        pEntList.add(new PersonEntity(4L, "Tenley", "Boyd", addressFireStation,
+        pEntList.add(new PersonEntity(4L, "Tenley", "Boyd", addressEntity,
                 "841-874-6512", "tenz@email.com", medicalRecordList.get(2)));
-        pEntList.add(new PersonEntity(6L, "Roger", "Boyd", addressFireStation,
+        pEntList.add(new PersonEntity(6L, "Roger", "Boyd", addressEntity,
                 "841-874-6512", "jaboyd@email.com", medicalRecordList.get(3)));
-        pEntList.add(new PersonEntity(7L, "Felicia", "Boyd", addressFireStation,
+        pEntList.add(new PersonEntity(7L, "Felicia", "Boyd", addressEntity,
                 "841-874-6544", "jaboyd@email.com", medicalRecordList.get(4)));
     }
 

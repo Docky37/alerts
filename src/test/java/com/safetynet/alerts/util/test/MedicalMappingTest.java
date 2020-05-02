@@ -18,7 +18,7 @@ import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
-import com.safetynet.alerts.model.AddressFireStation;
+import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.utils.MedicalMapping;
@@ -44,12 +44,12 @@ public class MedicalMappingTest {
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
-    public static List<AddressFireStation> addressFireStList = new ArrayList<>();
+    public static List<AddressEntity> addressFireStList = new ArrayList<>();
     static {
         addressFireStList
-                .add(new AddressFireStation(1L, "1509 Culver St", "1"));
-        addressFireStList.add(new AddressFireStation(2L, "29_15th_St", "1"));
-        addressFireStList.add(new AddressFireStation(3L, "834 Binoc Ave", "3"));
+                .add(new AddressEntity(1L, "1509 Culver St", "1"));
+        addressFireStList.add(new AddressEntity(2L, "29_15th_St", "1"));
+        addressFireStList.add(new AddressEntity(3L, "834 Binoc Ave", "3"));
     }
 
     public static List<MedicalRecord> medicalRecordList = new ArrayList<>();

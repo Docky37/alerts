@@ -40,9 +40,9 @@ public class PersonEntity {
     /**
      * The address of the person.
      */
-    @ManyToOne(targetEntity = AddressFireStation.class)
+    @ManyToOne(targetEntity = AddressEntity.class)
     @JoinColumn(name = "addressId")
-    private AddressFireStation addressId;
+    private AddressEntity addressId;
     /**
      * The phone number of the person.
      */
@@ -68,13 +68,13 @@ public class PersonEntity {
      * @param pId
      * @param pFirstName
      * @param pLastName
-     * @param pAddressFireSt - Many to One join with AddressFireStation
+     * @param pAddressFireSt - Many to One join with AddressEntity
      * @param pPhone
      * @param pEmail
      * @param pMedRecId
      */
     public PersonEntity(final Long pId, final String pFirstName,
-            final String pLastName, final AddressFireStation pAddressFireSt,
+            final String pLastName, final AddressEntity pAddressFireSt,
             final String pPhone, final String pEmail,
             final MedicalRecord pMedRecId) {
         super();
@@ -152,7 +152,7 @@ public class PersonEntity {
      *
      * @return a String
      */
-    public AddressFireStation getAddressFireSt() {
+    public AddressEntity getAddressFireSt() {
         return addressId;
     }
 
@@ -161,7 +161,7 @@ public class PersonEntity {
      *
      * @param pAddressFireSt
      */
-    public void setAddressFireSt(final AddressFireStation pAddressFireSt) {
+    public void setAddressFireSt(final AddressEntity pAddressFireSt) {
         addressId = pAddressFireSt;
     }
 

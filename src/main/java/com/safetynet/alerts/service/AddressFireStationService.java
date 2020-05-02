@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.safetynet.alerts.model.AddressFireStation;
+import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.repositery.AddressFireStationRepository;
 import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
 
@@ -36,14 +36,14 @@ public class AddressFireStationService implements IAddressFireStationService {
      * each corresponding covering station) in the DataBase. The method is
      * called by the POST request on /firestations.
      *
-     * @param pListFireStation - a List<AddressFireStation> instance
-     * @return a List<AddressFireStation> instance
+     * @param pListFireStation - a List<AddressEntity> instance
+     * @return a List<AddressEntity> instance
      */
     @Override
-    public List<AddressFireStation> addListFireStations(
-            final List<AddressFireStation> pListFireStation) {
-        List<AddressFireStation> createdList;
-        createdList = (List<AddressFireStation>) addressFireStRepository
+    public List<AddressEntity> addListFireStations(
+            final List<AddressEntity> pListFireStation) {
+        List<AddressEntity> createdList;
+        createdList = (List<AddressEntity>) addressFireStRepository
                 .saveAll(pListFireStation);
         return createdList;
     }
@@ -53,12 +53,12 @@ public class AddressFireStationService implements IAddressFireStationService {
      * corresponding covering station) saved in the DataBase. The method is
      * called by a GET request on /firestation.
      *
-     * @return a List<AddressFireStation> instance
+     * @return a List<AddressEntity> instance
      */
     @Override
-    public List<AddressFireStation> findAll() {
-        List<AddressFireStation> addressFireStList;
-        addressFireStList = (List<AddressFireStation>) addressFireStRepository
+    public List<AddressEntity> findAll() {
+        List<AddressEntity> addressFireStList;
+        addressFireStList = (List<AddressEntity>) addressFireStRepository
                 .findAll();
         return addressFireStList;
     }
@@ -68,16 +68,16 @@ public class AddressFireStationService implements IAddressFireStationService {
      * corresponding covering station in database. The method is called by the
      * POST request on /firestation.
      *
-     * @param pAddressFireStation an AddressFireStation instance
-     * @return an AddressFireStation instance
+     * @param pAddressFireStation an AddressEntity instance
+     * @return an AddressEntity instance
      */
     @Override
-    public AddressFireStation addAddressFireStation(
-            final AddressFireStation pAddressFireStation) {
-        AddressFireStation foundAddressFireSt = addressFireStRepository
+    public AddressEntity addAddressFireStation(
+            final AddressEntity pAddressFireStation) {
+        AddressEntity foundAddressFireSt = addressFireStRepository
                 .findByAddress(pAddressFireStation.getAddress());
         if (foundAddressFireSt == null) {
-            AddressFireStation addedAddressFireSt = addressFireStRepository
+            AddressEntity addedAddressFireSt = addressFireStRepository
                     .save(pAddressFireStation);
             return addedAddressFireSt;
         } else {
@@ -91,13 +91,13 @@ public class AddressFireStationService implements IAddressFireStationService {
      * GET request on /firestation/{address}.
      *
      * @param pAddress a String
-     * @return an AddressFireStation instance
+     * @return an AddressEntity instance
      * @throws AddressFireStationNotFoundException
      */
     @Override
-    public AddressFireStation findByAddress(final String pAddress)
+    public AddressEntity findByAddress(final String pAddress)
             throws AddressFireStationNotFoundException {
-        AddressFireStation foundAddressFireSt = addressFireStRepository
+        AddressEntity foundAddressFireSt = addressFireStRepository
                 .findByAddress(pAddress);
         if (foundAddressFireSt == null) {
             throw new AddressFireStationNotFoundException();
@@ -110,17 +110,17 @@ public class AddressFireStationService implements IAddressFireStationService {
      * corresponding covering station in database. The method is called by the
      * PUT request on /firestation.
      *
-     * @param pAddressFireStation an AddressFireStation instance
-     * @return an AddressFireStation instance
+     * @param pAddressFireStation an AddressEntity instance
+     * @return an AddressEntity instance
      */
     @Override
-    public AddressFireStation updateAddress(
-            final AddressFireStation pAddressFireStation) {
-        AddressFireStation addressFireStToUpdate = pAddressFireStation;
-        AddressFireStation foundAddressFireSt = addressFireStRepository
+    public AddressEntity updateAddress(
+            final AddressEntity pAddressFireStation) {
+        AddressEntity addressFireStToUpdate = pAddressFireStation;
+        AddressEntity foundAddressFireSt = addressFireStRepository
                 .findByAddress(pAddressFireStation.getAddress());
         addressFireStToUpdate.setId(foundAddressFireSt.getId());
-        AddressFireStation updatedAddressFireSt = addressFireStRepository
+        AddressEntity updatedAddressFireSt = addressFireStRepository
                 .save(addressFireStToUpdate);
         return updatedAddressFireSt;
     }
@@ -131,11 +131,11 @@ public class AddressFireStationService implements IAddressFireStationService {
      * DELETE request on /firestation/{address}.
      *
      * @param pAddress a String
-     * @return an AddressFireStation instance
+     * @return an AddressEntity instance
      */
     @Override
-    public AddressFireStation deleteAnAddress(final String pAddress) {
-        AddressFireStation foundAddressFireSt = addressFireStRepository
+    public AddressEntity deleteAnAddress(final String pAddress) {
+        AddressEntity foundAddressFireSt = addressFireStRepository
                 .findByAddress(pAddress);
         if (foundAddressFireSt != null) {
             addressFireStRepository.deleteById(foundAddressFireSt.getId());

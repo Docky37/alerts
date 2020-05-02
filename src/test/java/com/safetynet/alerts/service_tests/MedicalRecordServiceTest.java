@@ -25,7 +25,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
-import com.safetynet.alerts.model.AddressFireStation;
+import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.model.MedicalRecord;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.MedicalRecordRepository;
@@ -47,11 +47,11 @@ public class MedicalRecordServiceTest {
     @Autowired
     IMedicalRecordService medicalRecordService;
 
-    public static AddressFireStation addressFireStation = new AddressFireStation(
+    public static AddressEntity addressEntity = new AddressEntity(
             1L, "1509 Culver St", "3");
 
     public static PersonEntity personEntity = new PersonEntity(1L, "John",
-            "Boyd", addressFireStation, "841-874-6512", "jaboyd@email.com",
+            "Boyd", addressEntity, "841-874-6512", "jaboyd@email.com",
             null);
 
     public static List<MedicalRecord> medicalRecordList = new ArrayList<>();

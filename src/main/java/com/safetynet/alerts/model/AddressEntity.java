@@ -8,14 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * AddressFireStation class, use to map an address and its covering fire
+ * AddressEntity class, use to map an address and its covering fire
  * station.
  *
  * @author Thierry SCHREINER
  */
 @Entity
 @Table(name = "address")
-public class AddressFireStation {
+public class AddressEntity {
 
     /**
      * The id of the mapping.
@@ -48,7 +48,7 @@ public class AddressFireStation {
     /**
      * Empty constructor.
      */
-    public AddressFireStation() {
+    public AddressEntity() {
 
     }
 
@@ -59,7 +59,7 @@ public class AddressFireStation {
      * @param pAddress
      * @param pStation
      */
-    public AddressFireStation(final long pId, final String pAddress,
+    public AddressEntity(final long pId, final String pAddress,
             final String pStation) {
         super();
         id = pId;
