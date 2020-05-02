@@ -20,7 +20,7 @@ import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.model.PersonEntity;
-import com.safetynet.alerts.repositery.AddressFireStationRepository;
+import com.safetynet.alerts.repositery.AddressRepository;
 import com.safetynet.alerts.utils.PersonMapping;
 
 @RunWith(SpringRunner.class)
@@ -37,7 +37,7 @@ public class PersonMappingTest {
     private PersonMapping personMapping;
 
     @MockBean
-    private AddressFireStationRepository addressFireStationRepository;
+    private AddressRepository addressRepository;
 
     public static List<PersonDTO> personList = new ArrayList<>();
     static {
@@ -70,7 +70,7 @@ public class PersonMappingTest {
             throws Exception {
         LOGGER.info("Start test: PersonDTO list mapping to PersonneEntity list");
         // GIVEN
-        given(addressFireStationRepository.findByAddress(anyString()))
+        given(addressRepository.findByAddress(anyString()))
                 .willReturn(addressFireStList.get(0));
         // WHEN
         List<PersonEntity> mappedList = personMapping

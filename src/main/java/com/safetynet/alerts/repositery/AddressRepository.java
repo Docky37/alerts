@@ -5,14 +5,14 @@ import org.springframework.data.repository.CrudRepository;
 import com.safetynet.alerts.model.AddressEntity;
 
 /**
- * The interface AddressFireStationRepository allows us to use CrudRepository
+ * The interface AddressRepository allows us to use CrudRepository
  * methods without any implementation. The application uses the standard methods
  * save, saveAll, findAll, put and remove from the CrudRepository interface. It
  * also define a findByAddress method.
  *
  * @author Thierry Schreiner
  */
-public interface AddressFireStationRepository
+public interface AddressRepository
         extends CrudRepository<AddressEntity, Long> {
 
     /**

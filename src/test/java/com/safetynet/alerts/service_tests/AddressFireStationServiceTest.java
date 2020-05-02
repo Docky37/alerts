@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 
 import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
 import com.safetynet.alerts.model.AddressEntity;
-import com.safetynet.alerts.repositery.AddressFireStationRepository;
+import com.safetynet.alerts.repositery.AddressRepository;
 import com.safetynet.alerts.service.AddressFireStationService;
 import com.safetynet.alerts.service.IAddressFireStationService;
 
@@ -35,7 +35,7 @@ import com.safetynet.alerts.service.IAddressFireStationService;
 public class AddressFireStationServiceTest {
 
     @MockBean
-    private AddressFireStationRepository addressFireStationRepository;
+    private AddressRepository addressRepository;
 
     private IAddressFireStationService addressFireStationService;
 
@@ -51,7 +51,7 @@ public class AddressFireStationServiceTest {
     @Before
     public void SetUp() {
         addressFireStationService = new AddressFireStationService(
-                addressFireStationRepository);
+                addressRepository);
     }
 
     // POST >>> CREATE (Add a list of AddressEntity)
@@ -62,7 +62,7 @@ public class AddressFireStationServiceTest {
     public void a_givenAListOfAddressFireStationToAdd_whenPostList_thenAddressFireStationsAreCreated()
             throws Exception {
         // GIVEN
-        given(addressFireStationRepository
+        given(addressRepository
                 .saveAll(Mockito.<AddressEntity>anyList()))
                         .willReturn(addressFireStList);
         // WHEN
@@ -81,7 +81,7 @@ public class AddressFireStationServiceTest {
     public void b_givenAllAddressFireStationsToFind_whenFindAll_thenReturnListOfAllAddressFireStations()
             throws Exception {
         // GIVEN
-        given(addressFireStationRepository.findAll())
+        given(addressRepository.findAll())
                 .willReturn(addressFireStList);
         // WHEN
         List<AddressEntity> foundList = addressFireStationService
@@ -99,7 +99,7 @@ public class AddressFireStationServiceTest {
             + " then returns the AddressEntity.")
     public void c1_givenAAddressFireStationToFind_whenGetAddressFireStationByLastNameAndFirstName_thenReturnTheAddressFireStation()
             throws Exception, AddressFireStationNotFoundException {
-        given(addressFireStationRepository.findByAddress(anyString()))
+        given(addressRepository.findByAddress(anyString()))
                 .willReturn(addressFireStList.get(2));
 
         AddressEntity addressEntity = addressFireStationService
@@ -119,7 +119,7 @@ public class AddressFireStationServiceTest {
     public void c2_givenAnUnknownAdress_whenFindByAddress_thenNotFoundException()
             throws Exception, AddressFireStationNotFoundException {
         // GIVEN
-        given(addressFireStationRepository.findByAddress(anyString()))
+        given(addressRepository.findByAddress(anyString()))
                 .willReturn(null);
         // WHEN
         AddressEntity addressEntity = addressFireStationService
@@ -139,9 +139,9 @@ public class AddressFireStationServiceTest {
         AddressEntity addressFireStationToAdd = new AddressEntity(4L,
                 "644 Gershwin Cir", "1");
 
-        given(addressFireStationRepository.findByAddress(anyString()))
+        given(addressRepository.findByAddress(anyString()))
                 .willReturn(null);
-        given(addressFireStationRepository.save(any(AddressEntity.class)))
+        given(addressRepository.save(any(AddressEntity.class)))
                 .willReturn(addressFireStationToAdd);
         // WHEN
         AddressEntity addedAddressFireStation = addressFireStationService
@@ -162,13 +162,13 @@ public class AddressFireStationServiceTest {
             throws Exception {
         // GIVEN
         AddressEntity addedAddressFireStation = addressFireStList.get(0);
-        given(addressFireStationRepository.findByAddress(anyString()))
+        given(addressRepository.findByAddress(anyString()))
                 .willReturn(addedAddressFireStation);
         // WHEN
         addedAddressFireStation = addressFireStationService
                 .addAddressFireStation(addedAddressFireStation);
         // THEN
-        verify(addressFireStationRepository,never()).save(any(AddressEntity.class));
+        verify(addressRepository,never()).save(any(AddressEntity.class));
     }
 
     @Test // PUT >>> UPDATE (
@@ -181,10 +181,10 @@ public class AddressFireStationServiceTest {
         AddressEntity addressFireStToUpdate = addressFireStList.get(2);
         AddressEntity updatedAddressFireStation = addressFireStList.get(2);
         updatedAddressFireStation.setStation("2");
-        given(addressFireStationRepository
+        given(addressRepository
                 .findByAddress(addressFireStToUpdate.getAddress()))
                         .willReturn(addressFireStToUpdate);
-        given(addressFireStationRepository.save(any(AddressEntity.class)))
+        given(addressRepository.save(any(AddressEntity.class)))
                 .willReturn(updatedAddressFireStation);
 
         // WHEN
@@ -205,15 +205,15 @@ public class AddressFireStationServiceTest {
             throws Exception {
         // GIVEN
         AddressEntity addressFireStToDelete = addressFireStList.get(2);
-        given(addressFireStationRepository.findByAddress(anyString()))
+        given(addressRepository.findByAddress(anyString()))
                 .willReturn(addressFireStList.get(2));
         // WHEN
         addressFireStationService.deleteAnAddress(
                 addressFireStToDelete.getAddress());
         // THEN
-        verify(addressFireStationRepository).findByAddress(
+        verify(addressRepository).findByAddress(
                 addressFireStToDelete.getAddress());
-        verify(addressFireStationRepository).deleteById(any(Long.class));
+        verify(addressRepository).deleteById(any(Long.class));
     }
 
     @Test // DELETE
@@ -223,15 +223,15 @@ public class AddressFireStationServiceTest {
             throws Exception {
         // GIVEN
         AddressEntity addressFireStToDelete = addressFireStList.get(2);
-        given(addressFireStationRepository.findByAddress(anyString()))
+        given(addressRepository.findByAddress(anyString()))
                 .willReturn(null);
         // WHEN
         addressFireStationService.deleteAnAddress(
                 addressFireStToDelete.getAddress());
         // THEN
-        verify(addressFireStationRepository).findByAddress(
+        verify(addressRepository).findByAddress(
                 addressFireStToDelete.getAddress());
-        verify(addressFireStationRepository,never()).deleteById(any(Long.class));
+        verify(addressRepository,never()).deleteById(any(Long.class));
     }
 
 }

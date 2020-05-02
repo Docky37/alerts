@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.model.PersonEntity;
-import com.safetynet.alerts.repositery.AddressFireStationRepository;
+import com.safetynet.alerts.repositery.AddressRepository;
 
 /**
  * This class is in charge of conversion between PersonDTO and PersonEntity
@@ -20,11 +20,11 @@ import com.safetynet.alerts.repositery.AddressFireStationRepository;
 public class PersonMapping {
 
     /**
-     * Create a instance of the interface AddressFireStationRepository to
+     * Create a instance of the interface AddressRepository to
      * dialogue with the table address of the DataBase.
      */
     @Autowired
-    private AddressFireStationRepository addressFireStationRepository;
+    private AddressRepository addressRepository;
 
     /**
      * This method convertToPersonEntity(List<PersonDTO> pListPerson) convert a
@@ -56,7 +56,7 @@ public class PersonMapping {
         PersonEntity pEnt = new PersonEntity();
         pEnt.setFirstName(pPerson.getFirstName());
         pEnt.setLastName(pPerson.getLastName());
-        pEnt.setAddressFireSt(addressFireStationRepository
+        pEnt.setAddressFireSt(addressRepository
                 .findByAddress(pPerson.getAddress()));
         pEnt.setPhone(pPerson.getPhone());
         pEnt.setEmail(pPerson.getEmail());

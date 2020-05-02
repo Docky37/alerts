@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.model.AddressEntity;
-import com.safetynet.alerts.repositery.AddressFireStationRepository;
+import com.safetynet.alerts.repositery.AddressRepository;
 import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
 
 /**
@@ -19,7 +19,7 @@ public class AddressFireStationService implements IAddressFireStationService {
     /**
      * PersonRepository is an Interface that extends CrudRepository.
      */
-    private AddressFireStationRepository addressFireStRepository;
+    private AddressRepository addressFireStRepository;
 
     /**
      * Class constructor - Set addressFireStRepository (IoC).
@@ -27,7 +27,7 @@ public class AddressFireStationService implements IAddressFireStationService {
      * @param pAddressFireStRepositery
      */
     public AddressFireStationService(
-            final AddressFireStationRepository pAddressFireStRepositery) {
+            final AddressRepository pAddressFireStRepositery) {
         addressFireStRepository = pAddressFireStRepositery;
     }
 
