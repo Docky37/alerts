@@ -3,6 +3,7 @@ package com.safetynet.alerts.service;
 import java.util.List;
 
 import com.safetynet.alerts.DTO.PersonDTO;
+import com.safetynet.alerts.controller.PersonNotFoundException;
 
 public interface IPersonService {
 
@@ -29,7 +30,8 @@ public interface IPersonService {
      * @param pFirstName
      * @return a PersonDTO (the found person)
      */
-    PersonDTO findByLastNameAndFirstName(String pLastName, String pFirstName);
+    PersonDTO findByLastNameAndFirstName(String pLastName, String pFirstName)
+            throws PersonNotFoundException;
 
     /**
      * The addPerson method first uses the
@@ -51,11 +53,14 @@ public interface IPersonService {
      * method of CrudRepository. It ends returning the convertToPerson return of
      * the personRepository.save method.
      *
-     * @param pPerson - the person to update
+     * @param pLastName  - the LastName of the person to update
+     * @param pFirstName - the FirstName of the person to update
+     * @param pPerson    - the person to update
      * @return a PersonDTO (the updated person) or null if person to update not
      *         found.
      */
-    PersonDTO updatePerson(PersonDTO pPerson);
+    PersonDTO updatePerson(String pLastName, String pFirstName,
+            PersonDTO pPerson) throws PersonNotFoundException;
 
     /**
      * Delete method that uses first findByLastNameAndFirstName to find the

@@ -1,6 +1,6 @@
 package com.safetynet.alerts.controller;
 
-public class PersonNotFoundException extends RuntimeException {
+public class PersonNotFoundException extends Throwable {
 
     /**
      * Default serial version ID.

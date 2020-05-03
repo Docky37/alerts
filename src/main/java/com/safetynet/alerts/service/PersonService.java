@@ -94,7 +94,7 @@ public class PersonService implements IPersonService {
      */
     @Override
     public PersonDTO findByLastNameAndFirstName(final String pLastName,
-            final String pFirstName) {
+            final String pFirstName) throws PersonNotFoundException {
         PersonEntity foundPE = personRepository
                 .findByLastNameAndFirstName(pLastName, pFirstName);
         if (foundPE == null) {
@@ -141,11 +141,14 @@ public class PersonService implements IPersonService {
      *         found.
      */
     @Override
-    public PersonDTO updatePerson(final PersonDTO pPerson) {
-        PersonEntity pEnt = personRepository.findByLastNameAndFirstName(
-                pPerson.getLastName(), pPerson.getFirstName());
-        if (pEnt != null
-                && pEnt.getFirstName().contentEquals(pPerson.getFirstName())
+    public PersonDTO updatePerson(final String pLastName,
+            final String pFirstName, final PersonDTO pPerson)
+            throws PersonNotFoundException {
+        PersonEntity pEnt = personRepository
+                .findByLastNameAndFirstName(pLastName, pFirstName);
+        if (pEnt == null) {
+            throw new PersonNotFoundException();
+        } else if (pEnt.getFirstName().contentEquals(pPerson.getFirstName())
                 && pEnt.getLastName().contentEquals(pPerson.getLastName())) {
             long id = pEnt.getId();
             pEnt = personMapping.convertToPersonEntity(pPerson);

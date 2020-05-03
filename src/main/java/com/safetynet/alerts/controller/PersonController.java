@@ -38,6 +38,11 @@ public class PersonController {
             .getLogger(AlertsApplication.class);
 
     /**
+     * The Status code 501 Not implemented.
+     */
+    static final int CODE_501 = 501;
+
+    /**
      * The service class used to manage person administrative CRUD operations.
      */
     private IPersonService personService;
@@ -94,10 +99,12 @@ public class PersonController {
      * @param lastName
      * @param firstName
      * @return a PersonDTO
+     * @throws PersonNotFoundException
      */
     @GetMapping(value = "person/{lastName}/{firstName}")
     public PersonDTO findPersonByName(@PathVariable final String lastName,
-            @PathVariable final String firstName) {
+            @PathVariable final String firstName)
+            throws PersonNotFoundException {
         return personService.findByLastNameAndFirstName(lastName, firstName);
     }
 
@@ -134,25 +141,26 @@ public class PersonController {
     /**
      * PUT request to update a person.
      *
+     * @param lastName
+     * @param firstName
      * @param pPerson
      * @return ResponseEntity<Void>
+     * @throws PersonNotFoundException
      */
     @PutMapping(value = "person/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> update(@RequestBody final PersonDTO pPerson) {
+    public ResponseEntity<Void> update(@PathVariable final String lastName,
+            @PathVariable final String firstName,
+            @RequestBody final PersonDTO pPerson)
+            throws PersonNotFoundException {
 
-        PersonDTO personUpdated = personService.updatePerson(pPerson);
-
-        if (personUpdated != null) {
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("person/{lastName}/{firstName}")
-                    .buildAndExpand(personUpdated.getLastName(),
-                            personUpdated.getFirstName())
-                    .toUri();
-            return ResponseEntity.created(location).build();
-        } else {
-            return ResponseEntity.notFound().build();
+        PersonDTO personUpdated = personService.updatePerson(lastName,
+                firstName, pPerson);
+        if (personUpdated == null) {
+            return ResponseEntity.status(CODE_501).build();
         }
+        return ResponseEntity.noContent().build();
+
     }
 
     /**
