@@ -151,12 +151,12 @@ public class AddressControllerTest {
 
     @Test // PUT
     public void givenAnAddressFireStToUpdate_whenPut_thenReturnsIsCreated()
-            throws Exception {
+            throws Exception, AddressNotFoundException {
 
         ObjectMapper mapper = new ObjectMapper();
         AddressDTO addressDTOToUpdate = addressDTOList.get(2);
         addressDTOToUpdate.setStation("4");
-        given(addressService.updateAddress((any(AddressDTO.class))))
+        given(addressService.updateAddress(anyString(),(any(AddressDTO.class))))
                 .willReturn(addressDTOToUpdate);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
@@ -166,7 +166,7 @@ public class AddressControllerTest {
                 .content(mapper.writeValueAsString(addressDTOToUpdate));
 
         mockMVC.perform(builder)
-                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.status().isNoContent())
                 .andDo(MockMvcResultHandlers.print());
     }
 

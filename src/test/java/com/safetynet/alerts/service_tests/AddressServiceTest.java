@@ -195,7 +195,7 @@ public class AddressServiceTest {
     @DisplayName("5. Given a AddressEntity to update, when save the AddressEntity,"
             + " then this AddressEntity is updated.")
     public void e_givenAnAddressToUpdate_whenUpdate_thenReturnUpdatedAddressFireStation()
-            throws Exception {
+            throws Exception, AddressNotFoundException {
         // GIVEN
         AddressDTO addressDTOToUpdate = addressDTOList.get(2);
         AddressEntity updatedAddressEntity = addressEntityList.get(2);
@@ -210,7 +210,7 @@ public class AddressServiceTest {
 
         // WHEN
         AddressDTO updatedAddressDTO = addressService
-                .updateAddress(addressDTOToUpdate);
+                .updateAddress(addressDTOToUpdate.getAddress(), addressDTOToUpdate);
         // THEN
         assertThat(updatedAddressDTO.getAddress())
                 .isEqualTo(addressDTOToUpdate.getAddress());

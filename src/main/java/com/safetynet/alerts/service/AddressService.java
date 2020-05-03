@@ -55,8 +55,7 @@ public class AddressService implements IAddressService {
             final List<AddressDTO> pListAddress) {
         List<AddressEntity> createdList;
         createdList = addressMapping.convertToAddressEntity(pListAddress);
-        createdList = (List<AddressEntity>) repository
-                .saveAll(createdList);
+        createdList = (List<AddressEntity>) repository.saveAll(createdList);
         return addressMapping.convertToAddressDTO(createdList);
     }
 
@@ -124,12 +123,16 @@ public class AddressService implements IAddressService {
      *
      * @param pAddressDTO an AddressDTO instance
      * @return an AddressEntity instance
+     * @throws AddressNotFoundException
      */
     @Override
-    public AddressDTO updateAddress(final AddressDTO pAddressDTO) {
+    public AddressDTO updateAddress(final String pAdressToUpdate,
+            final AddressDTO pAddressDTO) throws AddressNotFoundException {
         AddressEntity foundAddressEntity = repository
-                .findByAddress(pAddressDTO.getAddress());
-        if (foundAddressEntity != null && foundAddressEntity.getAddress()
+                .findByAddress(pAdressToUpdate);
+        if (foundAddressEntity == null) {
+            throw new AddressNotFoundException();
+        } else if (foundAddressEntity.getAddress()
                 .contentEquals(pAddressDTO.getAddress())) {
             AddressEntity updateAddressEntity = foundAddressEntity;
             updateAddressEntity.setStation(pAddressDTO.getStation());
@@ -144,12 +147,12 @@ public class AddressService implements IAddressService {
      * corresponding covering station of database. The method is called by the
      * DELETE request on /firestation/{address}.
      *
-     * @param pAddress a String
+     * @param pAddressToDelete a String
      * @return an AddressEntity instance
      */
     @Override
-    public AddressDTO deleteAnAddress(final String pAddress) {
-        AddressEntity foundAddress = repository.findByAddress(pAddress);
+    public AddressDTO deleteAnAddress(final String pAddressToDelete) {
+        AddressEntity foundAddress = repository.findByAddress(pAddressToDelete);
         if (foundAddress != null) {
             repository.deleteById(foundAddress.getId());
             return addressMapping.convertToAddressDTO(foundAddress);

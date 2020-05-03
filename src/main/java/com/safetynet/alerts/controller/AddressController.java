@@ -20,8 +20,8 @@ import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.service.IAddressService;
 
 /**
- * AddressController class, used to create administrative endpoints
- * for CRUD operations on address-fire station mapping.
+ * AddressController class, used to create administrative endpoints for CRUD
+ * operations on address-fire station mapping.
  *
  * @author Thierry Schreiner
  */
@@ -34,12 +34,16 @@ public class AddressController {
     private IAddressService addressService;
 
     /**
+     * The Status code 501 Not implemented.
+     */
+    static final int CODE_501 = 501;
+
+    /**
      * Class constructor - Set addressService (IoC).
      *
      * @param pFireStationService
      */
-    public AddressController(
-            final IAddressService pFireStationService) {
+    public AddressController(final IAddressService pFireStationService) {
         addressService = pFireStationService;
     }
 
@@ -93,8 +97,7 @@ public class AddressController {
     public ResponseEntity<Void> create(
             @RequestBody final AddressDTO pAdressDTO) {
 
-        AddressDTO addressFireStAdded = addressService
-                .addAddress(pAdressDTO);
+        AddressDTO addressFireStAdded = addressService.addAddress(pAdressDTO);
 
         if (addressFireStAdded == null) {
             return ResponseEntity.noContent().build();
@@ -132,24 +135,23 @@ public class AddressController {
      * PUT request to update an address - fire station association from
      * DataBase.
      *
+     * @param address
      * @param pAdressDTO
      * @return ResponseEntity<Void>
+     * @throws AddressNotFoundException
      */
     @PutMapping(value = "firestation/{address}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> update(
-            @RequestBody final AddressDTO pAdressDTO) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> update(@PathVariable final String address,
+            @RequestBody final AddressDTO pAdressDTO)
+            throws AddressNotFoundException {
 
-        AddressDTO addressDTOUpdated = addressService
-                .updateAddress(pAdressDTO);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("firestation/{address}")
-                .buildAndExpand(addressDTOUpdated.getAddress(),
-                        addressDTOUpdated.getStation())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
+        AddressDTO addressDTOUpdated = addressService.updateAddress(address,
+                pAdressDTO);
+        if (addressDTOUpdated == null) {
+            return ResponseEntity.status(CODE_501).build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -164,8 +166,7 @@ public class AddressController {
     public ResponseEntity<Void> deleteAddressFireStation(
             @PathVariable final String address) {
         AddressDTO addressFireStToDelete = null;
-        addressFireStToDelete = addressService
-                .deleteAnAddress(address);
+        addressFireStToDelete = addressService.deleteAnAddress(address);
         if (addressFireStToDelete == null) {
             return ResponseEntity.notFound().build();
         }

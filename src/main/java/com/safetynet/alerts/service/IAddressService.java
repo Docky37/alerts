@@ -15,8 +15,7 @@ public interface IAddressService {
      * @param pListAddress - a List<AddressDTO> instance
      * @return a List<AddressDTO> instance
      */
-    List<AddressDTO> addListAddress(
-            List<AddressDTO> pListAddress);
+    List<AddressDTO> addListAddress(List<AddressDTO> pListAddress);
 
     /**
      * The find all method is used to get a list of all addresses (with each
@@ -35,8 +34,7 @@ public interface IAddressService {
      * @param pAddressDTO an AddressDTO instance
      * @return an AddressDTO instance
      */
-    AddressDTO addAddress(
-            AddressDTO pAddressDTO);
+    AddressDTO addAddress(AddressDTO pAddressDTO);
 
     /**
      * The findByAddress method is used to find an address with its
@@ -47,27 +45,29 @@ public interface IAddressService {
      * @return an AddressDTO instance
      * @throws AddressNotFoundException
      */
-    AddressDTO findByAddress(String pAddress)
-            throws AddressNotFoundException;
+    AddressDTO findByAddress(String pAddress) throws AddressNotFoundException;
 
     /**
      * The updateAddress method is used to update an address or its
      * corresponding covering station in database. The method is called by the
      * PUT request on /firestation.
      *
-     * @param pAddressDTO an AddressDTO instance
+     * @param pAddressToUpdate
+     * @param pAddressDTO      an AddressDTO instance
      * @return an AddressDTO instance
+     * @throws AddressNotFoundException
      */
-    AddressDTO updateAddress(AddressDTO pAddressDTO);
+    AddressDTO updateAddress(String pAddressToUpdate, AddressDTO pAddressDTO)
+            throws AddressNotFoundException;
 
     /**
      * The deleteAnAddress method is used to remove an address (and its
      * corresponding covering station of database. The method is called by the
      * DELETE request on /firestation/{address}.
      *
-     * @param pAddress a String
+     * @param pAddressToDelete a String
      * @return an AddressDTO instance
      */
-    AddressDTO deleteAnAddress(String pAddress);
+    AddressDTO deleteAnAddress(String pAddressToDelete);
 
 }
