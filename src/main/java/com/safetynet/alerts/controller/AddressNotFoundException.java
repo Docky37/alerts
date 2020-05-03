@@ -1,6 +1,6 @@
 package com.safetynet.alerts.controller;
 
-public class AddressFireStationNotFoundException extends Throwable {
+public class AddressNotFoundException extends Throwable {
 
     /**
      * Default serial version ID.

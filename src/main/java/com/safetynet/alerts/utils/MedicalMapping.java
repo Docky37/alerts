@@ -61,11 +61,11 @@ public class MedicalMapping {
         List<PersonInfoDTO> personList = mapPersonInfoList(pEntList);
         LOGGER.debug("MedicalMapping OPS#4 >>> PersonInfoDTO list: {}",
                 personList.toString());
-        householdDTO.setAddressFireStation(pEntList.get(0).getAddressFireSt());
+        householdDTO.setAddressEntity(pEntList.get(0).getAddressFireSt());
         householdDTO.setPersonList(personList);
 
         LOGGER.info("MedicalMapping OPS#4 >>> HouseholdDTO = {} - {}",
-                householdDTO.getAddressFireStation(),
+                householdDTO.getAddressEntity(),
                 householdDTO.getPersonList().toArray());
         return householdDTO;
     }
@@ -94,7 +94,7 @@ public class MedicalMapping {
             }
             if (!p.getAddressFireSt().getAddress()
                     .equals(currentAddress.getAddress())) {
-                householdDTO.setAddressFireStation(currentAddress);
+                householdDTO.setAddressEntity(currentAddress);
                 householdDTO.setPersonList(personList);
                 personList = new ArrayList<>();
                 householdList.add(householdDTO);
@@ -114,7 +114,7 @@ public class MedicalMapping {
 
         }
 
-        householdDTO.setAddressFireStation(currentAddress);
+        householdDTO.setAddressEntity(currentAddress);
         householdDTO.setPersonList(personList);
         householdList.add(householdDTO);
         floodDTOList.add(new FloodDTO(currentStation, householdList));

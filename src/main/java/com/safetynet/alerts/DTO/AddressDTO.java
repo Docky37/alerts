@@ -1,4 +1,4 @@
-package com.safetynet.alerts.model;
+package com.safetynet.alerts.DTO;
 
 
 
@@ -11,11 +11,7 @@ package com.safetynet.alerts.model;
 public class AddressDTO {
 
     /**
-     * The id of the mapping.
-     */
-    private long id;
-    /**
-     * The address of the house.
+     * The address of the household.
      */
     private String address;
     /**
@@ -41,34 +37,14 @@ public class AddressDTO {
     /**
      * Class constructor.
      *
-     * @param pId
      * @param pAddress
      * @param pStation
      */
-    public AddressDTO(final long pId, final String pAddress,
+    public AddressDTO(final String pAddress,
             final String pStation) {
         super();
-        id = pId;
         address = pAddress;
         station = pStation;
-    }
-
-    /**
-     * Getter of id.
-     *
-     * @return an long - the id of the mapping address
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * Setter of id.
-     *
-     * @param pId - the id of the fire station
-     */
-    public void setId(final long pId) {
-        id = pId;
     }
 
     /**
@@ -148,7 +124,7 @@ public class AddressDTO {
      */
     @Override
     public String toString() {
-        return "FireStations [id=" + id + ", address=" + address + ", city="
+        return "AddressDTO [address=" + address + ", city="
                 + city + ", zip code=" + zip + ", station=" + station + "]";
     }
 

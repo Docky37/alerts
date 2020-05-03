@@ -2,15 +2,18 @@ package com.safetynet.alerts.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.repositery.AddressRepository;
-import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
+import com.safetynet.alerts.utils.AddressMapping;
+import com.safetynet.alerts.DTO.AddressDTO;
+import com.safetynet.alerts.controller.AddressNotFoundException;
 
 /**
- * AddressService is the class in charge of the business work about
- * adress - fire station association.
+ * AddressService is the class in charge of the business work about adress -
+ * fire station association.
  *
  * @author Thierry Schreiner
  */
@@ -19,16 +22,24 @@ public class AddressService implements IAddressService {
     /**
      * PersonRepository is an Interface that extends CrudRepository.
      */
-    private AddressRepository addressFireStRepository;
+    private AddressRepository repository;
+    /**
+     * AddressMapping is an utility that provides bidirectional conversion
+     * between AddressDTO and AddressEntity.
+     */
+    @Autowired
+    private AddressMapping addressMapping;
 
     /**
      * Class constructor - Set addressFireStRepository (IoC).
      *
      * @param pAddressFireStRepositery
+     * @param pAddressMapping
      */
-    public AddressService(
-            final AddressRepository pAddressFireStRepositery) {
-        addressFireStRepository = pAddressFireStRepositery;
+    public AddressService(final AddressRepository pAddressFireStRepositery,
+            final AddressMapping pAddressMapping) {
+        repository = pAddressFireStRepositery;
+        addressMapping = pAddressMapping;
     }
 
     /**
@@ -36,16 +47,17 @@ public class AddressService implements IAddressService {
      * each corresponding covering station) in the DataBase. The method is
      * called by the POST request on /firestations.
      *
-     * @param pListFireStation - a List<AddressEntity> instance
+     * @param pListAddress - a List<AddressDTO> instance
      * @return a List<AddressEntity> instance
      */
     @Override
-    public List<AddressEntity> addListFireStations(
-            final List<AddressEntity> pListFireStation) {
+    public List<AddressDTO> addListAddress(
+            final List<AddressDTO> pListAddress) {
         List<AddressEntity> createdList;
-        createdList = (List<AddressEntity>) addressFireStRepository
-                .saveAll(pListFireStation);
-        return createdList;
+        createdList = addressMapping.convertToAddressEntity(pListAddress);
+        createdList = (List<AddressEntity>) repository
+                .saveAll(createdList);
+        return addressMapping.convertToAddressDTO(createdList);
     }
 
     /**
@@ -56,11 +68,12 @@ public class AddressService implements IAddressService {
      * @return a List<AddressEntity> instance
      */
     @Override
-    public List<AddressEntity> findAll() {
-        List<AddressEntity> addressFireStList;
-        addressFireStList = (List<AddressEntity>) addressFireStRepository
+    public List<AddressDTO> findAll() {
+        List<AddressEntity> addressEntityList = (List<AddressEntity>) repository
                 .findAll();
-        return addressFireStList;
+        List<AddressDTO> addressDTOList = addressMapping
+                .convertToAddressDTO(addressEntityList);
+        return addressDTOList;
     }
 
     /**
@@ -68,18 +81,18 @@ public class AddressService implements IAddressService {
      * corresponding covering station in database. The method is called by the
      * POST request on /firestation.
      *
-     * @param pAddressFireStation an AddressEntity instance
+     * @param pAddressDTO an AddressEntity instance
      * @return an AddressEntity instance
      */
     @Override
-    public AddressEntity addAddressFireStation(
-            final AddressEntity pAddressFireStation) {
-        AddressEntity foundAddressFireSt = addressFireStRepository
-                .findByAddress(pAddressFireStation.getAddress());
-        if (foundAddressFireSt == null) {
-            AddressEntity addedAddressFireSt = addressFireStRepository
-                    .save(pAddressFireStation);
-            return addedAddressFireSt;
+    public AddressDTO addAddress(final AddressDTO pAddressDTO) {
+        AddressEntity foundAddress = repository
+                .findByAddress(pAddressDTO.getAddress());
+        if (foundAddress == null) {
+            AddressEntity addedAddress = addressMapping
+                    .convertToAddressEntity(pAddressDTO);
+            addedAddress = repository.save(addedAddress);
+            return addressMapping.convertToAddressDTO(addedAddress);
         } else {
             return null;
         }
@@ -95,14 +108,13 @@ public class AddressService implements IAddressService {
      * @throws AddressFireStationNotFoundException
      */
     @Override
-    public AddressEntity findByAddress(final String pAddress)
-            throws AddressFireStationNotFoundException {
-        AddressEntity foundAddressFireSt = addressFireStRepository
-                .findByAddress(pAddress);
-        if (foundAddressFireSt == null) {
-            throw new AddressFireStationNotFoundException();
+    public AddressDTO findByAddress(final String pAddress)
+            throws AddressNotFoundException {
+        AddressEntity addressEntity = repository.findByAddress(pAddress);
+        if (addressEntity == null) {
+            throw new AddressNotFoundException();
         }
-        return foundAddressFireSt;
+        return addressMapping.convertToAddressDTO(addressEntity);
     }
 
     /**
@@ -110,19 +122,21 @@ public class AddressService implements IAddressService {
      * corresponding covering station in database. The method is called by the
      * PUT request on /firestation.
      *
-     * @param pAddressFireStation an AddressEntity instance
+     * @param pAddressDTO an AddressDTO instance
      * @return an AddressEntity instance
      */
     @Override
-    public AddressEntity updateAddress(
-            final AddressEntity pAddressFireStation) {
-        AddressEntity addressFireStToUpdate = pAddressFireStation;
-        AddressEntity foundAddressFireSt = addressFireStRepository
-                .findByAddress(pAddressFireStation.getAddress());
-        addressFireStToUpdate.setId(foundAddressFireSt.getId());
-        AddressEntity updatedAddressFireSt = addressFireStRepository
-                .save(addressFireStToUpdate);
-        return updatedAddressFireSt;
+    public AddressDTO updateAddress(final AddressDTO pAddressDTO) {
+        AddressEntity foundAddressEntity = repository
+                .findByAddress(pAddressDTO.getAddress());
+        if (foundAddressEntity != null && foundAddressEntity.getAddress()
+                .contentEquals(pAddressDTO.getAddress())) {
+            AddressEntity updateAddressEntity = foundAddressEntity;
+            updateAddressEntity.setStation(pAddressDTO.getStation());
+            updateAddressEntity = repository.save(updateAddressEntity);
+            return addressMapping.convertToAddressDTO(updateAddressEntity);
+        }
+        return null;
     }
 
     /**
@@ -134,13 +148,13 @@ public class AddressService implements IAddressService {
      * @return an AddressEntity instance
      */
     @Override
-    public AddressEntity deleteAnAddress(final String pAddress) {
-        AddressEntity foundAddressFireSt = addressFireStRepository
-                .findByAddress(pAddress);
-        if (foundAddressFireSt != null) {
-            addressFireStRepository.deleteById(foundAddressFireSt.getId());
+    public AddressDTO deleteAnAddress(final String pAddress) {
+        AddressEntity foundAddress = repository.findByAddress(pAddress);
+        if (foundAddress != null) {
+            repository.deleteById(foundAddress.getId());
+            return addressMapping.convertToAddressDTO(foundAddress);
         }
-        return foundAddressFireSt;
+        return null;
     }
 
 }

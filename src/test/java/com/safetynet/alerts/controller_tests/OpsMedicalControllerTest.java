@@ -93,7 +93,7 @@ public class OpsMedicalControllerTest {
                 p.get(1).getMedRecId().getAllergies(), p.get(1).getPhone()));
     }
     static {
-        mappedFireAlert.setAddressFireStation(addressFireStList.get(0));
+        mappedFireAlert.setAddressEntity(addressFireStList.get(0));
         mappedFireAlert.setPersonList(myFireList);
     }
 

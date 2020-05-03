@@ -17,7 +17,7 @@ public class HouseholdDTO {
     /**
      * The AddressEntity that corresponds to the given address.
      */
-    private AddressEntity addressEntity;
+    private AddressEntity address;
 
     /**
      * The list of person leaving at the given address.
@@ -33,12 +33,12 @@ public class HouseholdDTO {
     /**
      * Class constructor.
      *
-     * @param pAddressFireStation
+     * @param pAddressEntity
      * @param pPersonList
      */
-    public HouseholdDTO(final AddressEntity pAddressFireStation,
+    public HouseholdDTO(final AddressEntity pAddressEntity,
             final List<PersonInfoDTO> pPersonList) {
-        addressEntity = pAddressFireStation;
+        address = pAddressEntity;
         personList = pPersonList;
     }
 
@@ -47,18 +47,18 @@ public class HouseholdDTO {
      *
      * @return the addressEntity
      */
-    public AddressEntity getAddressFireStation() {
-        return addressEntity;
+    public AddressEntity getAddressEntity() {
+        return address;
     }
 
     /**
      * Setter of addressEntity.
      *
-     * @param pAddressFireStation the addressEntity to set
+     * @param pAddressEntity the addressEntity to set
      */
-    public void setAddressFireStation(
-            final AddressEntity pAddressFireStation) {
-        addressEntity = pAddressFireStation;
+    public void setAddressEntity(
+            final AddressEntity pAddressEntity) {
+        address = pAddressEntity;
     }
 
     /**
@@ -85,7 +85,7 @@ public class HouseholdDTO {
     @Override
     public String toString() {
         return "HouseholdDTO [addressEntity="
-                + addressEntity.toString() + ", personList="
+                + address.toString() + ", personList="
                 + personList.toString() + "]";
     }
 

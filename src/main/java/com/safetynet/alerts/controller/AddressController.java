@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.safetynet.alerts.model.AddressEntity;
+import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.service.IAddressService;
 
 /**
- * AddressFireStationController class, used to create administrative endpoints
+ * AddressController class, used to create administrative endpoints
  * for CRUD operations on address-fire station mapping.
  *
  * @author Thierry Schreiner
  */
 @RestController
-public class AddressFireStationController {
+public class AddressController {
     /**
      * The service class used to manage address - fire station association CRUD
      * operations.
@@ -38,7 +38,7 @@ public class AddressFireStationController {
      *
      * @param pFireStationService
      */
-    public AddressFireStationController(
+    public AddressController(
             final IAddressService pFireStationService) {
         addressService = pFireStationService;
     }
@@ -47,16 +47,16 @@ public class AddressFireStationController {
      * POST request to create address-fireStation mapping in DataBase from a
      * list of mapping.
      *
-     * @param pListFireStation
+     * @param pAdressDTOList
      * @return ResponseEntity<Void>
      */
     @PostMapping(value = "firestations")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(
-            @RequestBody final List<AddressEntity> pListFireStation) {
+            @RequestBody final List<AddressDTO> pAdressDTOList) {
 
-        List<AddressEntity> listFireStAdded = addressService
-                .addListFireStations(pListFireStation);
+        List<AddressDTO> listFireStAdded = addressService
+                .addListAddress(pAdressDTOList);
 
         if (listFireStAdded == null) {
             return ResponseEntity.noContent().build();
@@ -78,23 +78,23 @@ public class AddressFireStationController {
      * @return a List of all address - fire station associations in DB
      */
     @GetMapping(value = "firestation")
-    public List<AddressEntity> findAll() {
+    public List<AddressDTO> findAll() {
         return addressService.findAll();
     }
 
     /**
      * POST request to add a new Address-FireStation in DB.
      *
-     * @param pAddressFireStation - The association to add in DB
+     * @param pAdressDTO - The association to add in DB
      * @return ResponseEntity<Void>
      */
     @PostMapping(value = "firestation")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(
-            @RequestBody final AddressEntity pAddressFireStation) {
+            @RequestBody final AddressDTO pAdressDTO) {
 
-        AddressEntity addressFireStAdded = addressService
-                .addAddressFireStation(pAddressFireStation);
+        AddressDTO addressFireStAdded = addressService
+                .addAddress(pAdressDTO);
 
         if (addressFireStAdded == null) {
             return ResponseEntity.noContent().build();
@@ -112,19 +112,19 @@ public class AddressFireStationController {
      * GET request to find one address-fire station association.
      *
      * @param address
-     * @return AddressEntity
+     * @return AddressDTO
      * @throws AddressFireStationNotFoundException
      */
     @GetMapping(value = "firestation/{address}")
-    public AddressEntity findByAddress(@PathVariable final String address)
-            throws AddressFireStationNotFoundException {
+    public AddressDTO findByAddress(@PathVariable final String address)
+            throws AddressNotFoundException {
         return addressService.findByAddress(address);
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private void addressFireStationNotFoundHandler(
-            final AddressFireStationNotFoundException e) {
+            final AddressNotFoundException e) {
 
     }
 
@@ -132,21 +132,21 @@ public class AddressFireStationController {
      * PUT request to update an address - fire station association from
      * DataBase.
      *
-     * @param pAddressFireStation
+     * @param pAdressDTO
      * @return ResponseEntity<Void>
      */
     @PutMapping(value = "firestation/{address}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> update(
-            @RequestBody final AddressEntity pAddressFireStation) {
+            @RequestBody final AddressDTO pAdressDTO) {
 
-        AddressEntity addressFireStUpdated = addressService
-                .updateAddress(pAddressFireStation);
+        AddressDTO addressDTOUpdated = addressService
+                .updateAddress(pAdressDTO);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("firestation/{address}")
-                .buildAndExpand(addressFireStUpdated.getAddress(),
-                        addressFireStUpdated.getStation())
+                .buildAndExpand(addressDTOUpdated.getAddress(),
+                        addressDTOUpdated.getStation())
                 .toUri();
 
         return ResponseEntity.created(location).build();
@@ -163,7 +163,7 @@ public class AddressFireStationController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> deleteAddressFireStation(
             @PathVariable final String address) {
-        AddressEntity addressFireStToDelete = null;
+        AddressDTO addressFireStToDelete = null;
         addressFireStToDelete = addressService
                 .deleteAnAddress(address);
         if (addressFireStToDelete == null) {

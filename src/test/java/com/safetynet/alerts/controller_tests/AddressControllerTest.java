@@ -24,29 +24,35 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynet.alerts.controller.AddressFireStationController;
-import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
+import com.safetynet.alerts.DTO.AddressDTO;
+import com.safetynet.alerts.controller.AddressController;
+import com.safetynet.alerts.controller.AddressNotFoundException;
 import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.service.IAddressService;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(AddressFireStationController.class)
-public class AddressFireStationControllerTest {
+@WebMvcTest(AddressController.class)
+public class AddressControllerTest {
     @Autowired
     private MockMvc mockMVC;
 
     @MockBean
     private IAddressService addressService;
 
-    public static List<AddressEntity> addressFireStationList = new ArrayList<>();
+    public static List<AddressEntity> addressEntityList = new ArrayList<>();
 
     static {
-        addressFireStationList
-                .add(new AddressEntity(1L, "1509 Culver St", "3"));
-        addressFireStationList
-                .add(new AddressEntity(2L, "29_15th_St", "2"));
-        addressFireStationList
-                .add(new AddressEntity(3L, "834 Binoc Ave", "3"));
+        addressEntityList.add(new AddressEntity(1L, "1509 Culver St", "3"));
+        addressEntityList.add(new AddressEntity(2L, "29_15th_St", "2"));
+        addressEntityList.add(new AddressEntity(3L, "834 Binoc Ave", "3"));
+    }
+
+    public static List<AddressDTO> addressDTOList = new ArrayList<>();
+
+    static {
+        addressDTOList.add(new AddressDTO("1509 Culver St", "3"));
+        addressDTOList.add(new AddressDTO("29_15th_St", "2"));
+        addressDTOList.add(new AddressDTO("834 Binoc Ave", "3"));
     }
 
     @Test // POST
@@ -54,12 +60,12 @@ public class AddressFireStationControllerTest {
             throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
-        given(addressService.addListFireStations(Mockito.<AddressEntity>anyList()))
-                        .willReturn(addressFireStationList);
+        given(addressService.addListAddress(Mockito.<AddressDTO>anyList()))
+                .willReturn(addressDTOList);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/firestations")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(addressFireStationList)))
+                .content(mapper.writeValueAsString(addressDTOList)))
                 .andExpect(status().isCreated());
     }
 
@@ -68,42 +74,39 @@ public class AddressFireStationControllerTest {
             throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
-        given(addressService.addListFireStations(Mockito.<AddressEntity>anyList()))
-                        .willReturn(null);
+        given(addressService.addListAddress(Mockito.<AddressDTO>anyList()))
+                .willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/firestations")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(addressFireStationList)))
+                .content(mapper.writeValueAsString(addressDTOList)))
                 .andExpect(status().isNoContent());
     }
 
-     @Test // POST
-    public void givenAnAddressFireStationToAdd_whenPost_thenReturnsIsCreated()
+    @Test // POST
+    public void givenAnAddressAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
-        AddressEntity addressFireStToAdd = new AddressEntity(4L,
-                "644 Gershwin Cir", "1");
-        given(addressService
-                .addAddressFireStation(any(AddressEntity.class)))
-                        .willReturn(addressFireStToAdd);
+        AddressDTO addressDTOToAdd = new AddressDTO("644 Gershwin Cir", "1");
+        given(addressService.addAddress(any(AddressDTO.class)))
+                .willReturn(addressDTOToAdd);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/firestation")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(addressFireStToAdd)))
+                .content(mapper.writeValueAsString(addressDTOToAdd)))
                 .andExpect(status().isCreated());
     }
 
-     @Test // POST
+    @Test // POST
     public void givenAnAddressFireStationToAdd_whenPost_thenReturnsNoContent()
             throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
         AddressEntity addressFireStToAdd = new AddressEntity(4L,
                 "644 Gershwin Cir", "1");
-        given(addressService
-                .addAddressFireStation(any(AddressEntity.class)))
-                        .willReturn(null);
+        given(addressService.addAddress(any(AddressDTO.class)))
+                .willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/firestation")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -113,9 +116,9 @@ public class AddressFireStationControllerTest {
 
     @Test // GET
     public void givenAnAddressFireStToFind_whenGet_thenReturnsTheAddressFireStation()
-            throws Exception, AddressFireStationNotFoundException {
-        given(addressService.findByAddress(anyString())).willReturn(
-                new AddressEntity(4L, "644 Gershwin Cir", "1"));
+            throws Exception, AddressNotFoundException {
+        given(addressService.findByAddress(anyString()))
+                .willReturn(new AddressDTO("644 Gershwin Cir", "1"));
 
         mockMVC.perform(MockMvcRequestBuilders.get("/firestation/address"))
                 .andExpect(status().isOk())
@@ -128,9 +131,9 @@ public class AddressFireStationControllerTest {
 
     @Test // GET
     public void givenUnknownAddress_whenGet_thenNotFoundException()
-            throws Exception, AddressFireStationNotFoundException {
+            throws Exception, AddressNotFoundException {
         given(addressService.findByAddress(anyString()))
-                .willThrow(new AddressFireStationNotFoundException());
+                .willThrow(new AddressNotFoundException());
 
         mockMVC.perform(MockMvcRequestBuilders.get("/firestation/address"))
                 .andExpect(status().isNotFound());
@@ -140,8 +143,7 @@ public class AddressFireStationControllerTest {
     @Test // GET
     public void givenAllAddressFireStationToFind_whenFindAll_thenReturnsListOfAll()
             throws Exception {
-        given(addressService.findAll())
-                .willReturn(addressFireStationList);
+        given(addressService.findAll()).willReturn(addressDTOList);
         mockMVC.perform(MockMvcRequestBuilders.get("/firestation"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
@@ -152,18 +154,16 @@ public class AddressFireStationControllerTest {
             throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
-        AddressEntity addressFireStToUpdate = addressFireStationList
-                .get(2);
-        addressFireStToUpdate.setStation("4");
-        given(addressService
-                .updateAddress(any(AddressEntity.class)))
-                        .willReturn(addressFireStToUpdate);
+        AddressDTO addressDTOToUpdate = addressDTOList.get(2);
+        addressDTOToUpdate.setStation("4");
+        given(addressService.updateAddress((any(AddressDTO.class))))
+                .willReturn(addressDTOToUpdate);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
-                .put("/firestation/" + addressFireStToUpdate.getAddress())
+                .put("/firestation/" + addressDTOToUpdate.getAddress())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
-                .content(mapper.writeValueAsString(addressFireStToUpdate));
+                .content(mapper.writeValueAsString(addressDTOToUpdate));
 
         mockMVC.perform(builder)
                 .andExpect(MockMvcResultMatchers.status().isCreated())
@@ -173,8 +173,7 @@ public class AddressFireStationControllerTest {
     @Test // DELETE
     public void givenAnAddressFireStationToDelete_whenDelete_thenReturnsIsOk()
             throws Exception {
-        AddressEntity addressFireStToDelete = addressFireStationList
-                .get(1);
+        AddressDTO addressFireStToDelete = addressDTOList.get(1);
         given(addressService.deleteAnAddress(anyString()))
                 .willReturn(addressFireStToDelete);
 
@@ -186,10 +185,8 @@ public class AddressFireStationControllerTest {
     @Test // DELETE
     public void givenAnUnknownAddressFireStationToDelete_whenDelete_thenReturnsIsNotFound()
             throws Exception {
-        AddressEntity addressFireStToDelete = addressFireStationList
-                .get(1);
-        given(addressService.deleteAnAddress(anyString()))
-                .willReturn(null);
+        AddressDTO addressFireStToDelete = addressDTOList.get(1);
+        given(addressService.deleteAnAddress(anyString())).willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders
                 .delete("/firestation/" + addressFireStToDelete.getAddress()))

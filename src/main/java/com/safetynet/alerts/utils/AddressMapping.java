@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.safetynet.alerts.model.AddressDTO;
+import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.model.AddressEntity;
 
 /**
@@ -18,10 +18,10 @@ import com.safetynet.alerts.model.AddressEntity;
 public class AddressMapping {
 
     /**
-     * This method convertToAddressEntity(List<AddressDTO> pListAddress) convert a
-     * list of AddressDTO to a list of AddressEntity, using the next method
-     * convertToAddressEntity(AddressDTO pPerson) as a sub-method to convert each
-     * person of the list to a personEntity.
+     * This method convertToAddressEntity(List<AddressDTO> pListAddress) convert
+     * a list of AddressDTO to a list of AddressEntity, using the next method
+     * convertToAddressEntity(AddressDTO pPerson) as a sub-method to convert
+     * each person of the list to a personEntity.
      *
      * @param pListAddress - a list of AddressDTO objects
      * @return a list of AddressEntity objects
@@ -40,7 +40,7 @@ public class AddressMapping {
     /**
      * This method convert a AddressDTO to AddressEntity.
      *
-     * @param pPerson - the AddressDTO object to convert
+     * @param pAddressDTO - the AddressDTO object to convert
      * @return a AddressEntity object
      */
     public AddressEntity convertToAddressEntity(final AddressDTO pAddressDTO) {
@@ -57,18 +57,19 @@ public class AddressMapping {
      * AddressDTO, using the next method to convert each AddressEntity to
      * AddressDTO.
      *
-     * @param listPE - the list of AddressEntity
+     * @param pAddressEntityList - the list of AddressEntity
      * @return a List<AddressDTO> object
      */
-    public List<AddressDTO> convertToPerson(final List<AddressEntity> listPE) {
-        List<AddressDTO> listPersons = new ArrayList<AddressDTO>();
-        AddressDTO AddressDTO;
-        for (AddressEntity addressEntity : listPE) {
-            AddressDTO = convertToPerson(addressEntity);
-            listPersons.add(AddressDTO);
+    public List<AddressDTO> convertToAddressDTO(
+            final List<AddressEntity> pAddressEntityList) {
+        List<AddressDTO> addressDTOList = new ArrayList<AddressDTO>();
+        AddressDTO addressDTO;
+        for (AddressEntity addressEntity : pAddressEntityList) {
+            addressDTO = convertToAddressDTO(addressEntity);
+            addressDTOList.add(addressDTO);
         }
 
-        return (listPersons);
+        return (addressDTOList);
     }
 
     /**
@@ -77,7 +78,7 @@ public class AddressMapping {
      * @param pAddressEntity - the AddressEntity object to convert
      * @return a AddressDTO object
      */
-    public AddressDTO convertToPerson(final AddressEntity pAddressEntity) {
+    public AddressDTO convertToAddressDTO(final AddressEntity pAddressEntity) {
         AddressDTO addressDTO = new AddressDTO();
         addressDTO.setAddress(pAddressEntity.getAddress());
         addressDTO.setCity(pAddressEntity.getCity());

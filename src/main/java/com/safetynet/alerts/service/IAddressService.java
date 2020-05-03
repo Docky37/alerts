@@ -2,8 +2,8 @@ package com.safetynet.alerts.service;
 
 import java.util.List;
 
-import com.safetynet.alerts.controller.AddressFireStationNotFoundException;
-import com.safetynet.alerts.model.AddressEntity;
+import com.safetynet.alerts.DTO.AddressDTO;
+import com.safetynet.alerts.controller.AddressNotFoundException;
 
 public interface IAddressService {
 
@@ -12,31 +12,31 @@ public interface IAddressService {
      * each corresponding covering station) in the DataBase. The method is
      * called by the POST request on /firestations.
      *
-     * @param pListFireStation - a List<AddressEntity> instance
-     * @return a List<AddressEntity> instance
+     * @param pListAddress - a List<AddressDTO> instance
+     * @return a List<AddressDTO> instance
      */
-    List<AddressEntity> addListFireStations(
-            List<AddressEntity> pListFireStation);
+    List<AddressDTO> addListAddress(
+            List<AddressDTO> pListAddress);
 
     /**
      * The find all method is used to get a list of all addresses (with each
      * corresponding covering station) saved in the DataBase. The method is
      * called by a GET request on /firestation.
      *
-     * @return a List<AddressEntity> instance
+     * @return a List<AddressDTO> instance
      */
-    List<AddressEntity> findAll();
+    List<AddressDTO> findAll();
 
     /**
      * The addAddressFireStation method is used to add one new address with its
      * corresponding covering station in database. The method is called by the
      * POST request on /firestation.
      *
-     * @param pAddressFireStation an AddressEntity instance
-     * @return an AddressEntity instance
+     * @param pAddressDTO an AddressDTO instance
+     * @return an AddressDTO instance
      */
-    AddressEntity addAddressFireStation(
-            AddressEntity pAddressFireStation);
+    AddressDTO addAddress(
+            AddressDTO pAddressDTO);
 
     /**
      * The findByAddress method is used to find an address with its
@@ -44,21 +44,21 @@ public interface IAddressService {
      * GET request on /firestation/{address}.
      *
      * @param pAddress a String
-     * @return an AddressEntity instance
-     * @throws AddressFireStationNotFoundException
+     * @return an AddressDTO instance
+     * @throws AddressNotFoundException
      */
-    AddressEntity findByAddress(String pAddress)
-            throws AddressFireStationNotFoundException;
+    AddressDTO findByAddress(String pAddress)
+            throws AddressNotFoundException;
 
     /**
      * The updateAddress method is used to update an address or its
      * corresponding covering station in database. The method is called by the
      * PUT request on /firestation.
      *
-     * @param pAddressFireStation an AddressEntity instance
-     * @return an AddressEntity instance
+     * @param pAddressDTO an AddressDTO instance
+     * @return an AddressDTO instance
      */
-    AddressEntity updateAddress(AddressEntity pAddressFireStation);
+    AddressDTO updateAddress(AddressDTO pAddressDTO);
 
     /**
      * The deleteAnAddress method is used to remove an address (and its
@@ -66,8 +66,8 @@ public interface IAddressService {
      * DELETE request on /firestation/{address}.
      *
      * @param pAddress a String
-     * @return an AddressEntity instance
+     * @return an AddressDTO instance
      */
-    AddressEntity deleteAnAddress(String pAddress);
+    AddressDTO deleteAnAddress(String pAddress);
 
 }

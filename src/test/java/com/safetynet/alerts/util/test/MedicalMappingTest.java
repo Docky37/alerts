@@ -103,7 +103,7 @@ public class MedicalMappingTest {
                 p.get(2).getMedRecId().getMedications(),
                 p.get(2).getMedRecId().getAllergies(), p.get(2).getPhone()));
         
-        mappedFireAlert.setAddressFireStation(addressFireStList.get(0));
+        mappedFireAlert.setAddressEntity(addressFireStList.get(0));
         mappedFireAlert.setPersonList(myFireList);
     }
 
@@ -117,8 +117,8 @@ public class MedicalMappingTest {
         // WHEN
         HouseholdDTO householdDTO = medicalMapping.mapFire(p, address);
         // THEN
-        assertThat(householdDTO.getAddressFireStation()).isEqualTo(
-                mappedFireAlert.getAddressFireStation());
+        assertThat(householdDTO.getAddressEntity()).isEqualTo(
+                mappedFireAlert.getAddressEntity());
     }
 
     // OPS #5 - FLOOD ALERT ---------------------------------------------------
