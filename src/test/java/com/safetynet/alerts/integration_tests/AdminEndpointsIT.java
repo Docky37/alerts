@@ -29,7 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.model.AddressEntity;
-import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.MedicalRecordEntity;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -63,25 +63,25 @@ public class AdminEndpointsIT {
     // PERSONS ------------------------------------------------------
     public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new PersonDTO(0L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new PersonDTO(0L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new PersonDTO(0L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
     // MEDICAL RECORDS -----------------------------------------------
-    public static List<MedicalRecord> medicalRecordList = new ArrayList<>();
+    public static List<MedicalRecordEntity> medicalRecordList = new ArrayList<>();
     static {
         medicalRecordList
-                .add(new MedicalRecord(1L, "John", "Boyd", "03/06/1984",
+                .add(new MedicalRecordEntity(1L, "John", "Boyd", "03/06/1984",
                         new String[] { "aznol:350mg", "hydrapermazol:100mg" },
                         new String[] { "nillacilan" }));
-        medicalRecordList.add(new MedicalRecord(
+        medicalRecordList.add(new MedicalRecordEntity(
                 2L, "Jacob", "Boyd", "03/06/1989", new String[] {
                         "pharmacol:5000mg", "terazine:10mg", "noznazol:250mg" },
                 new String[] {}));
-        medicalRecordList.add(new MedicalRecord(3L, "Tenley", "Boyd",
+        medicalRecordList.add(new MedicalRecordEntity(3L, "Tenley", "Boyd",
                 "03/06/1989", new String[] {}, new String[] { "peanut" }));
 
     }
@@ -111,7 +111,7 @@ public class AdminEndpointsIT {
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "[{\"id\":1,\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"station\":\"3\"},{\"id\":2,\"address\":\"29 15th St\",\"city\":\"Culver\",\"zip\":\"97451\",\"station\":\"2\"},{\"id\":3,\"address\":\"834 Binoc Ave\",\"city\":\"Culver\",\"zip\":\"97451\",\"station\":\"3\"}]"))
+                        "[{\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"station\":\"3\"},{\"address\":\"29 15th St\",\"city\":\"Culver\",\"zip\":\"97451\",\"station\":\"2\"},{\"address\":\"834 Binoc Ave\",\"city\":\"Culver\",\"zip\":\"97451\",\"station\":\"3\"}]"))
                 .andExpect(status().isOk());
     }
 
@@ -141,7 +141,7 @@ public class AdminEndpointsIT {
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "{\"id\":4,\"address\":\"644 Gershwin Cir\",\"city\":\"Culver\",\"zip\":\"97451\",\"station\":\"1\"}"))
+                        "{\"address\":\"644 Gershwin Cir\",\"city\":\"Culver\",\"zip\":\"97451\",\"station\":\"1\"}"))
                 .andExpect(status().isOk());
     }
 
@@ -167,7 +167,7 @@ public class AdminEndpointsIT {
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "[{\"id\":1,\"firstName\":\"John\",\"lastName\":\"Boyd\",\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6512\",\"email\":\"jaboyd@email.com\"},{\"id\":2,\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6513\",\"email\":\"drk@email.com\"},{\"id\":3,\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6512\",\"email\":\"tenz@email.com\"}]"))
+                        "[{\"firstName\":\"John\",\"lastName\":\"Boyd\",\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6512\",\"email\":\"jaboyd@email.com\"},{\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6513\",\"email\":\"drk@email.com\"},{\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6512\",\"email\":\"tenz@email.com\"}]"))
                 .andExpect(status().isOk());
     }
 
@@ -178,7 +178,7 @@ public class AdminEndpointsIT {
     public void givenAPersonToAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        PersonDTO personToAdd = new PersonDTO(0L, "Roger", "Boyd", "1509 Culver St",
+        PersonDTO personToAdd = new PersonDTO("Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com");
         mockMvc.perform(MockMvcRequestBuilders.post("/person")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -196,7 +196,7 @@ public class AdminEndpointsIT {
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "{\"id\":4,\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6512\",\"email\":\"jaboyd@email.com\"}"))
+                        "{\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"address\":\"1509 Culver St\",\"city\":\"Culver\",\"zip\":\"97451\",\"phone\":\"841-874-6512\",\"email\":\"jaboyd@email.com\"}"))
                 .andExpect(status().isOk());
     }
 
@@ -223,7 +223,7 @@ public class AdminEndpointsIT {
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "[{\"id\":1,\"firstName\":\"John\",\"lastName\":\"Boyd\",\"birthdate\":\"03/06/1984\",\"medications\":[\"aznol:350mg\",\"hydrapermazol:100mg\"],\"allergies\":[\"nillacilan\"]},{\"id\":2,\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"birthdate\":\"03/06/1989\",\"medications\":[\"pharmacol:5000mg\",\"terazine:10mg\",\"noznazol:250mg\"],\"allergies\":[]},{\"id\":3,\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"birthdate\":\"03/06/1989\",\"medications\":[],\"allergies\":[\"peanut\"]}]"))
+                        "[{\"firstName\":\"John\",\"lastName\":\"Boyd\",\"birthdate\":\"03/06/1984\",\"medications\":[\"aznol:350mg\",\"hydrapermazol:100mg\"],\"allergies\":[\"nillacilan\"]},{\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"birthdate\":\"03/06/1989\",\"medications\":[\"pharmacol:5000mg\",\"terazine:10mg\",\"noznazol:250mg\"],\"allergies\":[]},{\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"birthdate\":\"03/06/1989\",\"medications\":[],\"allergies\":[\"peanut\"]}]"))
                 .andExpect(status().isOk());
     }
 
@@ -234,7 +234,7 @@ public class AdminEndpointsIT {
     public void givenAMedicalRecordToAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        MedicalRecord medRecToAdd = new MedicalRecord(0L, "Roger", "Boyd",
+        MedicalRecordEntity medRecToAdd = new MedicalRecordEntity(0L, "Roger", "Boyd",
                 "09/06/2017", new String[] {}, new String[] { "Peanuts" });
         mockMvc.perform(MockMvcRequestBuilders.post("/medicalRecord")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -252,7 +252,7 @@ public class AdminEndpointsIT {
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "{\"id\":4,\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"birthdate\":\"09/06/2017\",\"medications\":[],\"allergies\":[\"Peanuts\"]}"))
+                        "{\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"birthdate\":\"09/06/2017\",\"medications\":[],\"allergies\":[\"Peanuts\"]}"))
                 .andExpect(status().isOk());
     }
 
