@@ -50,11 +50,11 @@ public class PersonControllerTest {
     public static List<PersonDTO> personList = new ArrayList<>();
 
     static {
-        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
-                "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new PersonDTO(2L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St", "Culver",
+                "97451", "841-874-6512", "jaboyd@email.com"));
+        personList.add(new PersonDTO("Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new PersonDTO(3L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
@@ -92,7 +92,7 @@ public class PersonControllerTest {
         LOGGER.info("Start test: GET - findByLastNameAndFirstName");
         given(personService.findByLastNameAndFirstName(anyString(),
                 anyString()))
-                        .willReturn(new PersonDTO(1L, "John", "Boyd",
+                        .willReturn(new PersonDTO("John", "Boyd",
                                 "1509 Culver St", "Culver", "97451",
                                 "841-874-6512", "jaboyd@email.com"));
 
@@ -135,9 +135,8 @@ public class PersonControllerTest {
             throws Exception {
         LOGGER.info("Start test: POST - Add one person");
         ObjectMapper mapper = new ObjectMapper();
-        PersonDTO personToAdd = new PersonDTO(4L, "Roger", "Boyd",
-                "1509 Culver St", "Culver", "97451", "841-874-6512",
-                "tenz@email.com");
+        PersonDTO personToAdd = new PersonDTO("Roger", "Boyd", "1509 Culver St",
+                "Culver", "97451", "841-874-6512", "tenz@email.com");
         given(personService.addPerson(any(PersonDTO.class))).willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/person")
@@ -151,9 +150,8 @@ public class PersonControllerTest {
             throws Exception {
         LOGGER.info("Start test: POST - Add one person");
         ObjectMapper mapper = new ObjectMapper();
-        PersonDTO personToAdd = new PersonDTO(4L, "Roger", "Boyd",
-                "1509 Culver St", "Culver", "97451", "841-874-6512",
-                "tenz@email.com");
+        PersonDTO personToAdd = new PersonDTO("Roger", "Boyd", "1509 Culver St",
+                "Culver", "97451", "841-874-6512", "tenz@email.com");
         given(personService.addPerson(any(PersonDTO.class)))
                 .willReturn(personToAdd);
 

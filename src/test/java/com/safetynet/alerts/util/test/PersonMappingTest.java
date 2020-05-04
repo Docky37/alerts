@@ -41,9 +41,9 @@ public class PersonMappingTest {
 
     public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new PersonDTO(3L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 

@@ -48,22 +48,22 @@ public class OpsPersonControllerTest {
     public static List<PersonDTO> personList = new ArrayList<>();
 
     static {
-        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new PersonDTO(2L, "Johnathan", "Barrack", "29 15th St",
+        personList.add(new PersonDTO("Johnathan", "Barrack", "29 15th St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new PersonDTO(3L, "Doc", "Spring",
+        personList.add(new PersonDTO("Doc", "Spring",
                 "1515 Java St - Beverly Hills", "Los Angeles", "90211",
                 "123-456-7890", "Doc.Spring@email.com"));
-        personList.add(new PersonDTO(4L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
-        personList.add(new PersonDTO(4L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6515", "tenz@email.com"));
-        personList.add(new PersonDTO(5L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new PersonDTO(6L, "Roger", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new PersonDTO(7L, "Felicia", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Felicia", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6544", "jaboyd@email.com"));
     }
 

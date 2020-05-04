@@ -91,7 +91,6 @@ public class PersonMapping {
      */
     public PersonDTO convertToPerson(final PersonEntity pEnt) {
         PersonDTO personDTO = new PersonDTO();
-        personDTO.setId(pEnt.getId());
         personDTO.setFirstName(pEnt.getFirstName());
         personDTO.setLastName(pEnt.getLastName());
         personDTO.setAddress(pEnt.getAddressFireSt().getAddress());

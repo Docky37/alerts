@@ -8,10 +8,6 @@ package com.safetynet.alerts.DTO;
 public class PersonDTO {
 
     /**
-     * The id of the person.
-     */
-    private long id;
-    /**
      * The first name of the person.
      */
     private String firstName;
@@ -53,11 +49,10 @@ public class PersonDTO {
      * @param pPhone
      * @param pEmail
      */
-    public PersonDTO(final Long pId, final String pFirstName,
+    public PersonDTO(final String pFirstName,
             final String pLastName, final String pAddress, final String pCity,
             final String pZip, final String pPhone, final String pEmail) {
         super();
-        id = pId;
         firstName = pFirstName;
         lastName = pLastName;
         address = pAddress;
@@ -71,24 +66,6 @@ public class PersonDTO {
      * Empty constructor.
      */
     public PersonDTO() {
-    }
-
-    /**
-     * Getter of the person id.
-     *
-     * @return an int - the person id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Setter of the person id.
-     *
-     * @param pId - the person id.
-     */
-    public void setId(final Long pId) {
-        id = pId;
     }
 
     /**
