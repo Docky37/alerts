@@ -24,7 +24,7 @@ import com.safetynet.alerts.model.PersonEntity;
  * * @author Thierry Schreiner
  */
 @Component
-public class MedicalMapping {
+public class OpsMedicalMapping {
     /**
      * Create a SLF4J/LOG4J LOGGER instance.
      */
@@ -59,12 +59,12 @@ public class MedicalMapping {
             final String address) {
         HouseholdDTO householdDTO = new HouseholdDTO();
         List<PersonInfoDTO> personList = mapPersonInfoList(pEntList);
-        LOGGER.debug("MedicalMapping OPS#4 >>> PersonInfoDTO list: {}",
+        LOGGER.debug("OpsMedicalMapping OPS#4 >>> PersonInfoDTO list: {}",
                 personList.toString());
         householdDTO.setAddressEntity(pEntList.get(0).getAddressFireSt());
         householdDTO.setPersonList(personList);
 
-        LOGGER.info("MedicalMapping OPS#4 >>> HouseholdDTO = {} - {}",
+        LOGGER.info("OpsMedicalMapping OPS#4 >>> HouseholdDTO = {} - {}",
                 householdDTO.getAddressEntity(),
                 householdDTO.getPersonList().toArray());
         return householdDTO;
@@ -119,7 +119,7 @@ public class MedicalMapping {
         householdList.add(householdDTO);
         floodDTOList.add(new FloodDTO(currentStation, householdList));
 
-        LOGGER.info("MedicalMapping OPS#5 >>> FloodAlert = {}",
+        LOGGER.info("OpsMedicalMapping OPS#5 >>> FloodAlert = {}",
                 householdDTO.toString());
         // }
         return floodDTOList;
@@ -150,7 +150,7 @@ public class MedicalMapping {
                     personEntity.getPhone()));
 
         }
-        LOGGER.info("MedicalMapping OPS#6 >>> PersonInfo list = {}",
+        LOGGER.info("OpsMedicalMapping OPS#6 >>> PersonInfo list = {}",
                 personInfoList.toString());
 
         return personInfoList;

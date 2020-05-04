@@ -13,7 +13,7 @@ import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
-import com.safetynet.alerts.utils.MedicalMapping;
+import com.safetynet.alerts.utils.OpsMedicalMapping;
 
 /**
  * OpsMedicalService is the class in charge of the OPS medical business work.
@@ -42,11 +42,11 @@ public class OpsMedicalService implements IOpsMedicalService {
     private PersonRepository personRepository;
 
     /**
-     * The MedicalMapping class performs data mapping of a List of PersonEntity
+     * The OpsMedicalMapping class performs data mapping of a List of PersonEntity
      * to create a HouseholdDTO object.
      */
     @Autowired
-    private MedicalMapping medicalMapping;
+    private OpsMedicalMapping opsMedicalMapping;
 
     /**
      * Class constructor - Set personRepository & personMapping (IoC).
@@ -55,9 +55,9 @@ public class OpsMedicalService implements IOpsMedicalService {
      * @param pMedicalMapping
      */
     public OpsMedicalService(final PersonRepository pPersonRepos,
-            final MedicalMapping pMedicalMapping) {
+            final OpsMedicalMapping pMedicalMapping) {
         personRepository = pPersonRepos;
-        medicalMapping = pMedicalMapping;
+        opsMedicalMapping = pMedicalMapping;
     }
 
     // OPS #4 ENDPOINT -------------------------------------------------------
@@ -77,7 +77,7 @@ public class OpsMedicalService implements IOpsMedicalService {
         LOGGER.debug("OpsMedicalService OPS#4 >>> PersonList: {}",
                 pEntList.toString());
 
-        HouseholdDTO householdDTO = medicalMapping.mapFire(pEntList, address);
+        HouseholdDTO householdDTO = opsMedicalMapping.mapFire(pEntList, address);
         LOGGER.info("OpsMedicalService OPS#4 >>> HouseholdDTO: {} - {}",
                 householdDTO.getAddressEntity(),
                 householdDTO.getPersonList());
@@ -101,7 +101,7 @@ public class OpsMedicalService implements IOpsMedicalService {
         LOGGER.debug("OpsMedicalService OPS#5 >>> PersonList: {}",
                 pEntList.toString());
 
-        List<FloodDTO> floodDTOList = medicalMapping.mapFlood(pEntList);
+        List<FloodDTO> floodDTOList = opsMedicalMapping.mapFlood(pEntList);
         LOGGER.debug("OpsMedicalService OPS#5 >>> FloodDTO list: {}",
                 floodDTOList.toString());
 
@@ -123,7 +123,7 @@ public class OpsMedicalService implements IOpsMedicalService {
         LOGGER.info("OpsMedicalService OPS #6 >>> personInfo -");
         List<PersonEntity> pEntList = (List<PersonEntity>) personRepository
                 .findByFirstNameAndLastName(pFirstName, pLastName);
-        List<PersonInfoDTO> personInfoDTOList = medicalMapping
+        List<PersonInfoDTO> personInfoDTOList = opsMedicalMapping
                 .mapPersonInfoList(pEntList);
         return personInfoDTOList;
     }

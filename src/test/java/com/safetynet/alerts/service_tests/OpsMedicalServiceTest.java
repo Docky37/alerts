@@ -33,7 +33,7 @@ import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.IOpsMedicalService;
 import com.safetynet.alerts.service.OpsMedicalService;
-import com.safetynet.alerts.utils.MedicalMapping;
+import com.safetynet.alerts.utils.OpsMedicalMapping;
 import com.safetynet.alerts.utils.PersonMapping;
 
 @RunWith(SpringRunner.class)
@@ -54,7 +54,7 @@ public class OpsMedicalServiceTest {
     private PersonMapping personMapping;
 
     @MockBean
-    private MedicalMapping medicalMapping;
+    private OpsMedicalMapping opsMedicalMapping;
 
     private IOpsMedicalService OpsMedicalService;
 
@@ -168,7 +168,7 @@ public class OpsMedicalServiceTest {
     @Before
     public void SetUp() {
         OpsMedicalService = new OpsMedicalService(personRepository,
-                medicalMapping);
+                opsMedicalMapping);
     }
 
     // OPS #4 - FIRE ALERT ---------------------------------------------------
@@ -183,7 +183,7 @@ public class OpsMedicalServiceTest {
         String address = "1509 Culver St";
         HouseholdDTO householdDTO = new HouseholdDTO();
         given(personRepository.findByAddressIdAddress(address)).willReturn(p);
-        given(medicalMapping.mapFire(p, address)).willReturn(mappedFireAlert);
+        given(opsMedicalMapping.mapFire(p, address)).willReturn(mappedFireAlert);
         // WHEN
         householdDTO = OpsMedicalService.fireByAddress(address);
         // THEN
@@ -204,12 +204,12 @@ public class OpsMedicalServiceTest {
         // GIVEN
         List<FloodDTO> floodDTOList = new ArrayList<>();
         given(personRepository.findAllGroupByAddress(stationList)).willReturn(p);
-        given(medicalMapping.mapFlood(p)).willReturn(floodDTOList);
+        given(opsMedicalMapping.mapFlood(p)).willReturn(floodDTOList);
         // WHEN
         floodDTOList = OpsMedicalService.floodByStation(stationList);
         // THEN
         verify(personRepository).findAllGroupByAddress(stationList);
-        verify(medicalMapping).mapFlood(p);
+        verify(opsMedicalMapping).mapFlood(p);
     }
 
     // OPS #6 - PERSON INFO ---------------------------------------------------
@@ -223,11 +223,11 @@ public class OpsMedicalServiceTest {
         // GIVEN
         given(personRepository.findByFirstNameAndLastName(anyString(), anyString())).willReturn(pEnt);
         LOGGER.info("myPersonInfoDTOList = {}",myPersonInfoDTOList);
-        given(medicalMapping.mapPersonInfoList(Mockito.<PersonEntity>anyList())).willReturn(myPersonInfoDTOList);
+        given(opsMedicalMapping.mapPersonInfoList(Mockito.<PersonEntity>anyList())).willReturn(myPersonInfoDTOList);
         // WHEN
         List<PersonInfoDTO> personInfoDTOList = OpsMedicalService.personInfo("john", "boyd");
         // THEN
-        verify(medicalMapping).mapPersonInfoList(Mockito.<PersonEntity>anyList());
+        verify(opsMedicalMapping).mapPersonInfoList(Mockito.<PersonEntity>anyList());
         assertThat(personInfoDTOList.toString()).isEqualTo(
                 "[PersonInfoDTO [firstName=John, lastName=Boyd, age=36 years old, medications=[aznol:350mg, hydrapermazol:100mg], allergies=[nillacilan], phone=841-874-6512], PersonInfoDTO [firstName=John, lastName=Boyd, age=19 months old, medications=[tetracyclaz:650mg], allergies=[xilliathal], phone=841-874-6544]]");
     }

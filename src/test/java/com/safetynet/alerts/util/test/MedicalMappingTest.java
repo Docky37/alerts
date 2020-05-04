@@ -21,10 +21,10 @@ import com.safetynet.alerts.DTO.PersonInfoDTO;
 import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.model.MedicalRecordEntity;
 import com.safetynet.alerts.model.PersonEntity;
-import com.safetynet.alerts.utils.MedicalMapping;
+import com.safetynet.alerts.utils.OpsMedicalMapping;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(MedicalMapping.class)
+@WebMvcTest(OpsMedicalMapping.class)
 public class MedicalMappingTest {
 
     /**
@@ -34,7 +34,7 @@ public class MedicalMappingTest {
             .getLogger(AlertsApplication.class);
 
     @Autowired
-    private MedicalMapping medicalMapping;
+    private OpsMedicalMapping opsMedicalMapping;
 
     public static List<PersonDTO> personList = new ArrayList<>();
     static {
@@ -115,7 +115,7 @@ public class MedicalMappingTest {
         // GIVEN
         String address = addressFireStList.get(0).getAddress();
         // WHEN
-        HouseholdDTO householdDTO = medicalMapping.mapFire(p, address);
+        HouseholdDTO householdDTO = opsMedicalMapping.mapFire(p, address);
         // THEN
         assertThat(householdDTO.getAddressEntity()).isEqualTo(
                 mappedFireAlert.getAddressEntity());
@@ -128,7 +128,7 @@ public class MedicalMappingTest {
         LOGGER.info("Start test: PersonDTO list mapping to PersonneEntity list");
         // GIVEN
         // WHEN
-        List<FloodDTO> floodList = medicalMapping.mapFlood(p);
+        List<FloodDTO> floodList = opsMedicalMapping.mapFlood(p);
         // THEN
         assertThat(floodList.get(0).getStation()).isEqualTo("1");
         assertThat(floodList.get(0).getHouseholdList().get(0).getPersonList().get(0).getLastName()).isEqualTo("Boyd");
