@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.MedicalRecordController;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
-import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.MedicalRecordEntity;
 import com.safetynet.alerts.service.IMedicalRecordService;
 
 @RunWith(SpringRunner.class)
@@ -51,18 +51,18 @@ public class MedicalRecordControllerTest {
     static DateTimeFormatter Formatter = DateTimeFormatter
             .ofPattern("dd/MM/yyyy");
 
-    public static List<MedicalRecord> medicalRecordList = new ArrayList<>();
+    public static List<MedicalRecordEntity> medicalRecordList = new ArrayList<>();
 
     static {
         medicalRecordList
-                .add(new MedicalRecord(1L, "John", "Boyd", "03/06/1984",
+                .add(new MedicalRecordEntity(1L, "John", "Boyd", "03/06/1984",
                         new String[] { "aznol:350mg", "hydrapermazol:100mg" },
                         new String[] { "nillacilan" }));
-        medicalRecordList.add(new MedicalRecord(
+        medicalRecordList.add(new MedicalRecordEntity(
                 2L, "Jacob", "Boyd", "03/06/1989", new String[] {
                         "pharmacol:5000mg", "terazine:10mg", "noznazol:250mg" },
                 new String[] {}));
-        medicalRecordList.add(new MedicalRecord(3L, "Tenley", "Boyd",
+        medicalRecordList.add(new MedicalRecordEntity(3L, "Tenley", "Boyd",
                 "03/06/1989", new String[] {}, new String[] { "peanut" }));
 
     }
@@ -73,7 +73,7 @@ public class MedicalRecordControllerTest {
         LOGGER.info("Start test: GET - findByLastNameAndFirstName");
         given(medicalRecordService.findByLastNameAndFirstName(anyString(),
                 anyString())).willReturn(
-                        new MedicalRecord(1L, "John", "Boyd", "03/06/1984",
+                        new MedicalRecordEntity(1L, "John", "Boyd", "03/06/1984",
                                 new String[] { "aznol:350mg",
                                         "hydrapermazol:100mg" },
                                 new String[] { "nillacilan" }));
@@ -94,7 +94,7 @@ public class MedicalRecordControllerTest {
         LOGGER.info("Start test: POST - A list of MedicalRecords");
         ObjectMapper mapper = new ObjectMapper();
         given(medicalRecordService
-                .addListMedicalRecord(Mockito.<MedicalRecord>anyList()))
+                .addListMedicalRecord(Mockito.<MedicalRecordEntity>anyList()))
                         .willReturn(medicalRecordList);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecords")
@@ -109,7 +109,7 @@ public class MedicalRecordControllerTest {
         LOGGER.info("Start test: POST - A list of MedicalRecords");
         ObjectMapper mapper = new ObjectMapper();
         given(medicalRecordService
-                .addListMedicalRecord(Mockito.<MedicalRecord>anyList()))
+                .addListMedicalRecord(Mockito.<MedicalRecordEntity>anyList()))
                         .willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecords")
@@ -145,11 +145,11 @@ public class MedicalRecordControllerTest {
     @Test // POST
     public void givenAMedicalRecordToAdd_whenPostMedicalRecord_thenReturnIsCreated()
             throws Exception {
-        LOGGER.info("Start test: POST - Add one MedicalRecord");
+        LOGGER.info("Start test: POST - Add one MedicalRecordEntity");
         ObjectMapper mapper = new ObjectMapper();
-        MedicalRecord personToAdd = new MedicalRecord(4L, "Roger", "Boyd",
+        MedicalRecordEntity personToAdd = new MedicalRecordEntity(4L, "Roger", "Boyd",
                 "09/06/2017", new String[] {}, new String[] {});
-        given(medicalRecordService.addMedicalRecord(any(MedicalRecord.class)))
+        given(medicalRecordService.addMedicalRecord(any(MedicalRecordEntity.class)))
                 .willReturn(personToAdd);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecord")
@@ -161,11 +161,11 @@ public class MedicalRecordControllerTest {
     @Test // POST
     public void givenAnUnknownMedicalRecordToAdd_whenPostMedicalRecord_thenReturnNoContent()
             throws Exception {
-        LOGGER.info("Start test: POST - Add one MedicalRecord");
+        LOGGER.info("Start test: POST - Add one MedicalRecordEntity");
         ObjectMapper mapper = new ObjectMapper();
-        MedicalRecord personToAdd = new MedicalRecord(4L, "Roger", "Boyd",
+        MedicalRecordEntity personToAdd = new MedicalRecordEntity(4L, "Roger", "Boyd",
                 "09/06/2017", new String[] {}, new String[] {});
-        given(medicalRecordService.addMedicalRecord(any(MedicalRecord.class)))
+        given(medicalRecordService.addMedicalRecord(any(MedicalRecordEntity.class)))
                 .willReturn(null);
 
         mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecord")
@@ -179,11 +179,11 @@ public class MedicalRecordControllerTest {
             throws Exception {
         LOGGER.info("Start test: PUT - Update a person");
         ObjectMapper mapper = new ObjectMapper();
-        MedicalRecord medicalRecordToUpdate = medicalRecordList.get(2);
+        MedicalRecordEntity medicalRecordToUpdate = medicalRecordList.get(2);
         // medicalRecordToUpdate.setEmail("updated@email.com");
         // medicalRecordToUpdate.setPhone("0123456789");
         given(medicalRecordService
-                .updateMedicalRecord(any(MedicalRecord.class)))
+                .updateMedicalRecord(any(MedicalRecordEntity.class)))
                         .willReturn(medicalRecordToUpdate);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
@@ -196,7 +196,7 @@ public class MedicalRecordControllerTest {
         mockMVC.perform(builder)
                 .andExpect(MockMvcResultMatchers.status().isCreated());
         // .andExpect(MockMvcResultMatchers.content()
-        // .string("MedicalRecord updated."))
+        // .string("MedicalRecordEntity updated."))
         // .andDo(MockMvcResultHandlers.print())
     }
 
@@ -205,11 +205,11 @@ public class MedicalRecordControllerTest {
             throws Exception {
         LOGGER.info("Start test: PUT - Update a person");
         ObjectMapper mapper = new ObjectMapper();
-        MedicalRecord medicalRecordToUpdate = medicalRecordList.get(2);
+        MedicalRecordEntity medicalRecordToUpdate = medicalRecordList.get(2);
         // medicalRecordToUpdate.setEmail("updated@email.com");
         // medicalRecordToUpdate.setPhone("0123456789");
         given(medicalRecordService
-                .updateMedicalRecord(any(MedicalRecord.class)))
+                .updateMedicalRecord(any(MedicalRecordEntity.class)))
                         .willReturn(null);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
@@ -222,7 +222,7 @@ public class MedicalRecordControllerTest {
         mockMVC.perform(builder)
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
         // .andExpect(MockMvcResultMatchers.content()
-        // .string("MedicalRecord updated."))
+        // .string("MedicalRecordEntity updated."))
         // .andDo(MockMvcResultHandlers.print())
     }
 
@@ -230,7 +230,7 @@ public class MedicalRecordControllerTest {
     public void givenAMedicalRecordToDelete_whenDeleteMedicalRecord_thenReturnIsOk()
             throws Exception {
         LOGGER.info("Start test: DELETE - Remove one person");
-        MedicalRecord medicalRecordToDelete = medicalRecordList.get(2);
+        MedicalRecordEntity medicalRecordToDelete = medicalRecordList.get(2);
         given(medicalRecordService.deleteAMedicalRecord(anyString(),
                 anyString())).willReturn(medicalRecordToDelete);
 
@@ -244,7 +244,7 @@ public class MedicalRecordControllerTest {
     public void givenAnUnknownMedicalRecordToDelete_whenDeleteMedicalRecord_thenReturnNotFound()
             throws Exception {
         LOGGER.info("Start test: DELETE - Remove one person");
-        MedicalRecord medicalRecordToDelete = medicalRecordList.get(2);
+        MedicalRecordEntity medicalRecordToDelete = medicalRecordList.get(2);
         given(medicalRecordService.deleteAMedicalRecord(anyString(),
                 anyString())).willReturn(null);
 

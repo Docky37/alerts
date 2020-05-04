@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
-import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.MedicalRecordEntity;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.MedicalRecordRepository;
 import com.safetynet.alerts.repositery.PersonRepository;
 
 /**
- * MedicalRecordService is the class in charge of the MedicalRecord business
+ * MedicalRecordService is the class in charge of the MedicalRecordEntity business
  * work.
  *
  * @author Thierry Schreiner
@@ -59,17 +59,17 @@ public class MedicalRecordService implements IMedicalRecordService {
      * records in DB.
      *
      * @param pListMedicalRecord
-     * @return a List<MedicalRecord>
+     * @return a List<MedicalRecordEntity>
      */
     @Override
-    public List<MedicalRecord> addListMedicalRecord(
-            final List<MedicalRecord> pListMedicalRecord) {
-        List<MedicalRecord> createdList = new ArrayList<MedicalRecord>();
-        for (MedicalRecord medicalRecord : pListMedicalRecord) {
-            MedicalRecord createdMedRec = addMedicalRecord(medicalRecord);
+    public List<MedicalRecordEntity> addListMedicalRecord(
+            final List<MedicalRecordEntity> pListMedicalRecord) {
+        List<MedicalRecordEntity> createdList = new ArrayList<MedicalRecordEntity>();
+        for (MedicalRecordEntity medicalRecordEntity : pListMedicalRecord) {
+            MedicalRecordEntity createdMedRec = addMedicalRecord(medicalRecordEntity);
             createdList.add(createdMedRec);
         }
-        // createdList = (List<MedicalRecord>) medicalRecordRepository
+        // createdList = (List<MedicalRecordEntity>) medicalRecordRepository
         // .saveAll(pListMedicalRecord);
         return createdList;
     }
@@ -78,12 +78,12 @@ public class MedicalRecordService implements IMedicalRecordService {
      * The find all method allows user to get a list of all medical records
      * saved in DB.
      *
-     * @return a List<MedicalRecord>
+     * @return a List<MedicalRecordEntity>
      */
     @Override
-    public List<MedicalRecord> findAll() {
-        List<MedicalRecord> medicalRecordList;
-        medicalRecordList = (List<MedicalRecord>) medicalRecordRepository
+    public List<MedicalRecordEntity> findAll() {
+        List<MedicalRecordEntity> medicalRecordList;
+        medicalRecordList = (List<MedicalRecordEntity>) medicalRecordRepository
                 .findAll();
         return medicalRecordList;
     }
@@ -91,14 +91,14 @@ public class MedicalRecordService implements IMedicalRecordService {
     /**
      * The addMedicalRecord method allows user to add one medical record in DB,
      * only if the person identified by lastName & firstName in the
-     * MedicalRecord exists in database persons table.
+     * MedicalRecordEntity exists in database persons table.
      *
      * @param pMedicalRecord
-     * @return a MedicalRecord
+     * @return a MedicalRecordEntity
      */
     @Override
-    public MedicalRecord addMedicalRecord(final MedicalRecord pMedicalRecord) {
-        MedicalRecord foundMedicalRecord = medicalRecordRepository
+    public MedicalRecordEntity addMedicalRecord(final MedicalRecordEntity pMedicalRecord) {
+        MedicalRecordEntity foundMedicalRecord = medicalRecordRepository
                 .findByLastNameAndFirstName(pMedicalRecord.getLastName(),
                         pMedicalRecord.getFirstName());
         if (foundMedicalRecord == null) {
@@ -110,7 +110,7 @@ public class MedicalRecordService implements IMedicalRecordService {
                 // owner is unknown in Alerts DB.
                 return null;
             } else {
-                MedicalRecord addedMedicalRecord = medicalRecordRepository
+                MedicalRecordEntity addedMedicalRecord = medicalRecordRepository
                         .save(pMedicalRecord);
                 personToJoin.setMedRecId(addedMedicalRecord);
                 personRepository.save(personToJoin);
@@ -126,13 +126,13 @@ public class MedicalRecordService implements IMedicalRecordService {
      *
      * @param lastName
      * @param firstName
-     * @return a MedicalRecord
+     * @return a MedicalRecordEntity
      * @throws MedicalRecordNotFoundException
      */
     @Override
-    public MedicalRecord findByLastNameAndFirstName(final String lastName,
+    public MedicalRecordEntity findByLastNameAndFirstName(final String lastName,
             final String firstName) throws MedicalRecordNotFoundException {
-        MedicalRecord foundMedicalRecord = medicalRecordRepository
+        MedicalRecordEntity foundMedicalRecord = medicalRecordRepository
                 .findByLastNameAndFirstName(lastName, firstName);
         if (foundMedicalRecord == null) {
             throw new MedicalRecordNotFoundException();
@@ -147,13 +147,13 @@ public class MedicalRecordService implements IMedicalRecordService {
      * method of CrudRepository to update it.
      *
      * @param pMedicalRecord
-     * @return a MedicalRecord
+     * @return a MedicalRecordEntity
      */
     @Override
-    public MedicalRecord updateMedicalRecord(
-            final MedicalRecord pMedicalRecord) {
-        MedicalRecord medicalRecordToUpdate = pMedicalRecord;
-        MedicalRecord foundMedicalRecord = medicalRecordRepository
+    public MedicalRecordEntity updateMedicalRecord(
+            final MedicalRecordEntity pMedicalRecord) {
+        MedicalRecordEntity medicalRecordToUpdate = pMedicalRecord;
+        MedicalRecordEntity foundMedicalRecord = medicalRecordRepository
                 .findByLastNameAndFirstName(pMedicalRecord.getLastName(),
                         pMedicalRecord.getFirstName());
         if (foundMedicalRecord != null
@@ -162,7 +162,7 @@ public class MedicalRecordService implements IMedicalRecordService {
                 && foundMedicalRecord.getLastName()
                         .contentEquals(pMedicalRecord.getLastName())) {
             medicalRecordToUpdate.setId(foundMedicalRecord.getId());
-            MedicalRecord updatedMedicalRecord = medicalRecordRepository
+            MedicalRecordEntity updatedMedicalRecord = medicalRecordRepository
                     .save(medicalRecordToUpdate);
             return updatedMedicalRecord;
         }
@@ -171,17 +171,17 @@ public class MedicalRecordService implements IMedicalRecordService {
 
     /**
      * Delete method that uses first findByLastNameAndFirstName to find the
-     * MedicalRecord to delete in DB and get its id to invokes the deleteById
+     * MedicalRecordEntity to delete in DB and get its id to invokes the deleteById
      * method of CrudRepository.
      *
      * @param lastName
      * @param firstName
-     * @return a MedicalRecord
+     * @return a MedicalRecordEntity
      */
     @Override
-    public MedicalRecord deleteAMedicalRecord(final String lastName,
+    public MedicalRecordEntity deleteAMedicalRecord(final String lastName,
             final String firstName) {
-        MedicalRecord medicalRecordToDelete = medicalRecordRepository
+        MedicalRecordEntity medicalRecordToDelete = medicalRecordRepository
                 .findByLastNameAndFirstName(lastName, firstName);
         if (medicalRecordToDelete != null) {
             medicalRecordRepository.deleteById(medicalRecordToDelete.getId());

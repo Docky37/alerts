@@ -28,7 +28,7 @@ import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
 import com.safetynet.alerts.model.AddressEntity;
-import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.MedicalRecordEntity;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.IOpsMedicalService;
@@ -60,20 +60,20 @@ public class OpsMedicalServiceTest {
 
     public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new PersonDTO(1L, "John", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new PersonDTO(2L, "Johnathan", "Barrack", "29 15th St",
+        personList.add(new PersonDTO("Johnathan", "Barrack", "29 15th St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new PersonDTO(3L, "Doc", "Spring",
+        personList.add(new PersonDTO("Doc", "Spring",
                 "1515 Java St - Beverly Hills", "Los Angeles", "90211",
                 "123-456-7890", "Doc.Spring@email.com"));
-        personList.add(new PersonDTO(4L, "Tenley", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Tenley", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6515", "tenz@email.com"));
-        personList.add(new PersonDTO(5L, "Jacob", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
-        personList.add(new PersonDTO(6L, "Roger", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Roger", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
-        personList.add(new PersonDTO(7L, "Felicia", "Boyd", "1509 Culver St",
+        personList.add(new PersonDTO("Felicia", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6544", "jaboyd@email.com"));
     }
 
@@ -84,21 +84,21 @@ public class OpsMedicalServiceTest {
         addressFireStList.add(new AddressEntity(2L, "29_15th_St", "2"));
     }
 
-    public static List<MedicalRecord> medicalRecordList = new ArrayList<>();
+    public static List<MedicalRecordEntity> medicalRecordList = new ArrayList<>();
     static {
         medicalRecordList
-                .add(new MedicalRecord(1L, "John", "Boyd", "03/06/1984",
+                .add(new MedicalRecordEntity(1L, "John", "Boyd", "03/06/1984",
                         new String[] { "aznol:350mg", "hydrapermazol:100mg" },
                         new String[] { "nillacilan" }));
-        medicalRecordList.add(new MedicalRecord(
+        medicalRecordList.add(new MedicalRecordEntity(
                 2L, "Jacob", "Boyd", "03/06/1989", new String[] {
                         "pharmacol:5000mg", "terazine:10mg", "noznazol:250mg" },
                 new String[] {}));
-        medicalRecordList.add(new MedicalRecord(3L, "Tenley", "Boyd",
+        medicalRecordList.add(new MedicalRecordEntity(3L, "Tenley", "Boyd",
                 "02/18/2012", new String[] {}, new String[] { "peanut" }));
-        medicalRecordList.add(new MedicalRecord(4L, "Roger", "Boyd",
+        medicalRecordList.add(new MedicalRecordEntity(4L, "Roger", "Boyd",
                 "09/06/2018", new String[] {}, new String[] {}));
-        medicalRecordList.add(new MedicalRecord(4L, "Felicia", "Boyd",
+        medicalRecordList.add(new MedicalRecordEntity(4L, "Felicia", "Boyd",
                 "01/08/1986", new String[] { "tetracyclaz:650mg" },
                 new String[] { "xilliathal" }));
     }

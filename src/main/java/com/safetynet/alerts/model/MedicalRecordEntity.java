@@ -15,14 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * MedicalRecord class, is used to contain the medical data of persons, in
+ * MedicalRecordEntity class, is used to contain the medical data of persons, in
  * relation with the database.
  *
  * @author Thierry SCHREINER
  */
 @Entity
 @Table(name = "medical_records")
-public class MedicalRecord {
+public class MedicalRecordEntity {
 
     /**
      * Date format used to convert String parameter to LocalDate.
@@ -38,7 +38,7 @@ public class MedicalRecord {
     /**
      * Empty class constructor.
      */
-    public MedicalRecord() {
+    public MedicalRecordEntity() {
     }
 
     /**
@@ -84,7 +84,7 @@ public class MedicalRecord {
      * @param pMedications
      * @param pAllergies
      */
-    public MedicalRecord(final long pId, final String pFirstName,
+    public MedicalRecordEntity(final long pId, final String pFirstName,
             final String pLastName, final String pBirthdate,
             final String[] pMedications, final String[] pAllergies) {
 
@@ -210,7 +210,7 @@ public class MedicalRecord {
      */
     @Override
     public String toString() {
-        return "MedicalRecord [id= " + id + ", firstName=" + firstName
+        return "MedicalRecordEntity [id= " + id + ", firstName=" + firstName
                 + ", lastName=" + lastName + ", birthdate="
                 + formatter2.format(birthdate) + ", medications="
                 + Arrays.toString(medications) + ", allergies="

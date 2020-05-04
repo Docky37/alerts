@@ -2,7 +2,7 @@ package com.safetynet.alerts.repositery;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.MedicalRecordEntity;
 
 /**
  * The interface MedicalRecordRepository allows us to use CrudRepository methods
@@ -13,7 +13,7 @@ import com.safetynet.alerts.model.MedicalRecord;
  * @author Thierry Schreiner
  */
 public interface MedicalRecordRepository
-        extends CrudRepository<MedicalRecord, Long> {
+        extends CrudRepository<MedicalRecordEntity, Long> {
 
     /**
      * This method use keyword "findBy" associated to repository fields lastName
@@ -21,8 +21,8 @@ public interface MedicalRecordRepository
      *
      * @param lastName
      * @param firstName
-     * @return a MedicalRecord
+     * @return a MedicalRecordEntity
      */
-    MedicalRecord findByLastNameAndFirstName(String lastName, String firstName);
+    MedicalRecordEntity findByLastNameAndFirstName(String lastName, String firstName);
 
 }

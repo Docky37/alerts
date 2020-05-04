@@ -56,11 +56,11 @@ public class PersonEntity {
     private String email;
 
     /**
-     * Foreign key for OneToOne join with MedicalRecord.
+     * Foreign key for OneToOne join with MedicalRecordEntity.
      */
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "medRecId")
-    private MedicalRecord medRecId;
+    private MedicalRecordEntity medRecId;
 
     /**
      * Class constructor.
@@ -76,7 +76,7 @@ public class PersonEntity {
     public PersonEntity(final Long pId, final String pFirstName,
             final String pLastName, final AddressEntity pAddressFireSt,
             final String pPhone, final String pEmail,
-            final MedicalRecord pMedRecId) {
+            final MedicalRecordEntity pMedRecId) {
         super();
         id = pId;
         firstName = pFirstName;
@@ -204,14 +204,14 @@ public class PersonEntity {
     /**
      * @return the medRecId
      */
-    public MedicalRecord getMedRecId() {
+    public MedicalRecordEntity getMedRecId() {
         return medRecId;
     }
 
     /**
      * @param pMedRecId the medRecId to set.
      */
-    public void setMedRecId(final MedicalRecord pMedRecId) {
+    public void setMedRecId(final MedicalRecordEntity pMedRecId) {
         medRecId = pMedRecId;
     }
 

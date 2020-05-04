@@ -27,7 +27,7 @@ import com.safetynet.alerts.DTO.OpsPersonDTO;
 import com.safetynet.alerts.DTO.PersonDTO;
 import com.safetynet.alerts.controller.OpsPersonController;
 import com.safetynet.alerts.service.IOpsPersonService;
-import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.MedicalRecordEntity;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(OpsPersonController.class)
@@ -98,21 +98,21 @@ public class OpsPersonControllerTest {
             }
         }
     }
-    public static List<MedicalRecord> medicalRecordList = new ArrayList<>();
+    public static List<MedicalRecordEntity> medicalRecordList = new ArrayList<>();
     static {
         medicalRecordList
-                .add(new MedicalRecord(1L, "John", "Boyd", "03/06/1984",
+                .add(new MedicalRecordEntity(1L, "John", "Boyd", "03/06/1984",
                         new String[] { "aznol:350mg", "hydrapermazol:100mg" },
                         new String[] { "nillacilan" }));
-        medicalRecordList.add(new MedicalRecord(
+        medicalRecordList.add(new MedicalRecordEntity(
                 2L, "Jacob", "Boyd", "03/06/1989", new String[] {
                         "pharmacol:5000mg", "terazine:10mg", "noznazol:250mg" },
                 new String[] {}));
-        medicalRecordList.add(new MedicalRecord(3L, "Tenley", "Boyd",
+        medicalRecordList.add(new MedicalRecordEntity(3L, "Tenley", "Boyd",
                 "02/18/2012", new String[] {}, new String[] { "peanut" }));
-        medicalRecordList.add(new MedicalRecord(4L, "Roger", "Boyd",
+        medicalRecordList.add(new MedicalRecordEntity(4L, "Roger", "Boyd",
                 "09/06/2017", new String[] {}, new String[] {}));
-        medicalRecordList.add(new MedicalRecord(4L, "Felicia", "Boyd",
+        medicalRecordList.add(new MedicalRecordEntity(4L, "Felicia", "Boyd",
                 "01/08/1986", new String[] { "tetracyclaz:650mg" },
                 new String[] { "xilliathal" }));
     }

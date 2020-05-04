@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.safetynet.alerts.model.MedicalRecord;
+import com.safetynet.alerts.model.MedicalRecordEntity;
 import com.safetynet.alerts.service.IMedicalRecordService;
 
 /**
@@ -53,9 +53,9 @@ public class MedicalRecordController {
     @PostMapping(value = "medicalRecords")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(
-            @RequestBody final List<MedicalRecord> pListMedicalRecord) {
+            @RequestBody final List<MedicalRecordEntity> pListMedicalRecord) {
 
-        List<MedicalRecord> listMedRecAdded = medicalRecordService
+        List<MedicalRecordEntity> listMedRecAdded = medicalRecordService
                 .addListMedicalRecord(pListMedicalRecord);
 
         if (listMedRecAdded == null) {
@@ -78,12 +78,12 @@ public class MedicalRecordController {
      * @return a List of all address - fire station associations in DB
      */
     @GetMapping(value = "medicalRecord")
-    public List<MedicalRecord> findAll() {
+    public List<MedicalRecordEntity> findAll() {
         return medicalRecordService.findAll();
     }
 
     /**
-     * POST request to add a new MedicalRecord in DB.
+     * POST request to add a new MedicalRecordEntity in DB.
      *
      * @param pMedicalRecord - The association to add in DB
      * @return ResponseEntity<Void>
@@ -91,9 +91,9 @@ public class MedicalRecordController {
     @PostMapping(value = "medicalRecord")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(
-            @RequestBody final MedicalRecord pMedicalRecord) {
+            @RequestBody final MedicalRecordEntity pMedicalRecord) {
 
-        MedicalRecord medicalRecordAdded = medicalRecordService
+        MedicalRecordEntity medicalRecordAdded = medicalRecordService
                 .addMedicalRecord(pMedicalRecord);
 
         if (medicalRecordAdded == null) {
@@ -109,15 +109,15 @@ public class MedicalRecordController {
     }
 
     /**
-     * GET request to find one MedicalRecord.
+     * GET request to find one MedicalRecordEntity.
      *
      * @param lastName
      * @param firstName
-     * @return MedicalRecord
+     * @return MedicalRecordEntity
      * @throws MedicalRecordNotFoundException
      */
     @GetMapping(value = "medicalRecord/{lastName}/{firstName}")
-    public MedicalRecord findMedicalRecordByName(
+    public MedicalRecordEntity findMedicalRecordByName(
             @PathVariable final String lastName,
             @PathVariable final String firstName)
             throws MedicalRecordNotFoundException {
@@ -142,9 +142,9 @@ public class MedicalRecordController {
     @PutMapping(value = "medicalRecord/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> update(
-            @RequestBody final MedicalRecord pMedicalRecord) {
+            @RequestBody final MedicalRecordEntity pMedicalRecord) {
 
-        MedicalRecord medicalRecordUpdated = medicalRecordService
+        MedicalRecordEntity medicalRecordUpdated = medicalRecordService
                 .updateMedicalRecord(pMedicalRecord);
 
         if (medicalRecordUpdated != null) {
@@ -173,7 +173,7 @@ public class MedicalRecordController {
     public ResponseEntity<Void> deleteMedicalRecord(
             @PathVariable final String lastName,
             @PathVariable final String firstName) {
-        MedicalRecord medicalRecordToDelete = null;
+        MedicalRecordEntity medicalRecordToDelete = null;
         medicalRecordToDelete = medicalRecordService
                 .deleteAMedicalRecord(lastName, firstName);
         if (medicalRecordToDelete == null) {
