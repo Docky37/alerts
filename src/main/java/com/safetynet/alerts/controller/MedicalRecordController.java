@@ -152,12 +152,13 @@ public class MedicalRecordController {
      *
      * @param pMedicalRecord
      * @return ResponseEntity<Void>
-     * @throws Throwable 
+     * @throws Throwable
      */
     @PutMapping(value = "medicalRecord/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> update(
-            @RequestBody final MedicalRecordDTO pMedicalRecord) throws Throwable {
+            @RequestBody final MedicalRecordDTO pMedicalRecord)
+            throws Throwable {
 
         MedicalRecordDTO medicalRecordUpdated = medicalRecordService
                 .updateMedicalRecord(pMedicalRecord);
@@ -166,7 +167,6 @@ public class MedicalRecordController {
             return ResponseEntity.status(CODE_501).build();
         }
         return ResponseEntity.noContent().build();
-
 
     }
 

@@ -23,6 +23,7 @@ public interface MedicalRecordRepository
      * @param firstName
      * @return a MedicalRecordEntity
      */
-    MedicalRecordEntity findByLastNameAndFirstName(String lastName, String firstName);
+    MedicalRecordEntity findByLastNameAndFirstName(String lastName,
+            String firstName);
 
 }

@@ -42,8 +42,8 @@ public class OpsMedicalService implements IOpsMedicalService {
     private PersonRepository personRepository;
 
     /**
-     * The OpsMedicalMapping class performs data mapping of a List of PersonEntity
-     * to create a HouseholdDTO object.
+     * The OpsMedicalMapping class performs data mapping of a List of
+     * PersonEntity to create a HouseholdDTO object.
      */
     @Autowired
     private OpsMedicalMapping opsMedicalMapping;
@@ -77,10 +77,10 @@ public class OpsMedicalService implements IOpsMedicalService {
         LOGGER.debug("OpsMedicalService OPS#4 >>> PersonList: {}",
                 pEntList.toString());
 
-        HouseholdDTO householdDTO = opsMedicalMapping.mapFire(pEntList, address);
+        HouseholdDTO householdDTO = opsMedicalMapping.mapFire(pEntList,
+                address);
         LOGGER.info("OpsMedicalService OPS#4 >>> HouseholdDTO: {} - {}",
-                householdDTO.getAddressEntity(),
-                householdDTO.getPersonList());
+                householdDTO.getAddressEntity(), householdDTO.getPersonList());
         return householdDTO;
 
     }

@@ -91,7 +91,8 @@ public class MedicalRecordService implements IMedicalRecordService {
      */
     @Override
     public List<MedicalRecordDTO> findAll() {
-        List<MedicalRecordEntity> medicalRecordList = (List<MedicalRecordEntity>) medicalRecordRepository
+        List<MedicalRecordEntity> medicalRecordList =
+                (List<MedicalRecordEntity>) medicalRecordRepository
                 .findAll();
         List<MedicalRecordDTO> foundMedicalRecordList = medicalRecordMapping
                 .convertToMedicalRecordDTO(medicalRecordList);

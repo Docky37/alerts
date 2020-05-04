@@ -39,8 +39,6 @@ public class PersonDTO {
 
     /**
      * Class constructor.
-     *
-     * @param pId
      * @param pFirstName
      * @param pLastName
      * @param pAddress

@@ -44,8 +44,8 @@ public interface IMedicalRecordService {
      * @return a MedicalRecordDTO
      * @throws MedicalRecordNotFoundException
      */
-    MedicalRecordDTO findByLastNameAndFirstName(String lastName, String firstName)
-            throws MedicalRecordNotFoundException;
+    MedicalRecordDTO findByLastNameAndFirstName(String lastName,
+            String firstName) throws MedicalRecordNotFoundException;
 
     /**
      * The updateMedicalRecord method first uses the
@@ -55,9 +55,10 @@ public interface IMedicalRecordService {
      *
      * @param pMedicalRecord
      * @return a MedicalRecordDTO
-     * @throws MedicalRecordNotFoundException 
+     * @throws MedicalRecordNotFoundException
      */
-    MedicalRecordDTO updateMedicalRecord(MedicalRecordDTO pMedicalRecord) throws MedicalRecordNotFoundException;
+    MedicalRecordDTO updateMedicalRecord(MedicalRecordDTO pMedicalRecord)
+            throws MedicalRecordNotFoundException;
 
     /**
      * Delete method that uses first findByLastNameAndFirstName to find the

@@ -27,11 +27,13 @@ import static org.mockito.Mockito.verify;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
 import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.model.MedicalRecordEntity;
+import com.safetynet.alerts.model.MedicalRecordDTO;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.MedicalRecordRepository;
 import com.safetynet.alerts.repositery.PersonRepository;
 import com.safetynet.alerts.service.IMedicalRecordService;
 import com.safetynet.alerts.service.MedicalRecordService;
+import com.safetynet.alerts.utils.MedicalRecordMapping;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MedicalRecordService.class)
@@ -44,36 +46,49 @@ public class MedicalRecordServiceTest {
     @MockBean
     PersonRepository personRepository;
 
+    @MockBean
+    MedicalRecordMapping medicalRecordMapping;
+
     @Autowired
     IMedicalRecordService medicalRecordService;
 
-    public static AddressEntity addressEntity = new AddressEntity(
-            1L, "1509 Culver St", "3");
+    public static AddressEntity addressEntity = new AddressEntity(1L,
+            "1509 Culver St", "3");
 
     public static PersonEntity personEntity = new PersonEntity(1L, "John",
-            "Boyd", addressEntity, "841-874-6512", "jaboyd@email.com",
-            null);
+            "Boyd", addressEntity, "841-874-6512", "jaboyd@email.com", null);
 
-    public static List<MedicalRecordEntity> medicalRecordList = new ArrayList<>();
-
+    public static List<MedicalRecordDTO> medRecDTOList = new ArrayList<>();
     static {
-        medicalRecordList
+        medRecDTOList.add(new MedicalRecordDTO("John", "Boyd", "03/06/1984",
+                new String[] { "aznol:350mg", "hydrapermazol:100mg" },
+                new String[] { "nillacilan" }));
+        medRecDTOList.add(new MedicalRecordDTO(
+                "Jacob", "Boyd", "03/06/1989", new String[] {
+                        "pharmacol:5000mg", "terazine:10mg", "noznazol:250mg" },
+                new String[] {}));
+        medRecDTOList.add(new MedicalRecordDTO("Tenley", "Boyd", "03/06/1989",
+                new String[] {}, new String[] { "peanut" }));
+    }
+
+    public static List<MedicalRecordEntity> medRecEntityList = new ArrayList<>();
+    static {
+        medRecEntityList
                 .add(new MedicalRecordEntity(1L, "John", "Boyd", "03/06/1984",
                         new String[] { "aznol:350mg", "hydrapermazol:100mg" },
                         new String[] { "nillacilan" }));
-        medicalRecordList.add(new MedicalRecordEntity(
+        medRecEntityList.add(new MedicalRecordEntity(
                 2L, "Jacob", "Boyd", "03/06/1989", new String[] {
                         "pharmacol:5000mg", "terazine:10mg", "noznazol:250mg" },
                 new String[] {}));
-        medicalRecordList.add(new MedicalRecordEntity(3L, "Tenley", "Boyd",
+        medRecEntityList.add(new MedicalRecordEntity(3L, "Tenley", "Boyd",
                 "03/06/1989", new String[] {}, new String[] { "peanut" }));
-
     }
 
     @Before
     public void SetUp() {
         medicalRecordService = new MedicalRecordService(medicalRecordRepository,
-                personRepository);
+                personRepository, medicalRecordMapping);
     }
 
     // POST >>> CREATE (Add a list of PersonDTO)
@@ -84,11 +99,18 @@ public class MedicalRecordServiceTest {
     public void a_givenAListOfMedicalRecordsToAdd_whenPostList_thenMedicalRecordsAreCreated()
             throws Exception {
         // GIVEN
-        given(medicalRecordRepository.saveAll(Mockito.<MedicalRecordEntity>anyList()))
-                .willReturn(medicalRecordList);
+        given(medicalRecordMapping.convertToMedicalRecordEntity(
+                Mockito.<MedicalRecordDTO>anyList()))
+                        .willReturn(medRecEntityList);
+        given(medicalRecordRepository
+                .saveAll(Mockito.<MedicalRecordEntity>anyList()))
+                        .willReturn(medRecEntityList);
+        given(medicalRecordMapping.convertToMedicalRecordDTO(
+                Mockito.<MedicalRecordEntity>anyList()))
+                        .willReturn(medRecDTOList);
         // WHEN
-        List<MedicalRecordEntity> addedList = medicalRecordService
-                .addListMedicalRecord(medicalRecordList);
+        List<MedicalRecordDTO> addedList = medicalRecordService
+                .addListMedicalRecord(medRecDTOList);
         // THEN
         assertThat(addedList.size()).isEqualTo(3);
 
@@ -102,9 +124,12 @@ public class MedicalRecordServiceTest {
     public void b_givenAllMedicalRecordsToFind_whenFindAll_thenReturnListOfAllMedicalRecords()
             throws Exception {
         // GIVEN
-        given(medicalRecordRepository.findAll()).willReturn(medicalRecordList);
+        given(medicalRecordRepository.findAll()).willReturn(medRecEntityList);
+        given(medicalRecordMapping.convertToMedicalRecordDTO(
+                Mockito.<MedicalRecordEntity>anyList()))
+                        .willReturn(medRecDTOList);
         // WHEN
-        List<MedicalRecordEntity> foundList = medicalRecordService.findAll();
+        List<MedicalRecordDTO> foundList = medicalRecordService.findAll();
         // THEN
         assertThat(foundList.get(0).getFirstName()).isEqualTo("John");
         assertThat(foundList.get(1).getFirstName()).isEqualTo("Jacob");
@@ -118,13 +143,18 @@ public class MedicalRecordServiceTest {
             + " then returns the MedicalRecordEntity.")
     public void c1_givenAMedicalRecordToFind_whenFindByLastNameAndFirstName_thenReturnMedRecord()
             throws Exception {
+        // GIVEN
         given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
-                anyString())).willReturn(medicalRecordList.get(0));
-
-        MedicalRecordEntity medicalRecordEntity = medicalRecordService
+                anyString())).willReturn(medRecEntityList.get(0));
+        given(medicalRecordMapping
+                .convertToMedicalRecordDTO(medRecEntityList.get(0)))
+                        .willReturn(medRecDTOList.get(0));
+        // WHEN
+        MedicalRecordDTO medicalRecordDTO = medicalRecordService
                 .findByLastNameAndFirstName("Boyd", "John");
-        assertThat(medicalRecordEntity.getLastName()).isEqualTo("Boyd");
-        assertThat(medicalRecordEntity.getFirstName()).isEqualTo("John");
+        // THEN
+        assertThat(medicalRecordDTO.getLastName()).isEqualTo("Boyd");
+        assertThat(medicalRecordDTO.getFirstName()).isEqualTo("John");
 
     }
 
@@ -140,10 +170,10 @@ public class MedicalRecordServiceTest {
         given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
                 anyString())).willReturn(null);
         // WHEN
-        MedicalRecordEntity medicalRecordEntity = medicalRecordService
+        MedicalRecordDTO medicalRecordDTO = medicalRecordService
                 .findByLastNameAndFirstName(anyString(), anyString());
         // THEN
-        assertThat(medicalRecordEntity).isNull();
+        assertThat(medicalRecordDTO).isNull();
     }
 
     // POST >>> CREATE (Add a new MedicalRecordEntity)
@@ -154,22 +184,24 @@ public class MedicalRecordServiceTest {
     public void d1_givenAPersonToAdd_whenPostPerson_thenPersonIsCreated()
             throws Exception {
         // GIVEN
-        MedicalRecordEntity medicalRecordToAdd = medicalRecordList.get(2);
-        given(medicalRecordRepository.findByLastNameAndFirstName(
-                medicalRecordToAdd.getLastName(),
-                medicalRecordToAdd.getFirstName())).willReturn(null,
-                        medicalRecordList.get(2));
+        given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(null);
         given(personRepository.findByLastNameAndFirstName(anyString(),
                 anyString())).willReturn(personEntity);
+        given(medicalRecordMapping
+                .convertToMedicalRecordEntity(any(MedicalRecordDTO.class)))
+                        .willReturn(medRecEntityList.get(0));
         given(medicalRecordRepository.save(any(MedicalRecordEntity.class)))
-                .willReturn(medicalRecordList.get(2));
-
+                .willReturn(medRecEntityList.get(0));
+        given(medicalRecordMapping
+                .convertToMedicalRecordDTO(any(MedicalRecordEntity.class)))
+                        .willReturn(medRecDTOList.get(0));
         // WHEN
-        MedicalRecordEntity addedMedicalRecord = medicalRecordService
-                .addMedicalRecord(medicalRecordToAdd);
+        MedicalRecordDTO addedMedicalRecord = medicalRecordService
+                .addMedicalRecord(medRecDTOList.get(0));
         // THEN
         assertThat(addedMedicalRecord.getLastName()).isEqualTo("Boyd");
-        assertThat(addedMedicalRecord.getFirstName()).isEqualTo("Tenley");
+        assertThat(addedMedicalRecord.getFirstName()).isEqualTo("John");
 
     }
 
@@ -181,21 +213,19 @@ public class MedicalRecordServiceTest {
     public void d2_givenAMedicalRecordToAddThatExists_whenPost_thenReturnNull()
             throws Exception {
         // GIVEN
-        MedicalRecordEntity medicalRecordToAdd = medicalRecordList.get(2);
-        given(medicalRecordRepository.findByLastNameAndFirstName(
-                medicalRecordToAdd.getLastName(),
-                medicalRecordToAdd.getFirstName())).willReturn(
-                        medicalRecordList.get(2));
+        MedicalRecordDTO medicalRecordToAdd = medRecDTOList.get(2);
+        given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(medRecEntityList.get(2));
         // WHEN
         medicalRecordToAdd = medicalRecordService
                 .addMedicalRecord(medicalRecordToAdd);
         // THEN
         verify(medicalRecordRepository).findByLastNameAndFirstName(anyString(),
                 anyString());
-        verify(personRepository,never()).findByLastNameAndFirstName(anyString(),
-                anyString());
-        verify(medicalRecordRepository, never()).save(any(MedicalRecordEntity.class));
-
+        verify(personRepository, never())
+                .findByLastNameAndFirstName(anyString(), anyString());
+        verify(medicalRecordRepository, never())
+                .save(any(MedicalRecordEntity.class));
     }
 
     // POST >>> CREATE (Try to add an orphan MedicalRecordEntity)
@@ -206,11 +236,9 @@ public class MedicalRecordServiceTest {
     public void d3_givenAnOrphanMedicalRecord_whenPost_thenReturnNull()
             throws Exception {
         // GIVEN
-        MedicalRecordEntity medicalRecordToAdd = medicalRecordList.get(2);
-        given(medicalRecordRepository.findByLastNameAndFirstName(
-                medicalRecordToAdd.getLastName(),
-                medicalRecordToAdd.getFirstName())).willReturn(null,
-                        medicalRecordList.get(2));
+        MedicalRecordDTO medicalRecordToAdd = medRecDTOList.get(2);
+        given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(null);
         given(personRepository.findByLastNameAndFirstName(anyString(),
                 anyString())).willReturn(null);
         // WHEN
@@ -221,8 +249,10 @@ public class MedicalRecordServiceTest {
                 anyString());
         verify(personRepository).findByLastNameAndFirstName(anyString(),
                 anyString());
-        verify(medicalRecordRepository, never()).save(any(MedicalRecordEntity.class));
-
+        verify(medicalRecordMapping, never())
+                .convertToMedicalRecordEntity(any(MedicalRecordDTO.class));
+        verify(medicalRecordRepository, never())
+                .save(any(MedicalRecordEntity.class));
     }
 
     @Test // PUT >>> UPDATE a MedicalRecordEntity
@@ -232,23 +262,26 @@ public class MedicalRecordServiceTest {
     public void e_givenAMedicalRecordToUpdate_whenUpdate_thenReturnUpdatedMedicalRecord()
             throws Exception {
         // GIVEN
-        MedicalRecordEntity medicalRecordToUpdate = medicalRecordList.get(2);
+        MedicalRecordDTO medicalRecordToUpdate = medRecDTOList.get(2);
         medicalRecordToUpdate.setBirthdate("06/03/1989");
-        MedicalRecordEntity updatedMedicalRecord = medicalRecordToUpdate;
-        given(medicalRecordRepository.findByLastNameAndFirstName(
-                updatedMedicalRecord.getLastName(),
-                updatedMedicalRecord.getFirstName()))
-                        .willReturn(medicalRecordList.get(2));
+        MedicalRecordEntity updatedMedicalRecord = medRecEntityList.get(2);
+        given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(medRecEntityList.get(2));
+        given(medicalRecordMapping
+                .convertToMedicalRecordEntity(any(MedicalRecordDTO.class)))
+                        .willReturn(updatedMedicalRecord);
         given(medicalRecordRepository.save(any(MedicalRecordEntity.class)))
                 .willReturn(updatedMedicalRecord);
-
+        given(medicalRecordMapping
+                .convertToMedicalRecordDTO(any(MedicalRecordEntity.class)))
+                        .willReturn(medicalRecordToUpdate);
         // WHEN
-        updatedMedicalRecord = medicalRecordService
+        MedicalRecordDTO updatedMedRecDTO = medicalRecordService
                 .updateMedicalRecord(medicalRecordToUpdate);
         // THEN
-        assertThat(updatedMedicalRecord.getFirstName())
+        assertThat(updatedMedRecDTO.getFirstName())
                 .isEqualTo(medicalRecordToUpdate.getFirstName());
-        assertThat(updatedMedicalRecord.getBirthdate())
+        assertThat(updatedMedRecDTO.getBirthdate())
                 .isEqualTo(medicalRecordToUpdate.getBirthdate());
     }
 
@@ -259,17 +292,16 @@ public class MedicalRecordServiceTest {
     public void f1_givenAMedicalRecordToDelete_whenDelete_thenMedicalRecordIsDeleted()
             throws Exception {
         // GIVEN
-        MedicalRecordEntity medicalRecordToDelete = medicalRecordList.get(2);
+        MedicalRecordDTO medicalRecordToDelete = medRecDTOList.get(2);
         given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
-                anyString())).willReturn(medicalRecordList.get(2));
+                anyString())).willReturn(medRecEntityList.get(2));
         // WHEN
         medicalRecordService.deleteAMedicalRecord(
                 medicalRecordToDelete.getLastName(),
                 medicalRecordToDelete.getFirstName());
         // THEN
         verify(medicalRecordRepository).findByLastNameAndFirstName(
-                medicalRecordToDelete.getLastName(),
-                medicalRecordToDelete.getFirstName());
+                anyString(), anyString());
         verify(medicalRecordRepository).deleteById(any(Long.class));
     }
 
@@ -280,7 +312,7 @@ public class MedicalRecordServiceTest {
     public void f2_givenAnUnknownMedicalRecordToDelete_whenDelete_thenReturnsNull()
             throws Exception {
         // GIVEN
-        MedicalRecordEntity medicalRecordToDelete = medicalRecordList.get(2);
+        MedicalRecordDTO medicalRecordToDelete = medRecDTOList.get(2);
         given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
                 anyString())).willReturn(null);
         // WHEN
@@ -291,7 +323,7 @@ public class MedicalRecordServiceTest {
         verify(medicalRecordRepository).findByLastNameAndFirstName(
                 medicalRecordToDelete.getLastName(),
                 medicalRecordToDelete.getFirstName());
-        verify(medicalRecordRepository,never()).deleteById(any(Long.class));
+        verify(medicalRecordRepository, never()).deleteById(any(Long.class));
     }
 
 }
