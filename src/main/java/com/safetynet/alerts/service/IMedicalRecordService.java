@@ -3,7 +3,7 @@ package com.safetynet.alerts.service;
 import java.util.List;
 
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
-import com.safetynet.alerts.model.MedicalRecordEntity;
+import com.safetynet.alerts.model.MedicalRecordDTO;
 
 public interface IMedicalRecordService {
 
@@ -12,28 +12,28 @@ public interface IMedicalRecordService {
      * records in DB.
      *
      * @param pListMedicalRecord
-     * @return a List<MedicalRecordEntity>
+     * @return a List<MedicalRecordDTO>
      */
-    List<MedicalRecordEntity> addListMedicalRecord(
-            List<MedicalRecordEntity> pListMedicalRecord);
+    List<MedicalRecordDTO> addListMedicalRecord(
+            List<MedicalRecordDTO> pListMedicalRecord);
 
     /**
      * The find all method allows user to get a list of all medical records
      * saved in DB.
      *
-     * @return a List<MedicalRecordEntity>
+     * @return a List<MedicalRecordDTO>
      */
-    List<MedicalRecordEntity> findAll();
+    List<MedicalRecordDTO> findAll();
 
     /**
      * The addMedicalRecord method allows user to add one medical record in DB,
      * only if the person identified by lastName & firstName in the
-     * MedicalRecordEntity exists in database persons table.
+     * MedicalRecordDTO exists in database persons table.
      *
      * @param pMedicalRecord
-     * @return a MedicalRecordEntity
+     * @return a MedicalRecordDTO
      */
-    MedicalRecordEntity addMedicalRecord(MedicalRecordEntity pMedicalRecord);
+    MedicalRecordDTO addMedicalRecord(MedicalRecordDTO pMedicalRecord);
 
     /**
      * The findByLastNameAndFirstName method allows user to find a medical
@@ -41,10 +41,10 @@ public interface IMedicalRecordService {
      *
      * @param lastName
      * @param firstName
-     * @return a MedicalRecordEntity
+     * @return a MedicalRecordDTO
      * @throws MedicalRecordNotFoundException
      */
-    MedicalRecordEntity findByLastNameAndFirstName(String lastName, String firstName)
+    MedicalRecordDTO findByLastNameAndFirstName(String lastName, String firstName)
             throws MedicalRecordNotFoundException;
 
     /**
@@ -54,19 +54,20 @@ public interface IMedicalRecordService {
      * method of CrudRepository to update it.
      *
      * @param pMedicalRecord
-     * @return a MedicalRecordEntity
+     * @return a MedicalRecordDTO
+     * @throws MedicalRecordNotFoundException 
      */
-    MedicalRecordEntity updateMedicalRecord(MedicalRecordEntity pMedicalRecord);
+    MedicalRecordDTO updateMedicalRecord(MedicalRecordDTO pMedicalRecord) throws MedicalRecordNotFoundException;
 
     /**
      * Delete method that uses first findByLastNameAndFirstName to find the
-     * MedicalRecordEntity to delete in DB and get its id to invokes the deleteById
+     * MedicalRecordDTO to delete in DB and get its id to invokes the deleteById
      * method of CrudRepository.
      *
      * @param lastName
      * @param firstName
-     * @return a MedicalRecordEntity
+     * @return a MedicalRecordDTO
      */
-    MedicalRecordEntity deleteAMedicalRecord(String lastName, String firstName);
+    MedicalRecordDTO deleteAMedicalRecord(String lastName, String firstName);
 
 }
