@@ -58,25 +58,21 @@ public class MedicaleRecordMappingTest {
                 "03/06/1989", new String[] {}, new String[] { "peanut" }));
     }
 
-    // MedicalRecordDTO list map to MedicalRecordEntity list Test
+    // MedicalRecordDTO map to MedicalRecordEntity Test
     @Test
-    public void givenAListOfMedicalRecordDTO_whenMapToMedicalRecordEntity_thenReturnMedicalRecordEntityList()
+    public void givenAMedicalRecordDTO_whenMapToMedicalRecordEntity_thenReturnMedicalRecordEntity()
             throws Exception {
         LOGGER.info(
-                "Start test: MedicalRecordDTO list mapping to MedicalRecordEntity list.");
+                "Start test: MedicalRecordDTO mapping to MedicalRecordEntity.");
         // GIVEN
         // WHEN
-        List<MedicalRecordEntity> resultList = medicalRecordMapping
-                .convertToMedicalRecordEntity(medRecDTOList);
+        MedicalRecordEntity result = medicalRecordMapping
+                .convertToMedicalRecordEntity(medRecDTOList.get(0));
         // THEN
-        assertThat(resultList.get(0).getFirstName())
+        assertThat(result.getFirstName())
                 .isEqualTo(medRecDTOList.get(0).getFirstName());
-        assertThat(resultList.get(0).getBirthdate())
+        assertThat(result.getBirthdate())
                 .isEqualTo(medRecDTOList.get(0).getBirthdate());
-        assertThat(resultList.get(2).getFirstName())
-                .isEqualTo(medRecDTOList.get(2).getFirstName());
-        assertThat(resultList.get(2).getBirthdate())
-                .isEqualTo(medRecDTOList.get(2).getBirthdate());
     }
 
     // AddressEntity list map to MedicalRecordDTO list Test

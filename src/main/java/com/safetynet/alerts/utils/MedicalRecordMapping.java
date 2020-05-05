@@ -18,27 +18,6 @@ import com.safetynet.alerts.model.MedicalRecordEntity;
 public class MedicalRecordMapping {
 
     /**
-     * This method convertToMedicalRecordEntity(List<MedicalRecordDTO>
-     * pListPerson) convert a list of MedicalRecordDTO to a list of
-     * MedicalRecordEntity, using the next method
-     * convertToMedicalRecordEntity(MedicalRecordDTO medRec) as a sub-method to
-     * convert each person of the list to a personEntity.
-     *
-     * @param pListPerson - a list of MedicalRecordDTO objects
-     * @return a list of MedicalRecordEntity objects
-     */
-    public List<MedicalRecordEntity> convertToMedicalRecordEntity(
-            final List<MedicalRecordDTO> pListPerson) {
-        List<MedicalRecordEntity> listPE = new ArrayList<MedicalRecordEntity>();
-        MedicalRecordEntity medRecEntity;
-        for (MedicalRecordDTO p : pListPerson) {
-            medRecEntity = convertToMedicalRecordEntity(p);
-            listPE.add(medRecEntity);
-        }
-        return listPE;
-    }
-
-    /**
      * This method convert a MedicalRecordDTO to MedicalRecordEntity.
      *
      * @param medRec - the MedicalRecordDTO object to convert

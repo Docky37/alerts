@@ -53,12 +53,14 @@ public interface IMedicalRecordService {
      * the person already exists in DB. If record exists, it calls the save
      * method of CrudRepository to update it.
      *
+     * @param pLastName
+     * @param pFirstName
      * @param pMedicalRecord
      * @return a MedicalRecordDTO
      * @throws MedicalRecordNotFoundException
      */
-    MedicalRecordDTO updateMedicalRecord(final String pLastName,
-            final String pFirstName, MedicalRecordDTO pMedicalRecord)
+    MedicalRecordDTO updateMedicalRecord(String pLastName,
+            String pFirstName, MedicalRecordDTO pMedicalRecord)
             throws MedicalRecordNotFoundException;
 
     /**

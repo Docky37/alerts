@@ -99,15 +99,22 @@ public class MedicalRecordServiceTest {
     public void a_givenAListOfMedicalRecordsToAdd_whenPostList_thenMedicalRecordsAreCreated()
             throws Exception {
         // GIVEN
-        given(medicalRecordMapping.convertToMedicalRecordEntity(
-                Mockito.<MedicalRecordDTO>anyList()))
-                        .willReturn(medRecEntityList);
-        given(medicalRecordRepository
-                .saveAll(Mockito.<MedicalRecordEntity>anyList()))
-                        .willReturn(medRecEntityList);
-        given(medicalRecordMapping.convertToMedicalRecordDTO(
-                Mockito.<MedicalRecordEntity>anyList()))
-                        .willReturn(medRecDTOList);
+        given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(null);
+        given(personRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(personEntity);
+        given(medicalRecordMapping
+                .convertToMedicalRecordEntity(any(MedicalRecordDTO.class)))
+                        .willReturn(medRecEntityList.get(0), medRecEntityList.get(1),
+                                medRecEntityList.get(2));
+        given(medicalRecordRepository.save(any(MedicalRecordEntity.class)))
+                .willReturn(medRecEntityList.get(0), medRecEntityList.get(1),
+                        medRecEntityList.get(2));
+        given(medicalRecordMapping
+                .convertToMedicalRecordDTO(any(MedicalRecordEntity.class)))
+                        .willReturn(medRecDTOList.get(0),
+                                medRecDTOList.get(1),
+                                medRecDTOList.get(2));
         // WHEN
         List<MedicalRecordDTO> addedList = medicalRecordService
                 .addListMedicalRecord(medRecDTOList);

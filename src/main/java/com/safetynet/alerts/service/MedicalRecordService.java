@@ -1,5 +1,6 @@
 package com.safetynet.alerts.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -66,6 +67,22 @@ public class MedicalRecordService implements IMedicalRecordService {
     }
 
     /**
+     * The find all method allows user to get a list of all medical records
+     * saved in DB.
+     *
+     * @return a List<MedicalRecordDTO>
+     */
+    @Override
+    public List<MedicalRecordDTO> findAll() {
+        List<MedicalRecordEntity> medicalRecordList =
+                (List<MedicalRecordEntity>) medicalRecordRepository
+                .findAll();
+        List<MedicalRecordDTO> foundMedicalRecordList = medicalRecordMapping
+                .convertToMedicalRecordDTO(medicalRecordList);
+        return foundMedicalRecordList;
+    }
+
+    /**
      * The addListMedicalRecord method allows user to save a list of medical
      * records in DB.
      *
@@ -75,27 +92,27 @@ public class MedicalRecordService implements IMedicalRecordService {
     @Override
     public List<MedicalRecordDTO> addListMedicalRecord(
             final List<MedicalRecordDTO> pMedicalRecordList) {
-        List<MedicalRecordEntity> createdList = medicalRecordMapping
-                .convertToMedicalRecordEntity(pMedicalRecordList);
-        createdList = (List<MedicalRecordEntity>) medicalRecordRepository
-                .saveAll(createdList);
+        List<MedicalRecordDTO> createdList = new ArrayList<MedicalRecordDTO>();
+        MedicalRecordDTO createdMedRecDTO;
+        int countOfCreatedMedRec = 0;
+        int countOfRejectedMedRec = 0;
+        for (MedicalRecordDTO medicalRecordDTO : pMedicalRecordList) {
+            createdMedRecDTO = addMedicalRecord(medicalRecordDTO);
+            if (createdMedRecDTO == null) { // MedicalRecord not created.
+                countOfRejectedMedRec++;
+            } else {
+                createdList.add(createdMedRecDTO);
+                countOfCreatedMedRec++;
+            }
+        }
+        LOGGER.info(
+                "Balance sheet:  {} medical records created and {} rejected.",
+                countOfCreatedMedRec, countOfRejectedMedRec);
 
-        return medicalRecordMapping.convertToMedicalRecordDTO(createdList);
-    }
-
-    /**
-     * The find all method allows user to get a list of all medical records
-     * saved in DB.
-     *
-     * @return a List<MedicalRecordDTO>
-     */
-    @Override
-    public List<MedicalRecordDTO> findAll() {
-        List<MedicalRecordEntity> medicalRecordList = (List<MedicalRecordEntity>) medicalRecordRepository
-                .findAll();
-        List<MedicalRecordDTO> foundMedicalRecordList = medicalRecordMapping
-                .convertToMedicalRecordDTO(medicalRecordList);
-        return foundMedicalRecordList;
+        if (createdList.size() > 0) {
+            return createdList;
+        }
+        return null;
     }
 
     /**
@@ -117,6 +134,11 @@ public class MedicalRecordService implements IMedicalRecordService {
                     .findByLastNameAndFirstName(pMedicalRecord.getLastName(),
                             pMedicalRecord.getFirstName());
             if (personToJoin == null) {
+                LOGGER.info(
+                        "Cannot create a orphan medical Record,"
+                                + "its owner ({} {}) is not registred !",
+                        pMedicalRecord.getFirstName(),
+                        pMedicalRecord.getLastName());
                 // TO DO message : Cannot save this medical record because its
                 // owner is unknown in Alerts DB.
                 return null;
@@ -127,10 +149,16 @@ public class MedicalRecordService implements IMedicalRecordService {
                         .save(addedMedicalRecord);
                 personToJoin.setMedRecId(addedMedicalRecord);
                 personRepository.save(personToJoin);
+                LOGGER.info("Medical record created for {} {}.",
+                        pMedicalRecord.getFirstName(),
+                        pMedicalRecord.getLastName());
                 return medicalRecordMapping
                         .convertToMedicalRecordDTO(addedMedicalRecord);
             }
         }
+        LOGGER.info(
+                "Cannot create a medical Record for {} {}, it already exits!",
+                pMedicalRecord.getFirstName(), pMedicalRecord.getLastName());
         return null;
     }
 
