@@ -18,26 +18,6 @@ import com.safetynet.alerts.model.AddressEntity;
 public class AddressMapping {
 
     /**
-     * This method convertToAddressEntity(List<AddressDTO> pListAddress) convert
-     * a list of AddressDTO to a list of AddressEntity, using the next method
-     * convertToAddressEntity(AddressDTO pPerson) as a sub-method to convert
-     * each person of the list to a personEntity.
-     *
-     * @param pListAddress - a list of AddressDTO objects
-     * @return a list of AddressEntity objects
-     */
-    public List<AddressEntity> convertToAddressEntity(
-            final List<AddressDTO> pListAddress) {
-        List<AddressEntity> listPE = new ArrayList<AddressEntity>();
-        AddressEntity addressEntity;
-        for (AddressDTO address : pListAddress) {
-            addressEntity = convertToAddressEntity(address);
-            listPE.add(addressEntity);
-        }
-        return listPE;
-    }
-
-    /**
      * This method convert a AddressDTO to AddressEntity.
      *
      * @param pAddressDTO - the AddressDTO object to convert

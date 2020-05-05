@@ -3,6 +3,8 @@ package com.safetynet.alerts.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.service.IAddressService;
 
@@ -27,6 +30,13 @@ import com.safetynet.alerts.service.IAddressService;
  */
 @RestController
 public class AddressController {
+
+    /**
+     * Create a SLF4J/LOG4J LOGGER instance.
+     */
+    static final Logger LOGGER = LoggerFactory
+            .getLogger(AlertsApplication.class);
+
     /**
      * The service class used to manage address - fire station association CRUD
      * operations.
@@ -56,22 +66,28 @@ public class AddressController {
      */
     @PostMapping(value = "firestations")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(
+    public ResponseEntity<Void> importAddressList(
             @RequestBody final List<AddressDTO> pAdressDTOList) {
+        LOGGER.info("NEW HTML ADMINISTRATIVE POST REQUEST"
+                + "on http://localhost:8080/firestations");
+        LOGGER.info(" AddressController  >>> Import a Address list.");
 
         List<AddressDTO> listFireStAdded = addressService
                 .addListAddress(pAdressDTOList);
 
         if (listFireStAdded == null) {
+            LOGGER.info("END of HTML administrative POST Request"
+                    + "with Status 204 No Content");
             return ResponseEntity.noContent().build();
         }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("firestations/")
+                .path("/firestations")
                 .buildAndExpand(listFireStAdded.get(1).getAddress(),
                         listFireStAdded.get(1).getStation())
                 .toUri();
-
+        LOGGER.info("END of HTML administrative POST Request"
+                + "with Status 201 Created");
         return ResponseEntity.created(location).build();
 
     }
@@ -81,9 +97,16 @@ public class AddressController {
      *
      * @return a List of all address - fire station associations in DB
      */
-    @GetMapping(value = "firestation")
+    @GetMapping(value = "/firestation")
     public List<AddressDTO> findAll() {
-        return addressService.findAll();
+        LOGGER.info("NEW HTML ADMINISTRATIVE GET REQUEST"
+                + "on http://localhost:8080/firestation");
+        LOGGER.info(" AddressController  >>> Get all addresses.");
+        List<AddressDTO> resultList = addressService.findAll();
+        LOGGER.info(
+                "END of HTML administrative GET Request"
+                + " with Status 200 OK ---");
+        return resultList;
     }
 
     /**
@@ -92,22 +115,29 @@ public class AddressController {
      * @param pAdressDTO - The association to add in DB
      * @return ResponseEntity<Void>
      */
-    @PostMapping(value = "firestation")
+    @PostMapping(value = "/firestation")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(
             @RequestBody final AddressDTO pAdressDTO) {
+        LOGGER.info("NEW HTML ADMINISTRATIVE POST REQUEST"
+                + "on http://localhost:8080/firestation");
+        LOGGER.info(" AddressController  >>> Add an address.");
 
-        AddressDTO addressFireStAdded = addressService.addAddress(pAdressDTO);
+        AddressDTO addressAdded = addressService.addAddress(pAdressDTO);
 
-        if (addressFireStAdded == null) {
+        if (addressAdded == null) {
+            LOGGER.info("END of HTML administrative POST Request"
+                    + "with Status 204 No Content");
             return ResponseEntity.noContent().build();
         }
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("firestation/{address}")
-                .buildAndExpand(addressFireStAdded.getAddress(),
-                        addressFireStAdded.getStation())
+                .buildAndExpand(addressAdded.getAddress(),
+                        addressAdded.getStation())
                 .toUri();
-
+        LOGGER.info(
+                "END of HTML administrative POST Request"
+                + " with Status 201 Created");
         return ResponseEntity.created(location).build();
     }
 
@@ -121,14 +151,23 @@ public class AddressController {
     @GetMapping(value = "firestation/{address}")
     public AddressDTO findByAddress(@PathVariable final String address)
             throws AddressNotFoundException {
-        return addressService.findByAddress(address);
+        LOGGER.info(
+                "NEW HTML ADMINISTRATIVE GET REQUEST"
+                + " on http://localhost:8080/firestation");
+        LOGGER.info(" AddressController  >>> Get the address: '{}'", address);
+        AddressDTO result = addressService.findByAddress(address);
+        LOGGER.info(
+                "END of HTML administrative GET Request with Status 200 OK");
+        return result;
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private void addressFireStationNotFoundHandler(
             final AddressNotFoundException e) {
-
+        LOGGER.info(
+                "END of HTML administrative GET Request"
+                + " with Status 404 NOT FOUND");
     }
 
     /**
@@ -136,21 +175,32 @@ public class AddressController {
      * DataBase.
      *
      * @param address
-     * @param pAdressDTO
+     * @param pAddressDTO
      * @return ResponseEntity<Void>
      * @throws AddressNotFoundException
      */
     @PutMapping(value = "firestation/{address}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> update(@PathVariable final String address,
-            @RequestBody final AddressDTO pAdressDTO)
+            @RequestBody final AddressDTO pAddressDTO)
             throws AddressNotFoundException {
+        LOGGER.info(
+                "NEW HTML ADMINISTRATIVE PUT REQUEST"
+                + " on http://localhost:8080/firestation");
+        LOGGER.info("AddressController >>> Update the address '{}',", address);
+        LOGGER.info("with content: '{}'.", pAddressDTO.toString());
 
         AddressDTO addressDTOUpdated = addressService.updateAddress(address,
-                pAdressDTO);
+                pAddressDTO);
         if (addressDTOUpdated == null) {
+            LOGGER.info(
+                    "END of HTML administrative GET Request"
+                    + " with Status 501 Not Implemented");
             return ResponseEntity.status(CODE_501).build();
         }
+        LOGGER.info(
+                "END of HTML administrative GET Request"
+                + " with Status 404 NOT FOUND");
         return ResponseEntity.noContent().build();
     }
 
@@ -165,11 +215,20 @@ public class AddressController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> deleteAddressFireStation(
             @PathVariable final String address) {
+        LOGGER.info(
+                "NEW HTML ADMINISTRATIVE DELETE REQUEST"
+                + " on http://localhost:8080/firestation");
+        LOGGER.info("AddressController >>> Delete the address '{}',", address);
         AddressDTO addressFireStToDelete = null;
         addressFireStToDelete = addressService.deleteAnAddress(address);
         if (addressFireStToDelete == null) {
+            LOGGER.info(
+                    "END of HTML administrative GET Request"
+                    + " with Status 404 NOT FOUND");
             return ResponseEntity.notFound().build();
         }
+        LOGGER.info(
+                "END of HTML administrative GET Request with Status 200 OK");
         return ResponseEntity.ok().build();
     }
 

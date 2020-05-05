@@ -73,14 +73,17 @@ public class AddressServiceTest {
     public void a_givenAListOfAddressDTOToAdd_whenPostList_thenAddressDTOAreCreated()
             throws Exception {
         // GIVEN
-        given(addressMapping
-                .convertToAddressEntity(Mockito.<AddressDTO>anyList()))
-                        .willReturn(addressEntityList);
-        given(addressRepository.saveAll(Mockito.<AddressEntity>anyList()))
-                .willReturn(addressEntityList);
-        given(addressMapping
-                .convertToAddressDTO(Mockito.<AddressEntity>anyList()))
-                        .willReturn(addressDTOList);
+        given(addressRepository.findByAddress(anyString())).willReturn(null);
+        given(addressMapping.convertToAddressEntity(any(AddressDTO.class)))
+                .willReturn(addressEntityList.get(0), addressEntityList.get(1),
+                        addressEntityList.get(2));
+        given(addressRepository.save(any(AddressEntity.class)))
+        .willReturn(addressEntityList.get(0), addressEntityList.get(1),
+                addressEntityList.get(2));
+        given(addressMapping.convertToAddressDTO(any(AddressEntity.class)))
+        .willReturn(addressDTOList.get(0), addressDTOList.get(1),
+                addressDTOList.get(2));
+
         // WHEN
         List<AddressDTO> addedList = addressService
                 .addListAddress(addressDTOList);
@@ -90,12 +93,12 @@ public class AddressServiceTest {
 
     }
 
-    // GET ("/AddressEntity")>>> READ (Find all AddressFireStations)
+    // GET ("/AddressEntity")>>> READ (Find all Address)
     @Test
-    @Tag("TestB-FindAllAddressFireStations")
-    @DisplayName("2. Given AddressFireStations in database, when findAll,"
-            + " then returns the list of all AddressFireStations.")
-    public void b_givenAllAddressFireStationsToFind_whenFindAll_thenReturnListOfAllAddressFireStations()
+    @Tag("TestB-FindAllAddress")
+    @DisplayName("2. Given Address in database, when findAll,"
+            + " then returns the list of all Address.")
+    public void b_givenAllAddressToFind_whenFindAll_thenReturnListOfAllAddress()
             throws Exception {
         // GIVEN
         given(addressRepository.findAll()).willReturn(addressEntityList);
@@ -119,9 +122,8 @@ public class AddressServiceTest {
             throws Exception, AddressNotFoundException {
         given(addressRepository.findByAddress(anyString()))
                 .willReturn(addressEntityList.get(2));
-        given(addressMapping
-                .convertToAddressDTO(any(AddressEntity.class)))
-                        .willReturn(addressDTOList.get(2));
+        given(addressMapping.convertToAddressDTO(any(AddressEntity.class)))
+                .willReturn(addressDTOList.get(2));
         AddressDTO addressDTO = addressService
                 .findByAddress(addressDTOList.get(2).getAddress());
         assertThat(addressDTO.getAddress()).isEqualTo("834 Binoc Ave");
@@ -133,7 +135,7 @@ public class AddressServiceTest {
     // an Unknown
     // AddressEntity)
     @Test(expected = AddressNotFoundException.class)
-    @Tag("TestC2-FindAAddressFireStation")
+    @Tag("TestC2-FindAAddress")
     @DisplayName("3.Given a stranger to find, when search AddressEntity by last name & firstname,"
             + " then returns null.")
     public void c2_givenAnUnknownAdress_whenFindByAddress_thenNotFoundException()
@@ -148,10 +150,10 @@ public class AddressServiceTest {
 
     // POST >>> CREATE (Add a new AddressEntity)
     @Test
-    @Tag("TestD-CreateAAddressFireStation")
+    @Tag("TestD-CreateAnAddress")
     @DisplayName("4. Given a AddressEntity to add, when POST the AddressEntity, "
             + "then a new AddressEntity is created.")
-    public void d1_givenAAddressFireStationToAdd_whenPostAddressFireStation_thenAddressFireStationIsCreated()
+    public void d1_givenAAddressToAdd_whenPostAddress_thenAddressIsCreated()
             throws Exception {
         // GIVEN
         AddressDTO addressDTOToAdd = new AddressDTO("644 Gershwin Cir", "1");
@@ -191,7 +193,7 @@ public class AddressServiceTest {
     }
 
     @Test // PUT >>> UPDATE (
-    @Tag("TestE-UpdateAAddressFireStation")
+    @Tag("TestE-UpdateAnAddress")
     @DisplayName("5. Given a AddressEntity to update, when save the AddressEntity,"
             + " then this AddressEntity is updated.")
     public void e_givenAnAddressToUpdate_whenUpdate_thenReturnUpdatedAddressFireStation()
@@ -209,8 +211,8 @@ public class AddressServiceTest {
                 .willReturn(addressDTOToUpdate);
 
         // WHEN
-        AddressDTO updatedAddressDTO = addressService
-                .updateAddress(addressDTOToUpdate.getAddress(), addressDTOToUpdate);
+        AddressDTO updatedAddressDTO = addressService.updateAddress(
+                addressDTOToUpdate.getAddress(), addressDTOToUpdate);
         // THEN
         assertThat(updatedAddressDTO.getAddress())
                 .isEqualTo(addressDTOToUpdate.getAddress());
@@ -219,7 +221,7 @@ public class AddressServiceTest {
     }
 
     @Test // DELETE
-    @Tag("TestF-DeleteAAddressFireStation")
+    @Tag("TestF-DeleteAnAddress")
     @DisplayName("6. Given a AddressEntity to delete, when delete the AddressEntity,"
             + " then find this AddressEntity returns null.")
     public void f1_givenAAddressFireStationToDelete_whenDeleteAddressFireStation_thenReturnAddressFireStationDoesNotExist()

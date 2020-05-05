@@ -54,12 +54,10 @@ public class AddressMappingTest {
         LOGGER.info("Start test: AddressDTO list mapping to AddressEntity list.");
         // GIVEN
         // WHEN
-        List<AddressEntity> resultList = addressMapping.convertToAddressEntity(addressDTOList);
+        AddressEntity result = addressMapping.convertToAddressEntity(addressDTOList.get(0));
         // THEN
-        assertThat(resultList.get(0).getAddress()).isEqualTo(addressEntityList.get(0).getAddress());
-        assertThat(resultList.get(1).getAddress()).isEqualTo(addressEntityList.get(1).getAddress());
-        assertThat(resultList.get(1).getStation()).isEqualTo(addressEntityList.get(1).getStation());
-        assertThat(resultList.get(1).getStation()).isEqualTo(addressEntityList.get(1).getStation());
+        assertThat(result.getAddress()).isEqualTo(addressEntityList.get(0).getAddress());
+        assertThat(result.getStation()).isEqualTo(addressEntityList.get(0).getStation());
     }
 
     // AddressEntity list map to AddressDTO list Test

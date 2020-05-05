@@ -76,7 +76,7 @@ public class ChildAlertMappingTest {
     public static OpsPersonDTO child1 = new OpsPersonDTO("Tenley", "Boyd",
             "8 years old", "1509 Culver St", "841-874-6512");
     public static OpsPersonDTO child2 = new OpsPersonDTO("Roger", "Boyd",
-            "19 months old", "1509 Culver St", "841-874-6512");
+            "20 months old", "1509 Culver St", "841-874-6512");
     public static List<OpsPersonDTO> childList = Arrays.asList(child1, child2);
     public static List<String> adultList = Arrays.asList("John Boyd",
             "Jacob Boyd", "Felicia Boyd");
@@ -100,7 +100,7 @@ public class ChildAlertMappingTest {
         List<OpsPersonDTO> opsPersonDTOs = opsPersonMapping.convertToCoveredByStationPerson(pEntList);
         // THEN
         assertThat(opsPersonDTOs.get(3).getFirstName()).isEqualTo("Roger");
-        assertThat(opsPersonDTOs.get(3).getAge()).isEqualTo("19 months old");
+        assertThat(opsPersonDTOs.get(3).getAge()).isEqualTo("20 months old");
     }
 
     /**
@@ -123,7 +123,7 @@ public class ChildAlertMappingTest {
         assertThat(mappedChildAlert.getChildList().get(0).getAge())
                 .isEqualTo("8 years old");
         assertThat(mappedChildAlert.getChildList().get(1).getAge())
-                .isEqualTo("19 months old");
+                .isEqualTo("20 months old");
     }
 
 }
