@@ -57,7 +57,8 @@ public interface IMedicalRecordService {
      * @return a MedicalRecordDTO
      * @throws MedicalRecordNotFoundException
      */
-    MedicalRecordDTO updateMedicalRecord(MedicalRecordDTO pMedicalRecord)
+    MedicalRecordDTO updateMedicalRecord(final String pLastName,
+            final String pFirstName, MedicalRecordDTO pMedicalRecord)
             throws MedicalRecordNotFoundException;
 
     /**

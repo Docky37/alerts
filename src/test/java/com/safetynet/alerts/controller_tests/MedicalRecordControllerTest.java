@@ -183,9 +183,8 @@ public class MedicalRecordControllerTest {
         MedicalRecordDTO medicalRecordToUpdate = medicalRecordList.get(2);
         // medicalRecordToUpdate.setEmail("updated@email.com");
         // medicalRecordToUpdate.setPhone("0123456789");
-        given(medicalRecordService
-                .updateMedicalRecord(any(MedicalRecordDTO.class)))
-                        .willReturn(medicalRecordToUpdate);
+        given(medicalRecordService.updateMedicalRecord(anyString(), anyString(),
+                any(MedicalRecordDTO.class))).willReturn(medicalRecordToUpdate);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
                 .put("/medicalRecord/" + medicalRecordToUpdate.getLastName()
@@ -204,9 +203,8 @@ public class MedicalRecordControllerTest {
         LOGGER.info("Start test: PUT - Update a medicalRecord");
         ObjectMapper mapper = new ObjectMapper();
         MedicalRecordDTO medicalRecordToUpdate = medicalRecordList.get(2);
-        given(medicalRecordService
-                .updateMedicalRecord(any(MedicalRecordDTO.class)))
-                        .willReturn(null);
+        given(medicalRecordService.updateMedicalRecord(anyString(), anyString(),
+                any(MedicalRecordDTO.class))).willReturn(null);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
                 .put("/medicalRecord/" + medicalRecordToUpdate.getLastName()

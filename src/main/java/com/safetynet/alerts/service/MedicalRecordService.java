@@ -91,8 +91,7 @@ public class MedicalRecordService implements IMedicalRecordService {
      */
     @Override
     public List<MedicalRecordDTO> findAll() {
-        List<MedicalRecordEntity> medicalRecordList =
-                (List<MedicalRecordEntity>) medicalRecordRepository
+        List<MedicalRecordEntity> medicalRecordList = (List<MedicalRecordEntity>) medicalRecordRepository
                 .findAll();
         List<MedicalRecordDTO> foundMedicalRecordList = medicalRecordMapping
                 .convertToMedicalRecordDTO(medicalRecordList);
@@ -167,13 +166,12 @@ public class MedicalRecordService implements IMedicalRecordService {
      * @throws MedicalRecordNotFoundException
      */
     @Override
-    public MedicalRecordDTO updateMedicalRecord(
-            final MedicalRecordDTO pMedicalRecord)
+    public MedicalRecordDTO updateMedicalRecord(final String pLastName,
+            final String pFirstName, final MedicalRecordDTO pMedicalRecord)
             throws MedicalRecordNotFoundException {
         MedicalRecordDTO medicalRecordToUpdate = pMedicalRecord;
         MedicalRecordEntity foundMedicalRecord = medicalRecordRepository
-                .findByLastNameAndFirstName(pMedicalRecord.getLastName(),
-                        pMedicalRecord.getFirstName());
+                .findByLastNameAndFirstName(pLastName, pFirstName);
         if (foundMedicalRecord == null) {
             throw new MedicalRecordNotFoundException();
         } else if (foundMedicalRecord.getFirstName()

@@ -277,7 +277,8 @@ public class MedicalRecordServiceTest {
                         .willReturn(medicalRecordToUpdate);
         // WHEN
         MedicalRecordDTO updatedMedRecDTO = medicalRecordService
-                .updateMedicalRecord(medicalRecordToUpdate);
+                .updateMedicalRecord(anyString(), anyString(),
+                        medicalRecordToUpdate);
         // THEN
         assertThat(updatedMedRecDTO.getFirstName())
                 .isEqualTo(medicalRecordToUpdate.getFirstName());
@@ -300,8 +301,8 @@ public class MedicalRecordServiceTest {
                 medicalRecordToDelete.getLastName(),
                 medicalRecordToDelete.getFirstName());
         // THEN
-        verify(medicalRecordRepository).findByLastNameAndFirstName(
-                anyString(), anyString());
+        verify(medicalRecordRepository).findByLastNameAndFirstName(anyString(),
+                anyString());
         verify(medicalRecordRepository).deleteById(any(Long.class));
     }
 

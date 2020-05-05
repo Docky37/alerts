@@ -87,9 +87,9 @@ public class MedicalRecordController {
     }
 
     /**
-     * GET request to find all address - fire station associations in DataBase.
+     * GET request to find all MedicalRecords in DataBase.
      *
-     * @return a List of all address - fire station associations in DB
+     * @return a List<MedicalRecordDTO>
      */
     @GetMapping(value = "medicalRecord")
     public List<MedicalRecordDTO> findAll() {
@@ -147,21 +147,23 @@ public class MedicalRecordController {
     }
 
     /**
-     * PUT request to update an address - fire station association from
-     * DataBase.
+     * PUT request to update a MedicalRecord from DataBase.
      *
+     * @param lastName
+     * @param firstName
      * @param pMedicalRecord
      * @return ResponseEntity<Void>
      * @throws Throwable
      */
     @PutMapping(value = "medicalRecord/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> update(
+    public ResponseEntity<Void> update(@PathVariable final String lastName,
+            @PathVariable final String firstName,
             @RequestBody final MedicalRecordDTO pMedicalRecord)
             throws Throwable {
 
         MedicalRecordDTO medicalRecordUpdated = medicalRecordService
-                .updateMedicalRecord(pMedicalRecord);
+                .updateMedicalRecord(lastName, firstName, pMedicalRecord);
 
         if (medicalRecordUpdated == null) {
             return ResponseEntity.status(CODE_501).build();
