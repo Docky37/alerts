@@ -51,13 +51,13 @@ public class AdminEndpointsIT {
 
     // Data creation for tests
     // ADDRESSES ----------------------------------------------------
-    public static List<AddressEntity> addressFireStationList = new ArrayList<>();
+    public static List<AddressEntity> addressEntityList = new ArrayList<>();
     static {
-        addressFireStationList
+        addressEntityList
                 .add(new AddressEntity(1L, "1509 Culver St", "3"));
-        addressFireStationList
+        addressEntityList
                 .add(new AddressEntity(2L, "29 15th St", "2"));
-        addressFireStationList
+        addressEntityList
                 .add(new AddressEntity(3L, "834 Binoc Ave", "3"));
     }
     // PERSONS ------------------------------------------------------
@@ -95,9 +95,9 @@ public class AdminEndpointsIT {
     public void givenAnAddressFireStationListToAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        mockMvc.perform(MockMvcRequestBuilders.post("/firestations")
+        mockMvc.perform(MockMvcRequestBuilders.post("/firestation/batch")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(addressFireStationList)))
+                .content(mapper.writeValueAsString(addressEntityList)))
                 .andExpect(status().isCreated());
     }
 

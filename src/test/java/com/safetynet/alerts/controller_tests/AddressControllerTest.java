@@ -63,7 +63,7 @@ public class AddressControllerTest {
         given(addressService.addListAddress(Mockito.<AddressDTO>anyList()))
                 .willReturn(addressDTOList);
 
-        mockMVC.perform(MockMvcRequestBuilders.post("/firestations")
+        mockMVC.perform(MockMvcRequestBuilders.post("/firestation/batch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(addressDTOList)))
                 .andExpect(status().isCreated());
@@ -77,10 +77,10 @@ public class AddressControllerTest {
         given(addressService.addListAddress(Mockito.<AddressDTO>anyList()))
                 .willReturn(null);
 
-        mockMVC.perform(MockMvcRequestBuilders.post("/firestations")
+        mockMVC.perform(MockMvcRequestBuilders.post("/firestation/batch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(addressDTOList)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isCreated());
     }
 
     @Test // POST
@@ -111,7 +111,7 @@ public class AddressControllerTest {
         mockMVC.perform(MockMvcRequestBuilders.post("/firestation")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(addressFireStToAdd)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isBadRequest());
     }
 
     @Test // GET

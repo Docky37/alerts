@@ -70,4 +70,10 @@ public interface IAddressService {
      */
     AddressDTO deleteAnAddress(String pAddressToDelete);
 
+    /**
+     * The getBalanceSheet method.
+     *
+     * @return a String
+     */
+    String getBalanceSheet();
 }

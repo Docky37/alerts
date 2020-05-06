@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.repositery.AddressRepository;
 import com.safetynet.alerts.utils.AddressMapping;
+
 import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.controller.AddressNotFoundException;
@@ -29,6 +30,26 @@ public class AddressService implements IAddressService {
      */
     static final Logger LOGGER = LoggerFactory
             .getLogger(AlertsApplication.class);
+
+    /**
+     * The balanceSheet is a report of the batch import of address list.
+     */
+    private String balanceSheet;
+
+    /**
+     * Getter of balanceSheet.
+     *
+     * @return the balanceSheet
+     */
+    @Override
+    public String getBalanceSheet() {
+        return balanceSheet;
+    }
+
+    /**
+     * Used to add line break in String.
+     */
+    private String newLine = System.getProperty("line.separator");
 
     /**
      * PersonRepository is an Interface that extends CrudRepository.
@@ -62,19 +83,19 @@ public class AddressService implements IAddressService {
      */
     @Override
     public List<AddressDTO> findAll() {
-        LOGGER.info(" | AddressService 'Find all addresses' start -->");
+        LOGGER.debug(" | AddressService 'Find all addresses' start -->");
         List<AddressEntity> addressEntityList = (List<AddressEntity>) repository
                 .findAll();
         List<AddressDTO> addressDTOList = addressMapping
                 .convertToAddressDTO(addressEntityList);
         if (addressDTOList.size() > 0) {
             for (AddressDTO addressDTO : addressDTOList) {
-                LOGGER.info(" |  {}", addressDTO.toString());
+                LOGGER.debug(" |  {}", addressDTO.toString());
             }
         } else {
-            LOGGER.warn(" | !   NO ADDRESS IN DATABASE!");
+            LOGGER.error(" | !   NO ADDRESS IN DATABASE!");
         }
-        LOGGER.info(" | End of AddressService 'Find all addresses.' ---");
+        LOGGER.debug(" | End of AddressService 'Find all addresses.' ---");
         return addressDTOList;
     }
 
@@ -89,7 +110,8 @@ public class AddressService implements IAddressService {
     @Override
     public List<AddressDTO> addListAddress(
             final List<AddressDTO> pListAddress) {
-        LOGGER.info(" | AddressService 'Add a list of addresses' start -->");
+        LOGGER.debug(" | AddressService 'Add a list of addresses' start -->");
+        balanceSheet = "";
         List<AddressDTO> createdList = new ArrayList<AddressDTO>();
         AddressDTO createAddressDTO;
         int countOfCreatedAddress = 0;
@@ -98,14 +120,23 @@ public class AddressService implements IAddressService {
             createAddressDTO = addAddress(addressDTO);
             if (createAddressDTO == null) { // MedicalRecord not created.
                 countOfRejectedAddress++;
+                if (balanceSheet == "") {
+                    balanceSheet = "This registred addresses have not been"
+                            + " created again, to avoid duplicates: " + newLine;
+                }
+                balanceSheet = balanceSheet
+                        .concat("   -  " + addressDTO.toString()) + newLine;
             } else {
                 createdList.add(createAddressDTO);
                 countOfCreatedAddress++;
             }
         }
-        LOGGER.info(" | Balance sheet:  {} address created and {} rejected.",
+        balanceSheet = balanceSheet.concat(newLine + "Balance sheet: "
+                + countOfCreatedAddress + " addresses have been created and "
+                + countOfRejectedAddress + " rejected.");
+        LOGGER.debug(" | Balance sheet:  {} addresses created and {} rejected.",
                 countOfCreatedAddress, countOfRejectedAddress);
-        LOGGER.info(" | End of AddressService 'Add a list of addresses.' ---");
+        LOGGER.debug(" | End of AddressService 'Add a list of addresses.' ---");
 
         if (createdList.size() > 0) {
             return createdList;
@@ -123,25 +154,25 @@ public class AddressService implements IAddressService {
      */
     @Override
     public AddressDTO addAddress(final AddressDTO pAddressDTO) {
-        LOGGER.info(" | AddressService 'Add an address' start -->");
+        LOGGER.debug(" | AddressService 'Add an address' start -->");
         AddressEntity foundAddress = repository
                 .findByAddress(pAddressDTO.getAddress());
         if (foundAddress == null) {
             AddressEntity addedAddress = addressMapping
                     .convertToAddressEntity(pAddressDTO);
             addedAddress = repository.save(addedAddress);
-            LOGGER.info(
+            LOGGER.debug(
                     " |   + Address '{}' covered by station {}"
-                    + " has been successfully created.",
+                            + " has been successfully created.",
                     pAddressDTO.getAddress(), pAddressDTO.getStation());
-            LOGGER.info(" | End of AddressService 'Add an address'. ---");
+            LOGGER.debug(" | End of AddressService 'Add an address'. ---");
             return addressMapping.convertToAddressDTO(addedAddress);
         } else {
-            LOGGER.warn(
+            LOGGER.error(
                     " | !   Cannot create this Address '{}' "
-                    + "because it already exists!",
+                            + "because it already exists!",
                     pAddressDTO.getAddress());
-            LOGGER.info(" | End of AddressService 'Add an address'. ---");
+            LOGGER.debug(" | End of AddressService 'Add an address'. ---");
             return null;
         }
     }
@@ -158,19 +189,19 @@ public class AddressService implements IAddressService {
     @Override
     public AddressDTO findByAddress(final String pAddress)
             throws AddressNotFoundException {
-        LOGGER.info(" | AddressService 'Find the address {}' start -->",
+        LOGGER.debug(" | AddressService 'Find the address {}' start -->",
                 pAddress);
         AddressEntity addressEntity = repository.findByAddress(pAddress);
         if (addressEntity == null) {
-            LOGGER.info(" |  Address not found!");
-            LOGGER.info(" | End of AddressService 'Find an address.' ---");
+            LOGGER.error(" |  Address not found!");
+            LOGGER.debug(" | End of AddressService 'Find an address.' ---");
 
             throw new AddressNotFoundException();
         }
         AddressDTO resultAddressDTO = addressMapping
                 .convertToAddressDTO(addressEntity);
-        LOGGER.info(" |  {}", resultAddressDTO.toString());
-        LOGGER.info(" | End of AddressService 'Find an address.' ---");
+        LOGGER.debug(" |  {}", resultAddressDTO.toString());
+        LOGGER.debug(" | End of AddressService 'Find an address.' ---");
         return resultAddressDTO;
     }
 
@@ -186,14 +217,14 @@ public class AddressService implements IAddressService {
     @Override
     public AddressDTO updateAddress(final String pAdressToUpdate,
             final AddressDTO pAddressDTO) throws AddressNotFoundException {
-        LOGGER.info(" | AddressService 'Update the address {}' start -->",
+        LOGGER.debug(" | AddressService 'Update the address {}' start -->",
                 pAddressDTO.getAddress());
         AddressEntity foundAddressEntity = repository
                 .findByAddress(pAdressToUpdate);
         if (foundAddressEntity == null) {
-            LOGGER.warn(" | !   Cannot update this unregistered address '{}'!",
+            LOGGER.error(" | !   Cannot update this unregistered address '{}'!",
                     pAdressToUpdate);
-            LOGGER.info(" | End of AddressService 'Update an address'. ---");
+            LOGGER.debug(" | End of AddressService 'Update an address'. ---");
 
             throw new AddressNotFoundException();
         } else if (foundAddressEntity.getAddress()
@@ -201,16 +232,16 @@ public class AddressService implements IAddressService {
             AddressEntity updateAddressEntity = foundAddressEntity;
             updateAddressEntity.setStation(pAddressDTO.getStation());
             updateAddressEntity = repository.save(updateAddressEntity);
-            LOGGER.info(" |   OK now Address '{}' is covered by station {}.'",
+            LOGGER.debug(" |   OK now Address '{}' is covered by station {}.'",
                     updateAddressEntity.getAddress(),
                     updateAddressEntity.getStation());
 
-            LOGGER.info(" | End of AddressService 'Add an address'. ---");
+            LOGGER.debug(" | End of AddressService 'Add an address'. ---");
             return addressMapping.convertToAddressDTO(updateAddressEntity);
         }
-        LOGGER.warn(" | !  It is not allowed to rename '{} as {}.'",
+        LOGGER.error(" | !  It is not allowed to rename '{} as {}.'",
                 pAdressToUpdate, pAddressDTO.getAddress());
-        LOGGER.info(" | End of AddressService 'Update an address'. ---");
+        LOGGER.debug(" | End of AddressService 'Update an address'. ---");
         return null;
     }
 
@@ -224,11 +255,20 @@ public class AddressService implements IAddressService {
      */
     @Override
     public AddressDTO deleteAnAddress(final String pAddressToDelete) {
+        LOGGER.debug(" | AddressService 'Update the address {}' start -->",
+                pAddressToDelete);
         AddressEntity foundAddress = repository.findByAddress(pAddressToDelete);
         if (foundAddress != null) {
             repository.deleteById(foundAddress.getId());
-            return addressMapping.convertToAddressDTO(foundAddress);
+            AddressDTO deletedAddressDTO = addressMapping
+                    .convertToAddressDTO(foundAddress);
+            LOGGER.debug(" |   OK now Address '{}' is deleted.'",
+                    deletedAddressDTO);
+            LOGGER.debug(" | End of AddressService 'Find an address.' ---");
+            return deletedAddressDTO;
         }
+        LOGGER.error(" |  Address not found!");
+        LOGGER.debug(" | End of AddressService 'Find an address.' ---");
         return null;
     }
 
