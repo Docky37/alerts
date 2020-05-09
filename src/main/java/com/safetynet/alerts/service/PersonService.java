@@ -237,7 +237,7 @@ public class PersonService implements IPersonService {
                         pPerson.getAddress(), pPerson.getZip(),
                         pPerson.getCity());
                 LOGGER.debug(" | End of PersonService 'Update a person'. ---");
-                pPerson.setAddress(null);
+                pPerson.setAddress("'? "+ pPerson.getAddress()+ "?'");
                 return pPerson;
             }
             // Successful update

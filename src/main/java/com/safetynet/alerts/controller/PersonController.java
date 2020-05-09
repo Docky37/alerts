@@ -198,7 +198,7 @@ public class PersonController {
             return new ResponseEntity<Object>(
                     "It is not allowed to rename a person!", new HttpHeaders(),
                     HttpStatus.NOT_IMPLEMENTED);
-        } else if (personUpdated.getAddress() == null) {
+        } else if (personUpdated.getAddress().contains("'?")) {
             LOGGER.info("END of HTML administrative PUT Request"
                     + " with Status 400 Bad Request");
             return new ResponseEntity<Object>(

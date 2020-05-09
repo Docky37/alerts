@@ -190,12 +190,12 @@ public class PersonControllerTest {
         LOGGER.info("Start test: PUT - Update a person");
         ObjectMapper mapper = new ObjectMapper();
         PersonDTO personToUpdate = personList.get(2);
-        PersonDTO withoutAddressPersonDTO = personList.get(2);
-        withoutAddressPersonDTO.setAddress(null);
-        LOGGER.info("withoutAddressPersonDTO.getAddress() = {}",withoutAddressPersonDTO.getAddress());
+        PersonDTO unknownAddressPersonDTO = personList.get(2);
+        unknownAddressPersonDTO.setAddress("'? "+ personToUpdate.getAddress()+ "?'");
+        LOGGER.info("withoutAddressPersonDTO.getAddress() = {}",unknownAddressPersonDTO.getAddress());
 
         given(personService.updatePerson(anyString(), anyString(),
-                any(PersonDTO.class))).willReturn(withoutAddressPersonDTO);
+                any(PersonDTO.class))).willReturn(unknownAddressPersonDTO);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
                 .put("/person/" + personToUpdate.getLastName() + "/"
