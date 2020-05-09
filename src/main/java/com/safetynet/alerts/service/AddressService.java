@@ -141,7 +141,7 @@ public class AddressService implements IAddressService {
         if (createdList.size() > 0) {
             return createdList;
         }
-        return null;
+        return new ArrayList<AddressDTO>();
     }
 
     /**
