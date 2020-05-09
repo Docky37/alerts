@@ -20,31 +20,11 @@ import com.safetynet.alerts.repositery.AddressRepository;
 public class PersonMapping {
 
     /**
-     * Create a instance of the interface AddressRepository to
-     * dialogue with the table address of the DataBase.
+     * Create a instance of the interface AddressRepository to dialogue with the
+     * table address of the DataBase.
      */
     @Autowired
     private AddressRepository addressRepository;
-
-    /**
-     * This method convertToPersonEntity(List<PersonDTO> pListPerson) convert a
-     * list of PersonDTO to a list of PersonEntity, using the next method
-     * convertToPersonEntity(PersonDTO pPerson) as a sub-method to convert each
-     * person of the list to a personEntity.
-     *
-     * @param pListPerson - a list of PersonDTO objects
-     * @return a list of PersonEntity objects
-     */
-    public List<PersonEntity> convertToPersonEntity(
-            final List<PersonDTO> pListPerson) {
-        List<PersonEntity> listPE = new ArrayList<PersonEntity>();
-        PersonEntity pEnt;
-        for (PersonDTO p : pListPerson) {
-            pEnt = convertToPersonEntity(p);
-            listPE.add(pEnt);
-        }
-        return listPE;
-    }
 
     /**
      * This method convert a PersonDTO to PersonEntity.
@@ -53,11 +33,15 @@ public class PersonMapping {
      * @return a PersonEntity object
      */
     public PersonEntity convertToPersonEntity(final PersonDTO pPerson) {
+        if (addressRepository
+                .findByAddress(pPerson.getAddress()) == null) {
+            return null;  //Address unknown in DataBase!
+        }
         PersonEntity pEnt = new PersonEntity();
         pEnt.setFirstName(pPerson.getFirstName());
         pEnt.setLastName(pPerson.getLastName());
-        pEnt.setAddressFireSt(addressRepository
-                .findByAddress(pPerson.getAddress()));
+        pEnt.setAddressFireSt(
+                addressRepository.findByAddress(pPerson.getAddress()));
         pEnt.setPhone(pPerson.getPhone());
         pEnt.setEmail(pPerson.getEmail());
         pEnt.setMedRecId(null);

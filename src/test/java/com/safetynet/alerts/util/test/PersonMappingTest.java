@@ -2,6 +2,7 @@ package com.safetynet.alerts.util.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
@@ -66,24 +67,20 @@ public class PersonMappingTest {
     }
 
     @Test
-    public void givenAListOfPerson_whenConvert_thenReturnPersonEntityList()
+    public void givenAPerson_whenConvert_thenReturnPersonEntity()
             throws Exception {
-        LOGGER.info("Start test: PersonDTO list mapping to PersonneEntity list");
+        LOGGER.info("Start test: PersonDTO mapping to PersonneEntity");
         // GIVEN
         given(addressRepository.findByAddress(anyString()))
                 .willReturn(addressFireStList.get(0));
         // WHEN
-        List<PersonEntity> mappedList = personMapping
-                .convertToPersonEntity(personList);
+        PersonEntity pEnt = personMapping
+                .convertToPersonEntity(personList.get(0));
         // THEN
-        assertThat(mappedList.get(0).getAddressFireSt())
+        assertThat(pEnt.getAddressFireSt())
                 .isEqualTo(pEntList.get(0).getAddressFireSt());
-        assertThat(mappedList.get(0).getFirstName())
+        assertThat(pEnt.getFirstName())
                 .isEqualTo(pEntList.get(0).getFirstName());
-        assertThat(mappedList.get(1).getAddressFireSt())
-                .isEqualTo(pEntList.get(1).getAddressFireSt());
-        assertThat(mappedList.get(1).getFirstName())
-                .isEqualTo(pEntList.get(1).getFirstName());
     }
 
     @Test

@@ -58,34 +58,34 @@ public class PersonControllerTest {
                 "Culver", "97451", "841-874-6512", "tenz@email.com"));
     }
 
-    @Test // POST
+    @Test // POST - Successful creation
     public void givenAPersonListToAdd_whenPostList_thenReturnIsCreated()
             throws Exception {
-        LOGGER.info("Start test: POST - Add a list of PersonDTO");
+        LOGGER.info("Start test: POST - Add a list of Person");
         ObjectMapper mapper = new ObjectMapper();
         given(personService.addListPersons(Mockito.<PersonDTO>anyList()))
                 .willReturn(personList);
 
-        mockMVC.perform(MockMvcRequestBuilders.post("/persons")
+        mockMVC.perform(MockMvcRequestBuilders.post("/person/batch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(personList)))
                 .andExpect(status().isCreated());
     }
 
-    @Test // POST
-    public void givenAPersonListToAdd_whenPostList_thenReturnNoContent()
+
+    @Test // POST - Successful creation
+    public void givenAPersonListToAdd_whenPostList_thenReturnOK()
             throws Exception {
-        LOGGER.info("Start test: POST - Add a list of PersonDTO");
+        LOGGER.info("Start test: POST - Add a list of Person");
         ObjectMapper mapper = new ObjectMapper();
         given(personService.addListPersons(Mockito.<PersonDTO>anyList()))
-                .willReturn(null);
+                .willReturn(new ArrayList<PersonDTO>());
 
-        mockMVC.perform(MockMvcRequestBuilders.post("/persons")
+        mockMVC.perform(MockMvcRequestBuilders.post("/person/batch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(personList)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
-
     @Test // GET
     public void givenAPersonToFind_whenGetPersonByLastNameAndFirstName_thenReturnThePerson()
             throws PersonNotFoundException, Throwable {
@@ -130,8 +130,8 @@ public class PersonControllerTest {
                         .content().contentType("application/json"));
     }
 
-    @Test // POST
-    public void givenAPersonToAdd_whenPostPerson_thenReturnNoContent()
+    @Test // POST - error
+    public void givenAPersonToAdd_whenPostPerson_thenReturn400()
             throws Exception {
         LOGGER.info("Start test: POST - Add one person");
         ObjectMapper mapper = new ObjectMapper();
@@ -139,13 +139,13 @@ public class PersonControllerTest {
                 "Culver", "97451", "841-874-6512", "tenz@email.com");
         given(personService.addPerson(any(PersonDTO.class))).willReturn(null);
 
-        mockMVC.perform(MockMvcRequestBuilders.post("/person")
+        mockMVC.perform(MockMvcRequestBuilders.post("/person/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(personToAdd)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isBadRequest());
     }
 
-    @Test // POST
+    @Test // POST - Successful creation
     public void givenAPersonToAdd_whenPostPerson_thenReturnIsCreated()
             throws Exception {
         LOGGER.info("Start test: POST - Add one person");
@@ -161,17 +161,18 @@ public class PersonControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test // PUT
+    @Test // PUT (update OK)
     public void givenAPersonToUpdate_whenPutPerson_thenReturn204()
             throws Exception, PersonNotFoundException {
         LOGGER.info("Start test: PUT - Update a person");
         ObjectMapper mapper = new ObjectMapper();
         PersonDTO personToUpdate = personList.get(2);
-        personToUpdate.setEmail("updated@email.com");
-        personToUpdate.setPhone("0123456789");
+        personToUpdate.setAddress("1509 Culver St");
+        LOGGER.info("personToUpdate.getAddress() = {}",personToUpdate.getAddress());
+        
         given(personService.updatePerson(anyString(), anyString(),
                 any(PersonDTO.class))).willReturn(personToUpdate);
-
+        
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
                 .put("/person/" + personToUpdate.getLastName() + "/"
                         + personToUpdate.getFirstName())
@@ -183,8 +184,32 @@ public class PersonControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
+    @Test // PUT (unknown address)
+    public void testgivenAnUnknownAddress_whenPutPerson_then400BadRequest()
+            throws Exception, PersonNotFoundException {
+        LOGGER.info("Start test: PUT - Update a person");
+        ObjectMapper mapper = new ObjectMapper();
+        PersonDTO personToUpdate = personList.get(2);
+        PersonDTO withoutAddressPersonDTO = personList.get(2);
+        withoutAddressPersonDTO.setAddress(null);
+        LOGGER.info("withoutAddressPersonDTO.getAddress() = {}",withoutAddressPersonDTO.getAddress());
+
+        given(personService.updatePerson(anyString(), anyString(),
+                any(PersonDTO.class))).willReturn(withoutAddressPersonDTO);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
+                .put("/person/" + personToUpdate.getLastName() + "/"
+                        + personToUpdate.getFirstName())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+                .content(mapper.writeValueAsString(personToUpdate));
+
+        mockMVC.perform(builder)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
     @Test // PUT
-    public void givenAnUnknownToUpdate_whenPutPerson_then501NotImplemented()
+    public void givenAnPersonToUpdate_whenPutPerson_then501NotImplemented()
             throws Exception, PersonNotFoundException {
         LOGGER.info("Start test: PUT - Update a person");
         ObjectMapper mapper = new ObjectMapper();
@@ -207,7 +232,7 @@ public class PersonControllerTest {
 
     @Test // DELETE
     public void givenAPersonToDelete_whenDeletePerson_thenReturnIsOk()
-            throws Exception {
+            throws Exception, PersonNotFoundException {
         LOGGER.info("Start test: DELETE - Remove one person");
         PersonDTO personToDelete = personList.get(2);
         given(personService.deleteAPerson(anyString(), anyString()))
@@ -221,7 +246,7 @@ public class PersonControllerTest {
 
     @Test // DELETE
     public void givenAnUnknownToDelete_whenDeletePerson_thenReturnNotFound()
-            throws Exception {
+            throws Exception, PersonNotFoundException {
         LOGGER.info("Start test: DELETE - Remove unknown person");
         PersonDTO personToDelete = personList.get(2);
         given(personService.deleteAPerson(anyString(), anyString()))

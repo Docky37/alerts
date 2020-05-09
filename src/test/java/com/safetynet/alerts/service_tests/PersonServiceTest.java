@@ -44,8 +44,8 @@ public class PersonServiceTest {
 
     public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St",
-                "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
+        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St", "Culver",
+                "97451", "841-874-6512", "jaboyd@email.com"));
         personList.add(new PersonDTO("Jacob", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
         personList.add(new PersonDTO("Tenley", "Boyd", "1509 Culver St",
@@ -86,12 +86,15 @@ public class PersonServiceTest {
     public void a_givenAListOfPersonToAdd_whenPostList_thenPersonsAreCreated()
             throws Exception {
         // GIVEN
-        given(personMapping.convertToPersonEntity(Mockito.<PersonDTO>anyList()))
-                .willReturn(pEntList);
-        given(personRepository.saveAll(Mockito.<PersonEntity>anyList()))
-                .willReturn(pEntList);
-        given(personMapping.convertToPerson(Mockito.<PersonEntity>anyList()))
-                .willReturn(personList);
+        given(personRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(null, pEntList.get(0),null, pEntList.get(1),null, pEntList.get(2));
+        given(personMapping.convertToPersonEntity(any(PersonDTO.class)))
+                .willReturn(pEntList.get(0), pEntList.get(1), pEntList.get(2));
+        given(personRepository.save(any(PersonEntity.class)))
+                .willReturn(pEntList.get(0), pEntList.get(1), pEntList.get(2));
+        given(personMapping.convertToPerson(any(PersonEntity.class)))
+                .willReturn(personList.get(1),personList.get(1),personList.get(2));
+
         // WHEN
         List<PersonDTO> addedList = personService.addListPersons(personList);
         // THEN
@@ -218,9 +221,8 @@ public class PersonServiceTest {
         PersonEntity updatedPersonInDB = pEntList.get(2);
         updatedPersonInDB.setEmail("Tenley.Boyd@OpenClassrooms.com");
         updatedPersonInDB.setPhone("0123456789");
-        given(personRepository.findByLastNameAndFirstName(
-                anyString(), anyString()))
-                        .willReturn(pEntList.get(2));
+        given(personRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(pEntList.get(2));
         given(personMapping.convertToPersonEntity(any(PersonDTO.class)))
                 .willReturn(personInDB);
         given(personRepository.save(any(PersonEntity.class)))
@@ -239,7 +241,8 @@ public class PersonServiceTest {
                 .isEqualTo(personToUpdate.getPhone());
     }
 
-    @Test (expected = PersonNotFoundException.class)// PUT >>> UPDATE (
+    // PUT >>> UPDATE
+    @Test(expected = PersonNotFoundException.class)  
     @Tag("TestE-UpdateAPerson")
     @DisplayName("5. Given a unknown person to update, when save the person,"
             + " then returns null.")
@@ -268,12 +271,13 @@ public class PersonServiceTest {
     @Tag("TestF-DeleteAPerson")
     @DisplayName("6. Given a person to delete, when delete the person,"
             + " then person is deleted.")
-    public void f1_givenAPersonToDelete_whenDeletePerson_thenReturnPersonDoesNotExist()
-            throws Throwable {
+    public void f1_givenAPersonToDelete_whenDeletePerson_thenReturnPersonIsDeleted()
+            throws PersonNotFoundException {
         // GIVEN
         PersonDTO personToDelete = personList.get(2);
         given(personRepository.findByLastNameAndFirstName(anyString(),
                 anyString())).willReturn(pEntList.get(2));
+        given(personMapping.convertToPerson(any(PersonEntity.class))).willReturn(personToDelete);
         // WHEN
         personService.deleteAPerson(personToDelete.getLastName(),
                 personToDelete.getFirstName());
@@ -283,12 +287,13 @@ public class PersonServiceTest {
         verify(personRepository).deleteById(any(Long.class));
     }
 
-    @Test // DELETE
+    // DELETE
+    @Test(expected = PersonNotFoundException.class) // DELETE
     @Tag("TestF-DeleteAPerson")
     @DisplayName("6. Given a unknown person to delete, when delete the person,"
             + " then find this person returns null.")
     public void f2_givenAUnknownPersonToDelete_whenDeletePerson_thenReturnNull()
-            throws Exception {
+            throws PersonNotFoundException {
         // GIVEN
         PersonDTO personToDelete = personList.get(2);
         given(personRepository.findByLastNameAndFirstName(anyString(),

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,28 +60,32 @@ public class PersonController {
     /**
      * POST request to create persons in DataBase from a list.
      *
-     * @param pListPerson
+     * @param pPersonList
      * @return ResponseEntity<Void>
      */
-    @PostMapping(value = "persons")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(
-            @RequestBody final List<PersonDTO> pListPerson) {
+    @PostMapping(value = "person/batch")
+    public ResponseEntity<Object> create(
+            @RequestBody final List<PersonDTO> pPersonList) {
+        LOGGER.info("NEW HTML ADMINISTRATIVE POST REQUEST"
+                + " on http://localhost:8080/person/batch");
+        LOGGER.info(" AddressController  >>> Import a Person list");
+        LOGGER.info(" => List = {}", pPersonList.toString());
 
         List<PersonDTO> listPersonAdded = personService
-                .addListPersons(pListPerson);
+                .addListPersons(pPersonList);
 
-        if (listPersonAdded == null) {
-            return ResponseEntity.noContent().build();
+        if (listPersonAdded.isEmpty()) {
+            LOGGER.info("END of HTML administrative POST Request"
+                    + " with Status 200 OK");
+            return new ResponseEntity<Object>(personService.getBalanceSheet(),
+                    new HttpHeaders(), HttpStatus.OK);
         }
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("persons/")
-                .buildAndExpand(listPersonAdded.get(1).getLastName(),
-                        listPersonAdded.get(1).getFirstName())
-                .toUri();
+        LOGGER.info("END of HTML administrative POST Request"
+                + " with Status 201 Created");
+        return new ResponseEntity<Object>(personService.getBalanceSheet(),
+                new HttpHeaders(), HttpStatus.CREATED);
 
-        return ResponseEntity.created(location).build();
     }
 
     /**
@@ -90,7 +95,13 @@ public class PersonController {
      */
     @GetMapping(value = "person")
     public List<PersonDTO> findAll() {
-        return personService.findAll();
+        LOGGER.info("NEW HTML ADMINISTRATIVE GET REQUEST"
+                + " on http://localhost:8080/person");
+        LOGGER.info(" PersonController  >>> Get all persons.");
+        List<PersonDTO> resultList = personService.findAll();
+        LOGGER.info("END of HTML administrative GET Request"
+                + " with Status 200 OK ---");
+        return resultList;
     }
 
     /**
@@ -105,13 +116,22 @@ public class PersonController {
     public PersonDTO findPersonByName(@PathVariable final String lastName,
             @PathVariable final String firstName)
             throws PersonNotFoundException {
-        return personService.findByLastNameAndFirstName(lastName, firstName);
+        LOGGER.info("NEW HTML ADMINISTRATIVE GET REQUEST"
+                + " on http://localhost:8080/person");
+        LOGGER.info(" PersonController  >>> Get the person named '{} {}'.",
+                firstName, lastName);
+        PersonDTO resultPerson = personService
+                .findByLastNameAndFirstName(lastName, firstName);
+        LOGGER.info(
+                "END of HTML administrative GET Request with Status 200 OK");
+        return resultPerson;
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private void personNotFoundHandler(final PersonNotFoundException e) {
-
+        LOGGER.info("END of HTML administrative GET Request"
+                + " with Status 404 NOT FOUND");
     }
 
     /**
@@ -122,19 +142,29 @@ public class PersonController {
      */
     @PostMapping(value = "person")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@RequestBody final PersonDTO pPerson) {
+    public ResponseEntity<Object> create(@RequestBody final PersonDTO pPerson) {
+        LOGGER.info("NEW HTML ADMINISTRATIVE POST REQUEST"
+                + " on http://localhost:8080/person");
+        LOGGER.info(" PersonController  >>> Add the person '{}'", pPerson);
 
         PersonDTO personAdded = personService.addPerson(pPerson);
 
         if (personAdded == null) {
-            return ResponseEntity.noContent().build();
+            LOGGER.info("END of HTML administrative POST Request"
+                    + " with Status 400 Bad Request");
+            return new ResponseEntity<Object>("Cannot create this person ("
+                    + pPerson.getFirstName() + " " + pPerson.getLastName()
+                    + ") that is already registred. "
+                    + "Consider PUT request if you want to update this person.",
+                    new HttpHeaders(), HttpStatus.BAD_REQUEST);
         }
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("person/{lastName}/{firstName}")
+                .path("/{lastName}/{firstName}")
                 .buildAndExpand(personAdded.getLastName(),
                         personAdded.getFirstName())
                 .toUri();
-
+        LOGGER.info("END of HTML administrative POST Request"
+                + " with Status 201 Created");
         return ResponseEntity.created(location).build();
     }
 
@@ -148,17 +178,38 @@ public class PersonController {
      * @throws PersonNotFoundException
      */
     @PutMapping(value = "person/{lastName}/{firstName}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> update(@PathVariable final String lastName,
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Object> update(@PathVariable final String lastName,
             @PathVariable final String firstName,
             @RequestBody final PersonDTO pPerson)
             throws PersonNotFoundException {
+        LOGGER.info("NEW HTML ADMINISTRATIVE PUT REQUEST"
+                + " on http://localhost:8080/firestation");
+        LOGGER.info("PersonController >>> Update the person '{} {}',",
+                firstName, lastName);
+        LOGGER.info(" with content: '{}'.", pPerson.toString());
 
         PersonDTO personUpdated = personService.updatePerson(lastName,
                 firstName, pPerson);
+
         if (personUpdated == null) {
-            return ResponseEntity.status(CODE_501).build();
+            LOGGER.info("END of HTML administrative PUT Request"
+                    + " with Status 501 Not Implemented");
+            return new ResponseEntity<Object>(
+                    "It is not allowed to rename a person!", new HttpHeaders(),
+                    HttpStatus.NOT_IMPLEMENTED);
+        } else if (personUpdated.getAddress() == null) {
+            LOGGER.info("END of HTML administrative PUT Request"
+                    + " with Status 400 Bad Request");
+            return new ResponseEntity<Object>(
+                    "It is not allowed to update a person"
+                            + " with an unknown address ("
+                            + pPerson.getAddress() + " " + pPerson.getZip()
+                            + " " + pPerson.getCity() + ").",
+                    new HttpHeaders(), HttpStatus.BAD_REQUEST);
         }
+        LOGGER.info("END of HTML administrative PUT Request"
+                + " with Status 204 No Content");
         return ResponseEntity.noContent().build();
 
     }
@@ -169,17 +220,27 @@ public class PersonController {
      * @param lastName
      * @param firstName
      * @return ResponseEntity<Void>
+     * @throws PersonNotFoundException
      */
     @DeleteMapping(value = "person/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> deletePerson(
             @PathVariable final String lastName,
-            @PathVariable final String firstName) {
+            @PathVariable final String firstName)
+            throws PersonNotFoundException {
+        LOGGER.info("NEW HTML ADMINISTRATIVE DELETE REQUEST"
+                + " on http://localhost:8080/person");
+        LOGGER.info("AddressController >>> Delete the person named '{} {}',",
+                firstName, lastName);
         PersonDTO personToDelete = null;
         personToDelete = personService.deleteAPerson(lastName, firstName);
         if (personToDelete == null) {
+            LOGGER.info("END of HTML administrative DELETE Request"
+                    + " with Status 404 NOT FOUND");
             return ResponseEntity.notFound().build();
         }
+        LOGGER.info(
+                "END of HTML administrative DELETE Request with Status 200 OK");
         return ResponseEntity.ok().build();
     }
 }

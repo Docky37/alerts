@@ -71,7 +71,16 @@ public interface IPersonService {
      * @param pFirstName
      * @return a PersonDTO (the deleted person) or null if person to delete not
      *         found.
+     * @throws PersonNotFoundException
      */
-    PersonDTO deleteAPerson(String pLastName, String pFirstName);
+    PersonDTO deleteAPerson(String pLastName, String pFirstName)
+            throws PersonNotFoundException;
+
+    /**
+     * The getBalanceSheet method.
+     *
+     * @return a String
+     */
+    String getBalanceSheet();
 
 }
