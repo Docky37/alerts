@@ -55,7 +55,7 @@ public class AddressControllerTest {
         addressDTOList.add(new AddressDTO("834 Binoc Ave", "3"));
     }
 
-    @Test // POST
+    @Test // POST - Successful creation
     public void givenAnAddressFireStationListToAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
 
@@ -75,12 +75,12 @@ public class AddressControllerTest {
 
         ObjectMapper mapper = new ObjectMapper();
         given(addressService.addListAddress(Mockito.<AddressDTO>anyList()))
-                .willReturn(null);
+                .willReturn(new ArrayList<AddressDTO>());
 
         mockMVC.perform(MockMvcRequestBuilders.post("/firestation/batch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(addressDTOList)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 
     @Test // POST
@@ -150,7 +150,7 @@ public class AddressControllerTest {
     }
 
     @Test // PUT
-    public void givenAnAddressFireStToUpdate_whenPut_thenReturnsIsCreated()
+    public void givenAnAddressFireStToUpdate_whenPut_thenReturnsIsNoContent()
             throws Exception, AddressNotFoundException {
 
         ObjectMapper mapper = new ObjectMapper();
@@ -167,6 +167,27 @@ public class AddressControllerTest {
 
         mockMVC.perform(builder)
                 .andExpect(MockMvcResultMatchers.status().isNoContent())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test // PUT
+    public void givenAnAddressFireStToUpdate_whenChangeAddress_thenReturnsIs501()
+            throws Exception, AddressNotFoundException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        AddressDTO addressDTOToUpdate = addressDTOList.get(2);
+        addressDTOToUpdate.setAddress("Change Address");
+        given(addressService.updateAddress(anyString(),(any(AddressDTO.class))))
+                .willReturn(null);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
+                .put("/firestation/" + addressDTOToUpdate.getAddress())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")
+                .content(mapper.writeValueAsString(addressDTOToUpdate));
+
+        mockMVC.perform(builder)
+                .andExpect(MockMvcResultMatchers.status().isNotImplemented())
                 .andDo(MockMvcResultHandlers.print());
     }
 

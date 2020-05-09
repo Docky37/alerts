@@ -77,16 +77,15 @@ public class AddressController {
         List<AddressDTO> listFireStAdded = addressService
                 .addListAddress(pAdressDTOList);
 
-        if (listFireStAdded == null) {
+        if (listFireStAdded.isEmpty()) {
             LOGGER.info("END of HTML administrative POST Request"
-                    + "with Status 200 OK");
-            // return ResponseEntity.noContent().build();
+                    + " with Status 200 OK");
             return new ResponseEntity<Object>(addressService.getBalanceSheet(),
-                    new HttpHeaders(), HttpStatus.CREATED);
+                    new HttpHeaders(), HttpStatus.OK);
         }
 
         LOGGER.info("END of HTML administrative POST Request"
-                + "with Status 201 Created");
+                + " with Status 201 Created");
         return new ResponseEntity<Object>(addressService.getBalanceSheet(),
                 new HttpHeaders(), HttpStatus.CREATED);
 
@@ -191,15 +190,14 @@ public class AddressController {
         AddressDTO addressDTOUpdated = addressService.updateAddress(address,
                 pAddressDTO);
         if (addressDTOUpdated == null) {
-            LOGGER.info("END of HTML administrative GET Request"
+            LOGGER.info("END of HTML administrative PUT Request"
                     + " with Status 501 Not Implemented");
-            // return ResponseEntity.status(CODE_501).build();
             return new ResponseEntity<Object>(
                     "It is not allowed to rename '" + address + " as "
                             + pAddressDTO.getAddress() + ".",
                     new HttpHeaders(), HttpStatus.NOT_IMPLEMENTED);
         }
-        LOGGER.info("END of HTML administrative GET Request"
+        LOGGER.info("END of HTML administrative PUT Request"
                 + " with Status 204 No Content");
         return ResponseEntity.noContent().build();
     }
@@ -221,12 +219,12 @@ public class AddressController {
         AddressDTO addressFireStToDelete = null;
         addressFireStToDelete = addressService.deleteAnAddress(address);
         if (addressFireStToDelete == null) {
-            LOGGER.info("END of HTML administrative GET Request"
+            LOGGER.info("END of HTML administrative DELETE Request"
                     + " with Status 404 NOT FOUND");
             return ResponseEntity.notFound().build();
         }
         LOGGER.info(
-                "END of HTML administrative GET Request with Status 200 OK");
+                "END of HTML administrative DELETE Request with Status 200 OK");
         return ResponseEntity.ok().build();
     }
 

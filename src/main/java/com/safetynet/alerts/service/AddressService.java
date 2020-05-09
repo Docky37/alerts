@@ -120,8 +120,8 @@ public class AddressService implements IAddressService {
             createAddressDTO = addAddress(addressDTO);
             if (createAddressDTO == null) { // MedicalRecord not created.
                 countOfRejectedAddress++;
-                if (balanceSheet == "") {
-                    balanceSheet = "This registred addresses have not been"
+                if (balanceSheet.isEmpty()) {
+                    balanceSheet = "These registred addresses have not been"
                             + " created again, to avoid duplicates: " + newLine;
                 }
                 balanceSheet = balanceSheet
@@ -255,7 +255,7 @@ public class AddressService implements IAddressService {
      */
     @Override
     public AddressDTO deleteAnAddress(final String pAddressToDelete) {
-        LOGGER.debug(" | AddressService 'Update the address {}' start -->",
+        LOGGER.debug(" | AddressService 'Delete the address {}' start -->",
                 pAddressToDelete);
         AddressEntity foundAddress = repository.findByAddress(pAddressToDelete);
         if (foundAddress != null) {
@@ -264,11 +264,11 @@ public class AddressService implements IAddressService {
                     .convertToAddressDTO(foundAddress);
             LOGGER.debug(" |   OK now Address '{}' is deleted.'",
                     deletedAddressDTO);
-            LOGGER.debug(" | End of AddressService 'Find an address.' ---");
+            LOGGER.debug(" | End of AddressService 'Delete an address.' ---");
             return deletedAddressDTO;
         }
-        LOGGER.error(" |  Address not found!");
-        LOGGER.debug(" | End of AddressService 'Find an address.' ---");
+        LOGGER.error(" |  ADDRESS NOT FOUND!");
+        LOGGER.debug(" | End of AddressService 'Delete an address.' ---");
         return null;
     }
 
