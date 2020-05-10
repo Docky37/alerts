@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
@@ -29,7 +28,7 @@ public class OpsMedicalMapping {
      * Create a SLF4J/LOG4J LOGGER instance.
      */
     static final Logger LOGGER = LoggerFactory
-            .getLogger(AlertsApplication.class);
+            .getLogger(OpsMedicalMapping.class);
 
     /**
      * Date format used to convert String parameter to LocalDate.
@@ -59,12 +58,12 @@ public class OpsMedicalMapping {
             final String address) {
         HouseholdDTO householdDTO = new HouseholdDTO();
         List<PersonInfoDTO> personList = mapPersonInfoList(pEntList);
-        LOGGER.debug("OpsMedicalMapping OPS#4 >>> PersonInfoDTO list: {}",
+        LOGGER.debug("OPS#4 >>> PersonInfoDTO list: {}",
                 personList.toString());
         householdDTO.setAddressEntity(pEntList.get(0).getAddressFireSt());
         householdDTO.setPersonList(personList);
 
-        LOGGER.info("OpsMedicalMapping OPS#4 >>> HouseholdDTO = {} - {}",
+        LOGGER.info("OPS#4 >>> HouseholdDTO = {} - {}",
                 householdDTO.getAddressEntity(),
                 householdDTO.getPersonList().toArray());
         return householdDTO;
@@ -119,7 +118,7 @@ public class OpsMedicalMapping {
         householdList.add(householdDTO);
         floodDTOList.add(new FloodDTO(currentStation, householdList));
 
-        LOGGER.info("OpsMedicalMapping OPS#5 >>> FloodAlert = {}",
+        LOGGER.info("OPS#5 >>> FloodAlert = {}",
                 householdDTO.toString());
         // }
         return floodDTOList;
@@ -150,7 +149,7 @@ public class OpsMedicalMapping {
                     personEntity.getPhone()));
 
         }
-        LOGGER.info("OpsMedicalMapping OPS#6 >>> PersonInfo list = {}",
+        LOGGER.info("OPS#6 >>> PersonInfo list = {}",
                 personInfoList.toString());
 
         return personInfoList;

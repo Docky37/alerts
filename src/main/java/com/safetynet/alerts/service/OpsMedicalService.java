@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
@@ -27,7 +26,7 @@ public class OpsMedicalService implements IOpsMedicalService {
      * Create a SLF4J/LOG4J LOGGER instance.
      */
     static final Logger LOGGER = LoggerFactory
-            .getLogger(AlertsApplication.class);
+            .getLogger(OpsMedicalService.class);
 
     /**
      * This final value of 18 years is subtracted to the day date to make a
@@ -74,12 +73,12 @@ public class OpsMedicalService implements IOpsMedicalService {
     public HouseholdDTO fireByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
-        LOGGER.debug("OpsMedicalService OPS#4 >>> PersonList: {}",
+        LOGGER.debug("OPS#4 >>> PersonList: {}",
                 pEntList.toString());
 
         HouseholdDTO householdDTO = opsMedicalMapping.mapFire(pEntList,
                 address);
-        LOGGER.info("OpsMedicalService OPS#4 >>> HouseholdDTO: {} - {}",
+        LOGGER.info("OPS#4 >>> HouseholdDTO: {} - {}",
                 householdDTO.getAddressEntity(), householdDTO.getPersonList());
         return householdDTO;
 
@@ -98,11 +97,11 @@ public class OpsMedicalService implements IOpsMedicalService {
     public List<FloodDTO> floodByStation(final List<String> pStationList) {
         List<PersonEntity> pEntList = (List<PersonEntity>) personRepository
                 .findAllGroupByAddress(pStationList);
-        LOGGER.debug("OpsMedicalService OPS#5 >>> PersonList: {}",
+        LOGGER.debug("OPS#5 >>> PersonList: {}",
                 pEntList.toString());
 
         List<FloodDTO> floodDTOList = opsMedicalMapping.mapFlood(pEntList);
-        LOGGER.debug("OpsMedicalService OPS#5 >>> FloodDTO list: {}",
+        LOGGER.debug("OPS#5 >>> FloodDTO list: {}",
                 floodDTOList.toString());
 
         return floodDTOList;
@@ -120,7 +119,7 @@ public class OpsMedicalService implements IOpsMedicalService {
     @Override
     public List<PersonInfoDTO> personInfo(final String pFirstName,
             final String pLastName) {
-        LOGGER.info("OpsMedicalService OPS #6 >>> personInfo -");
+        LOGGER.debug("OPS #6 >>> personInfo for {} {}", pFirstName, pLastName);
         List<PersonEntity> pEntList = (List<PersonEntity>) personRepository
                 .findByFirstNameAndLastName(pFirstName, pLastName);
         List<PersonInfoDTO> personInfoDTOList = opsMedicalMapping

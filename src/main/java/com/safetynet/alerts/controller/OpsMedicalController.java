@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
@@ -27,7 +26,7 @@ public class OpsMedicalController {
      * Create a SLF4J/LOG4J LOGGER instance.
      */
     static final Logger LOGGER = LoggerFactory
-            .getLogger(AlertsApplication.class);
+            .getLogger(OpsMedicalController.class);
 
     /**
      * The service class used to manage person administrative CRUD operations.
@@ -55,7 +54,7 @@ public class OpsMedicalController {
     @GetMapping(value = "/fire")
     public HouseholdDTO fireByAddress(@RequestParam final String address) {
         LOGGER.info("NEW HTML REQUEST OPS#4 fire");
-        LOGGER.info("OpsMedicalController OPS#4 >>> RequestParam: {}", address);
+        LOGGER.info("OPS#4 >>> RequestParam: {}", address);
         return opsMedicalService.fireByAddress(address);
     }
 
@@ -71,7 +70,7 @@ public class OpsMedicalController {
     public List<FloodDTO> listOfPersonsCoveredByStation(
             @RequestParam final List<String> stationList) {
         LOGGER.info("NEW HTML REQUEST OPS#5 flood");
-        LOGGER.info("OpsMedicalController OPS#5 >>> RequestParam: {}",
+        LOGGER.info("OPS#5 >>> RequestParam: {}",
                 stationList);
         return opsMedicalService.floodByStation(stationList);
     }
@@ -89,7 +88,7 @@ public class OpsMedicalController {
     public List<PersonInfoDTO> personInfo(@RequestParam final String firstName,
             @RequestParam final String lastName) {
         LOGGER.info("NEW HTML REQUEST OPS#6 personInfo");
-        LOGGER.info("OpsMedicalController OPS#5 >>> RequestParam: {}& {}",
+        LOGGER.info("OPS#6 >>> RequestParam: {}& {}",
                 firstName, lastName);
         return opsMedicalService.personInfo(firstName, lastName);
     }
