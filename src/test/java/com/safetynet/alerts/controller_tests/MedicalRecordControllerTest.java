@@ -96,7 +96,7 @@ public class MedicalRecordControllerTest {
                 .addListMedicalRecord(Mockito.<MedicalRecordDTO>anyList()))
                         .willReturn(medicalRecordList);
 
-        mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecords")
+        mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecord/batch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(medicalRecordList)))
                 .andExpect(status().isCreated());
@@ -109,12 +109,12 @@ public class MedicalRecordControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         given(medicalRecordService
                 .addListMedicalRecord(Mockito.<MedicalRecordDTO>anyList()))
-                        .willReturn(null);
+                        .willReturn(new ArrayList<MedicalRecordDTO>());
 
-        mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecords")
+        mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecord/batch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(medicalRecordList)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
 
     @Test // GET
@@ -158,7 +158,7 @@ public class MedicalRecordControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test // POST
+    @Test // POST - Orphan
     public void givenAnUnknownMedicalRecordToAdd_whenPostMedicalRecord_thenReturnNoContent()
             throws Exception {
         LOGGER.info("Start test: POST - Add one medicalRecord");
@@ -167,12 +167,13 @@ public class MedicalRecordControllerTest {
                 "09/06/2017", new String[] {}, new String[] {});
         given(medicalRecordService
                 .addMedicalRecord(any(MedicalRecordDTO.class)))
-                        .willReturn(null);
+                        .willReturn(new MedicalRecordDTO("", "", "", new String[] {},
+                                new String[] {}));
 
         mockMVC.perform(MockMvcRequestBuilders.post("/medicalRecord")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(personToAdd)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isBadRequest());
     }
 
     @Test // PUT

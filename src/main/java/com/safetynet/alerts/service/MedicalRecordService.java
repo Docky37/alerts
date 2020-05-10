@@ -96,7 +96,8 @@ public class MedicalRecordService implements IMedicalRecordService {
     public List<MedicalRecordDTO> findAll() {
         LOGGER.debug(
                 " | MedicalRecordService 'Find all medicalRecords' start -->");
-        List<MedicalRecordEntity> medicalRecordList = (List<MedicalRecordEntity>) medicalRecordRepository
+        List<MedicalRecordEntity> medicalRecordList =
+                (List<MedicalRecordEntity>) medicalRecordRepository
                 .findAll();
         List<MedicalRecordDTO> foundMedicalRecordList = medicalRecordMapping
                 .convertToMedicalRecordDTO(medicalRecordList);
@@ -108,8 +109,8 @@ public class MedicalRecordService implements IMedicalRecordService {
         } else {
             LOGGER.error(" | !   NO MEDICAL RECORDS IN DATABASE!");
         }
-        LOGGER.debug(
-                " | End of MedicalRecordService 'Find all medicalRecords.' ---");
+        LOGGER.debug(" | End of MedicalRecordService"
+                + " 'Find all medicalRecords.' ---");
         return foundMedicalRecordList;
     }
 
@@ -135,8 +136,8 @@ public class MedicalRecordService implements IMedicalRecordService {
             if (createdMedRecDTO == null) { // MedicalRecord not created.
                 countOfRejectedMedRec++;
                 if (balanceSheet.isEmpty()) {
-                    balanceSheet = "These registred medicalRecords have not been"
-                            + " created, to avoid duplicates: " + newLine;
+                    balanceSheet = "These registred medicalRecords have not"
+                            + " been created, to avoid duplicates: " + newLine;
                 }
                 balanceSheet = balanceSheet.concat(
                         "   -  " + medicalRecordDTO.toString()) + newLine;
@@ -185,8 +186,8 @@ public class MedicalRecordService implements IMedicalRecordService {
                                 + "its owner ({} {}) is not registred !",
                         pMedicalRecord.getFirstName(),
                         pMedicalRecord.getLastName());
-                LOGGER.debug(
-                        " | End of MedicalRecordService 'Add a medicalRecord.' ---");
+                LOGGER.debug(" | End of MedicalRecordService"
+                        + " 'Add a medicalRecord.' ---");
                 return new MedicalRecordDTO("", "", "", new String[] {},
                         new String[] {});
             } else {
@@ -201,17 +202,20 @@ public class MedicalRecordService implements IMedicalRecordService {
                         pMedicalRecord.getFirstName(),
                         pMedicalRecord.getLastName());
                 LOGGER.debug(
-                        " | End of MedicalRecordService 'Add a medicalRecord.' ---");
+                        " | End of MedicalRecordService"
+                        + " 'Add a medicalRecord.' ---");
                 return medicalRecordMapping
                         .convertToMedicalRecordDTO(addedMedicalRecord);
             }
         } else {
             LOGGER.error(
-                    " | !   Cannot create a medical Record for {} {}, it already exits!",
+                    " | !   Cannot create a medical Record for {} {},"
+                    + " it already exits!",
                     pMedicalRecord.getFirstName(),
                     pMedicalRecord.getLastName());
             LOGGER.debug(
-                    " | End of MedicalRecordService 'Add a medicalRecord.' ---");
+                    " | End of MedicalRecordService"
+                    + " 'Add a medicalRecord.' ---");
             return null;
         }
     }
@@ -220,8 +224,8 @@ public class MedicalRecordService implements IMedicalRecordService {
      * The findByLastNameAndFirstName method allows user to find a medical
      * record in DB.
      *
-     * @param lastName
-     * @param firstName
+     * @param pLastName
+     * @param pFirstName
      * @return a MedicalRecordDTO
      * @throws MedicalRecordNotFoundException
      */
@@ -229,14 +233,16 @@ public class MedicalRecordService implements IMedicalRecordService {
     public MedicalRecordDTO findByLastNameAndFirstName(final String pLastName,
             final String pFirstName) throws MedicalRecordNotFoundException {
         LOGGER.debug(
-                " | MedicalRecordService 'Find a medicalRecord ({} {})' start -->",
+                " | MedicalRecordService 'Find a medicalRecord ({} {})"
+                + "' start -->",
                 pFirstName, pLastName);
         MedicalRecordEntity foundMedicalRecord = medicalRecordRepository
                 .findByLastNameAndFirstName(pLastName, pFirstName);
         if (foundMedicalRecord == null) {
             LOGGER.error(" | !  MEDICAL RECORD NOT FOUND!");
             LOGGER.debug(
-                    " | End of MedicalRecordService 'Find a medicalRecord.' ---");
+                    " | End of MedicalRecordService"
+                    + " 'Find a medicalRecord.' ---");
             throw new MedicalRecordNotFoundException();
         }
         MedicalRecordDTO foundMedRec = medicalRecordMapping
@@ -261,15 +267,15 @@ public class MedicalRecordService implements IMedicalRecordService {
             final String pFirstName, final MedicalRecordDTO pMedicalRecord)
             throws MedicalRecordNotFoundException {
         LOGGER.debug(
-                " | MedicalRecord 'Update the MedicalRecord of {} {}' start -->",
-                pFirstName, pLastName);
+                " | MedicalRecord 'Update the MedicalRecord of {} {}"
+                + "' start -->", pFirstName, pLastName);
         MedicalRecordDTO medicalRecordToUpdate = pMedicalRecord;
         MedicalRecordEntity foundMedicalRecord = medicalRecordRepository
                 .findByLastNameAndFirstName(pLastName, pFirstName);
         if (foundMedicalRecord == null) { // Unregistred medical record
             LOGGER.error(
-                    " | !   Cannot update this unregistered medical record ({} {})!",
-                    pFirstName, pLastName);
+                    " | !   Cannot update this unregistered medical record"
+                    + " ({} {})!", pFirstName, pLastName);
             LOGGER.debug(
                     " | End of PersonService 'Update a medicalRecord'. ---");
             throw new MedicalRecordNotFoundException();
@@ -286,48 +292,52 @@ public class MedicalRecordService implements IMedicalRecordService {
                     .convertToMedicalRecordDTO(updatedMedicalRecord);
             LOGGER.debug(" |   OK now this medicalRecord is updated: {}.",
                     updatedMedRec.toString());
-            LOGGER.debug(" | End of PersonService 'Update a medicalRecord'. ---");
+            LOGGER.debug(" | End of PersonService"
+                    + " 'Update a medicalRecord'. ---");
             return updatedMedRec;
         }
-        
         LOGGER.error(
-                    " | !   Cannot change the owner of medical record ({} {})!",
-                    pFirstName, pLastName);
+                    " | !   Cannot change the owner of medical record"
+                    + " ({} {})!", pFirstName, pLastName);
         LOGGER.debug(" | End of PersonService 'Update a medicalRecord'. ---");
         return null;
     }
 
     /**
      * Delete method that uses first findByLastNameAndFirstName to find the
-     * MedicalRecordDTO to delete in DB and get its id to invokes the deleteById
-     * method of CrudRepository.
+     * MedicalRecordDTO to delete in DB and get its id to invokes the
+     * deleteById method of CrudRepository.
      *
      * @param lastName
      * @param firstName
      * @return a MedicalRecordDTO
-     * @throws MedicalRecordNotFoundException 
+     * @throws MedicalRecordNotFoundException
      */
     @Override
     public MedicalRecordDTO deleteAMedicalRecord(final String lastName,
             final String firstName) throws MedicalRecordNotFoundException {
-        LOGGER.debug(
-                " | MedicalRecordService - Delete the medicalRecord of '{} {}' start -->",
+        LOGGER.debug(" | MedicalRecordService -"
+                + " Delete the medicalRecord of '{} {}' start -->",
                 lastName, firstName);
         MedicalRecordEntity medicalRecordToDelete = medicalRecordRepository
                 .findByLastNameAndFirstName(lastName, firstName);
         if (medicalRecordToDelete != null) {
             MedicalRecordDTO deletedMedicalRecordDTO = medicalRecordMapping
                     .convertToMedicalRecordDTO(medicalRecordToDelete);
-            PersonEntity medRecOwner = personRepository.findByLastNameAndFirstName(lastName, firstName);
+            PersonEntity medRecOwner =
+                    personRepository.findByLastNameAndFirstName(lastName,
+                            firstName);
             medRecOwner.setMedRecId(null);
             medicalRecordRepository.deleteById(medicalRecordToDelete.getId());
             LOGGER.debug(" |   OK now medicalRecord '{}' is deleted.'",
                     deletedMedicalRecordDTO.toString());
-            LOGGER.debug(" | End of MedicalRecordService 'Delete a medicalRecord.' ---");
+            LOGGER.debug(" | End of MedicalRecordService"
+                    + " 'Delete a medicalRecord.' ---");
             return deletedMedicalRecordDTO;
         }
         LOGGER.error(" |   MEDICAL RECORD NOT FOUND!");
-        LOGGER.debug(" | End of MedicalRecordService 'Delete a medicalRecord.' ---");
+        LOGGER.debug(" | End of MedicalRecordService"
+                + " 'Delete a medicalRecord.' ---");
         throw new MedicalRecordNotFoundException();
     }
 

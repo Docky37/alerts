@@ -105,15 +105,15 @@ public class MedicalRecordServiceTest {
                 anyString())).willReturn(personEntity);
         given(medicalRecordMapping
                 .convertToMedicalRecordEntity(any(MedicalRecordDTO.class)))
-                        .willReturn(medRecEntityList.get(0), medRecEntityList.get(1),
+                        .willReturn(medRecEntityList.get(0),
+                                medRecEntityList.get(1),
                                 medRecEntityList.get(2));
         given(medicalRecordRepository.save(any(MedicalRecordEntity.class)))
                 .willReturn(medRecEntityList.get(0), medRecEntityList.get(1),
                         medRecEntityList.get(2));
         given(medicalRecordMapping
                 .convertToMedicalRecordDTO(any(MedicalRecordEntity.class)))
-                        .willReturn(medRecDTOList.get(0),
-                                medRecDTOList.get(1),
+                        .willReturn(medRecDTOList.get(0), medRecDTOList.get(1),
                                 medRecDTOList.get(2));
         // WHEN
         List<MedicalRecordDTO> addedList = medicalRecordService
@@ -293,7 +293,7 @@ public class MedicalRecordServiceTest {
                 .isEqualTo(medicalRecordToUpdate.getBirthdate());
     }
 
-    @Test // DELETE a MedicalRecordEntity
+    @Test
     @Tag("TestF-DeleteAPerson")
     @DisplayName("6. Given a person to delete, when delete the person,"
             + " then find this person returns null.")
@@ -303,6 +303,11 @@ public class MedicalRecordServiceTest {
         MedicalRecordDTO medicalRecordToDelete = medRecDTOList.get(2);
         given(medicalRecordRepository.findByLastNameAndFirstName(anyString(),
                 anyString())).willReturn(medRecEntityList.get(2));
+        given(personRepository.findByLastNameAndFirstName(anyString(),
+                anyString())).willReturn(personEntity);
+        given(medicalRecordMapping
+                .convertToMedicalRecordDTO(any(MedicalRecordEntity.class)))
+                        .willReturn(medRecDTOList.get(0));
         // WHEN
         medicalRecordService.deleteAMedicalRecord(
                 medicalRecordToDelete.getLastName(),
@@ -313,11 +318,11 @@ public class MedicalRecordServiceTest {
         verify(medicalRecordRepository).deleteById(any(Long.class));
     }
 
-    @Test // DELETE a MedicalRecordEntity that not exists
-    @Tag("TestF-DeleteAPerson")
+    @Test(expected = MedicalRecordNotFoundException.class) // DELETE
+    @Tag("TestF-DeleteAMedicalRecord")
     @DisplayName("6. Given a unknown MedicalRecordEntity to delete, when delete,"
             + " returns null.")
-    public void f2_givenAnUnknownMedicalRecordToDelete_whenDelete_thenReturnsNull()
+    public void f2_givenAnUnknownMedicalRecordToDelete_whenDelete_then404()
             throws Exception {
         // GIVEN
         MedicalRecordDTO medicalRecordToDelete = medRecDTOList.get(2);

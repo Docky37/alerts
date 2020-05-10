@@ -131,10 +131,13 @@ public class MedicalRecordController {
         if (medicalRecordAdded == null) {
             LOGGER.info("END of HTML administrative POST Request"
                     + " with Status 400 Bad Request");
-            return new ResponseEntity<Object>("Cannot create this medical record, there is already one registred for '"
-                    + pMedicalRecord.getFirstName() + " "
-                    + pMedicalRecord.getLastName()
-                    + "'. Consider PUT request if you want to update it.",
+            return new ResponseEntity<Object>(
+                    "Cannot create this medical record,"
+                            + " there is already one registred for '"
+                            + pMedicalRecord.getFirstName() + " "
+                            + pMedicalRecord.getLastName()
+                            + "'. Consider PUT request"
+                            + " if you want to update it.",
                     new HttpHeaders(), HttpStatus.BAD_REQUEST);
         } else if (medicalRecordAdded.getLastName().isEmpty()) {
             LOGGER.info("END of HTML administrative POST Request"
@@ -173,8 +176,8 @@ public class MedicalRecordController {
                 + " on http://localhost:8080/medicalRecord");
         LOGGER.info(" PersonController  >>> Get the MedicalRecord of '{} {}'.",
                 firstName, lastName);
-        MedicalRecordDTO resultMedRec = medicalRecordService.findByLastNameAndFirstName(lastName,
-                firstName);
+        MedicalRecordDTO resultMedRec = medicalRecordService
+                .findByLastNameAndFirstName(lastName, firstName);
         LOGGER.info(
                 "END of HTML administrative GET Request with Status 200 OK");
         return resultMedRec;
@@ -216,8 +219,8 @@ public class MedicalRecordController {
             LOGGER.info("END of HTML administrative PUT Request"
                     + " with Status 501 Not Implemented");
             return new ResponseEntity<Object>(
-                    "It is not allowed to change the medical record owner!", new HttpHeaders(),
-                    HttpStatus.NOT_IMPLEMENTED);
+                    "It is not allowed to change the medical record owner!",
+                    new HttpHeaders(), HttpStatus.NOT_IMPLEMENTED);
         }
         LOGGER.info("END of HTML administrative PUT Request"
                 + " with Status 204 No Content");
@@ -232,24 +235,26 @@ public class MedicalRecordController {
      * @param lastName
      * @param firstName
      * @return ResponseEntity<Void>
-     * @throws PersonNotFoundException 
-     * @throws MedicalRecordNotFoundException 
+     * @throws PersonNotFoundException
+     * @throws MedicalRecordNotFoundException
      */
     @DeleteMapping(value = "medicalRecord/{lastName}/{firstName}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> deleteMedicalRecord(
             @PathVariable final String lastName,
-            @PathVariable final String firstName) throws MedicalRecordNotFoundException {
+            @PathVariable final String firstName)
+            throws MedicalRecordNotFoundException {
         LOGGER.info("NEW HTML ADMINISTRATIVE DELETE REQUEST"
                 + " on http://localhost:8080/medicalRecord");
-        LOGGER.info("MedicalRecordController >>> Delete the medicalRecord of '{} {}',",
+        LOGGER.info("MedicalRecordController >>>"
+                + " Delete the medicalRecord of '{} {}',",
                 firstName, lastName);
         MedicalRecordDTO medicalRecordToDelete = null;
         medicalRecordToDelete = medicalRecordService
                 .deleteAMedicalRecord(lastName, firstName);
         if (medicalRecordToDelete != null) {
-            LOGGER.info(
-                    "END of HTML administrative DELETE Request with Status 200 OK");
+            LOGGER.info("END of HTML administrative DELETE Request"
+                    + " with Status 200 OK");
             return ResponseEntity.ok().build();
         }
         LOGGER.error(" |   PERSON NOT FOUND!");

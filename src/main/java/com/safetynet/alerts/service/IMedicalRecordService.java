@@ -59,8 +59,8 @@ public interface IMedicalRecordService {
      * @return a MedicalRecordDTO
      * @throws MedicalRecordNotFoundException
      */
-    MedicalRecordDTO updateMedicalRecord(String pLastName,
-            String pFirstName, MedicalRecordDTO pMedicalRecord)
+    MedicalRecordDTO updateMedicalRecord(String pLastName, String pFirstName,
+            MedicalRecordDTO pMedicalRecord)
             throws MedicalRecordNotFoundException;
 
     /**
@@ -71,9 +71,10 @@ public interface IMedicalRecordService {
      * @param lastName
      * @param firstName
      * @return a MedicalRecordDTO
-     * @throws MedicalRecordNotFoundException 
+     * @throws MedicalRecordNotFoundException
      */
-    MedicalRecordDTO deleteAMedicalRecord(String lastName, String firstName) throws MedicalRecordNotFoundException;
+    MedicalRecordDTO deleteAMedicalRecord(String lastName, String firstName)
+            throws MedicalRecordNotFoundException;
 
     /**
      * The getBalanceSheet method.
