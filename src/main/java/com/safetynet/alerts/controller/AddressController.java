@@ -193,8 +193,8 @@ public class AddressController {
             LOGGER.info("END of HTML administrative PUT Request"
                     + " with Status 501 Not Implemented");
             return new ResponseEntity<Object>(
-                    "It is not allowed to rename an address ('" + address + "' as '"
-                            + pAddressDTO.getAddress() + "').",
+                    "It is not allowed to rename an address ('" + address
+                            + "' as '" + pAddressDTO.getAddress() + "').",
                     new HttpHeaders(), HttpStatus.NOT_IMPLEMENTED);
         }
         LOGGER.info("END of HTML administrative PUT Request"

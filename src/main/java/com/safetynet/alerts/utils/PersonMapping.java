@@ -33,10 +33,9 @@ public class PersonMapping {
      * @return a PersonEntity object
      */
     public PersonEntity convertToPersonEntity(final PersonDTO pPerson) {
-        if (addressRepository
-                .findByAddress(pPerson.getAddress()) == null) {
-            return null;  //Address unknown in DataBase!
-        }else {
+        if (addressRepository.findByAddress(pPerson.getAddress()) == null) {
+            return null; // Address unknown in DataBase!
+        } else {
             PersonEntity pEnt = new PersonEntity();
             pEnt.setFirstName(pPerson.getFirstName());
             pEnt.setLastName(pPerson.getLastName());

@@ -237,7 +237,7 @@ public class PersonService implements IPersonService {
                         pPerson.getAddress(), pPerson.getZip(),
                         pPerson.getCity());
                 LOGGER.debug(" | End of PersonService 'Update a person'. ---");
-                pPerson.setAddress("'? "+ pPerson.getAddress()+ "?'");
+                pPerson.setAddress("'? " + pPerson.getAddress() + "?'");
                 return pPerson;
             }
             // Successful update
@@ -250,9 +250,9 @@ public class PersonService implements IPersonService {
             LOGGER.debug(" | End of PersonService 'Update a person'. ---");
             return updatePersonDTO;
         }
-        LOGGER.error(
-                " | !   Cannot rename a person ('{} {}' as '{} {}'). ",
-                pLastName, pFirstName,pPerson.getFirstName(), pPerson.getLastName());
+        LOGGER.error(" | !   Cannot rename a person ('{} {}' as '{} {}'). ",
+                pLastName, pFirstName, pPerson.getFirstName(),
+                pPerson.getLastName());
 
         LOGGER.debug(" | End of PersonService 'Update a person'. ---");
         return null;
