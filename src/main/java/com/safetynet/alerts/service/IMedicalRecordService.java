@@ -71,7 +71,15 @@ public interface IMedicalRecordService {
      * @param lastName
      * @param firstName
      * @return a MedicalRecordDTO
+     * @throws MedicalRecordNotFoundException 
      */
-    MedicalRecordDTO deleteAMedicalRecord(String lastName, String firstName);
+    MedicalRecordDTO deleteAMedicalRecord(String lastName, String firstName) throws MedicalRecordNotFoundException;
+
+    /**
+     * The getBalanceSheet method.
+     *
+     * @return a String
+     */
+    String getBalanceSheet();
 
 }
