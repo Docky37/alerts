@@ -184,7 +184,7 @@ public class PersonController {
             @RequestBody final PersonDTO pPerson)
             throws PersonNotFoundException {
         LOGGER.info("NEW HTML ADMINISTRATIVE PUT REQUEST"
-                + " on http://localhost:8080/firestation");
+                + " on http://localhost:8080/person");
         LOGGER.info("PersonController >>> Update the person '{} {}',",
                 firstName, lastName);
         LOGGER.info(" with content: '{}'.", pPerson.toString());
@@ -230,7 +230,7 @@ public class PersonController {
             throws PersonNotFoundException {
         LOGGER.info("NEW HTML ADMINISTRATIVE DELETE REQUEST"
                 + " on http://localhost:8080/person");
-        LOGGER.info("AddressController >>> Delete the person named '{} {}',",
+        LOGGER.info("PersonController >>> Delete the person named '{} {}',",
                 firstName, lastName);
         PersonDTO personToDelete = null;
         personToDelete = personService.deleteAPerson(lastName, firstName);

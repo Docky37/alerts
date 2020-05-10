@@ -250,6 +250,10 @@ public class PersonService implements IPersonService {
             LOGGER.debug(" | End of PersonService 'Update a person'. ---");
             return updatePersonDTO;
         }
+        LOGGER.error(
+                " | !   Cannot rename a person ('{} {}' as '{} {}'). ",
+                pLastName, pFirstName,pPerson.getFirstName(), pPerson.getLastName());
+
         LOGGER.debug(" | End of PersonService 'Update a person'. ---");
         return null;
     }
@@ -279,7 +283,7 @@ public class PersonService implements IPersonService {
             LOGGER.debug(" |   OK now person '{}' is deleted.'",
                     deletedPersonDTO.toString());
             LOGGER.debug(" | End of PersonService 'Delete a person.' ---");
-            return personMapping.convertToPerson(pEnt);
+            return deletedPersonDTO;
         }
         LOGGER.error(" |   PERSON NOT FOUND!");
         LOGGER.debug(" | End of PersonService 'Delete a person.' ---");

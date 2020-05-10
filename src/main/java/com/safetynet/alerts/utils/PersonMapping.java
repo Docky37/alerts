@@ -36,16 +36,17 @@ public class PersonMapping {
         if (addressRepository
                 .findByAddress(pPerson.getAddress()) == null) {
             return null;  //Address unknown in DataBase!
+        }else {
+            PersonEntity pEnt = new PersonEntity();
+            pEnt.setFirstName(pPerson.getFirstName());
+            pEnt.setLastName(pPerson.getLastName());
+            pEnt.setAddressFireSt(
+                    addressRepository.findByAddress(pPerson.getAddress()));
+            pEnt.setPhone(pPerson.getPhone());
+            pEnt.setEmail(pPerson.getEmail());
+            pEnt.setMedRecId(null);
+            return pEnt;
         }
-        PersonEntity pEnt = new PersonEntity();
-        pEnt.setFirstName(pPerson.getFirstName());
-        pEnt.setLastName(pPerson.getLastName());
-        pEnt.setAddressFireSt(
-                addressRepository.findByAddress(pPerson.getAddress()));
-        pEnt.setPhone(pPerson.getPhone());
-        pEnt.setEmail(pPerson.getEmail());
-        pEnt.setMedRecId(null);
-        return pEnt;
     }
 
     /**
