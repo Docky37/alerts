@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.ChildDTO;
 import com.safetynet.alerts.DTO.CoveredPopulationDTO;
 import com.safetynet.alerts.service.IOpsPersonService;
@@ -25,7 +24,7 @@ public class OpsPersonController {
      * Create a SLF4J/LOG4J LOGGER instance.
      */
     static final Logger LOGGER = LoggerFactory
-            .getLogger(AlertsApplication.class);
+            .getLogger(OpsPersonController.class);
 
     /**
      * The service class used to manage person administrative CRUD operations.
@@ -50,14 +49,14 @@ public class OpsPersonController {
      * @param stationNumber
      * @return a CoveredPopulationDTO object
      */
-    @GetMapping(value = "/firestation/stationNumber")
+    @GetMapping(value = "/firestation/number")
     public CoveredPopulationDTO adultAndChildCountByStation(
             @RequestParam final String stationNumber) {
-        LOGGER.info("NEW HTML REQUEST OPS#1 firestation/stationNumber");
-        LOGGER.info(
-                "OpsPersonController OPS#1 >>> RequestParam: stationNumber= {}",
-                stationNumber);
-        return opsPersonService.populationCoveredByStation(stationNumber);
+        LOGGER.info("NEW HTML REQUEST OPS#1 firestation/number");
+        LOGGER.info("OPS#1 >>> RequestParam: stationNumber= {}", stationNumber);
+        CoveredPopulationDTO reponse = opsPersonService
+                .populationCoveredByStation(stationNumber);
+        return reponse;
     }
 
     // OPS #2 ENDPOINT -------------------------------------------------------
@@ -69,8 +68,8 @@ public class OpsPersonController {
      */
     @GetMapping(value = "/childAlert")
     public ChildDTO childAlertByAddress(@RequestParam final String address) {
-        LOGGER.info("NEW HTML REQUEST OPS#2 chilAlert");
-        LOGGER.info("OpsPersonController OPS#2 >>> RequestParam: address= {}",
+        LOGGER.info("NEW HTML REQUEST OPS#2 childAlert");
+        LOGGER.info("OPS#2 >>> RequestParam: address= {}",
                 address);
         return opsPersonService.findListOfChildByAddress(address);
     }
@@ -87,7 +86,7 @@ public class OpsPersonController {
     public List<String> getPhoneListByStation(
             @RequestParam final String station) {
         LOGGER.info("NEW HTML REQUEST OPS#3 phoneAlert");
-        LOGGER.info("OpsPersonController OPS#3 >>> RequestParam: station= {}",
+        LOGGER.info("OPS#3 >>> RequestParam: station= {}",
                 station);
         return opsPersonService.findAllPhoneListByStation(station);
     }
@@ -102,7 +101,7 @@ public class OpsPersonController {
     @GetMapping(value = "/communityEmail")
     public List<String> getEmailListByCity(@RequestParam final String city) {
         LOGGER.info("NEW HTML REQUEST OPS#7 communityEmail");
-        LOGGER.info("OpsPersonController OPS#7 >>> RequestParam: city = {}",
+        LOGGER.info("OPS#7 >>> RequestParam: city = {}",
                 city);
         return opsPersonService.findAllMailByCity(city);
     }

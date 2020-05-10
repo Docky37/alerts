@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.ChildDTO;
 import com.safetynet.alerts.DTO.CoveredPopulationDTO;
 import com.safetynet.alerts.model.PersonEntity;
@@ -29,7 +28,7 @@ public class OpsPersonService implements IOpsPersonService {
      * Create a SLF4J/LOG4J LOGGER instance.
      */
     static final Logger LOGGER = LoggerFactory
-            .getLogger(AlertsApplication.class);
+            .getLogger(OpsPersonService.class);
 
     /**
      * This final value of 18 years is subtracted to the day date to make a
@@ -83,7 +82,7 @@ public class OpsPersonService implements IOpsPersonService {
         coveredPopulationDTO.setChildCount(coveredPopulationDTO.getTotal()
                 - coveredPopulationDTO.getAdultCount());
         LOGGER.debug(
-                "OpsPersonService OPS#1 >>> Covered population: {} children"
+                "OPS#1 >>> Covered population: {} children"
                         + " + {} Adults = {}",
                 coveredPopulationDTO.getChildCount(),
                 coveredPopulationDTO.getAdultCount(),
@@ -91,12 +90,12 @@ public class OpsPersonService implements IOpsPersonService {
 
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStationOrderByAddressIdStation(pStation);
-        LOGGER.debug("OpsPersonService OPS#1 >>> Covered Person list: {}",
+        LOGGER.debug("OPS#1 >>> Covered Person list: {}",
                 listPE.toString());
 
         coveredPopulationDTO.setCoveredPersons(
                 opsPersonMapping.convertToCoveredByStationPerson(listPE));
-        LOGGER.debug("OpsPersonService OPS#1 >>> coveredPopulationDTO: {}",
+        LOGGER.info("OPS#1 >>> coveredPopulationDTO: {}",
                 coveredPopulationDTO.toString());
 
         return coveredPopulationDTO;
@@ -114,10 +113,10 @@ public class OpsPersonService implements IOpsPersonService {
     public ChildDTO findListOfChildByAddress(final String address) {
         List<PersonEntity> pEntList = personRepository
                 .findByAddressIdAddress(address);
-        LOGGER.debug("OpsPersonService OPS#2 >>> PersonEntity list = {}",
+        LOGGER.debug("OPS#2 >>> PersonEntity list = {}",
                 pEntList.toString());
         ChildDTO childDTO = opsPersonMapping.create(pEntList, address);
-        LOGGER.debug("OpsPersonService OPS#2 >>> ChildDTO = {}",
+        LOGGER.info("OPS#2 >>> ChildDTO = {}",
                 childDTO.toString());
 
         return childDTO;
@@ -136,13 +135,13 @@ public class OpsPersonService implements IOpsPersonService {
     public List<String> findAllPhoneListByStation(final String pStation) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStationOrderByAddressIdStation(pStation);
-        LOGGER.debug("OpsPersonService OPS#3 >>> PersonEntity list = {}",
+        LOGGER.debug("OPS#3 >>> PersonEntity list = {}",
                 listPE.toString());
         List<String> phoneList = new ArrayList<>();
         for (PersonEntity p : listPE) {
             phoneList.add(p.getPhone());
         }
-        LOGGER.debug("OpsPersonService OPS#3 >>> Phone list = {}",
+        LOGGER.debug("OPS#3 >>> Phone list = {}",
                 phoneList.toString());
 
         return phoneList;
@@ -160,13 +159,13 @@ public class OpsPersonService implements IOpsPersonService {
     public List<String> findAllMailByCity(final String pCity) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdCity(pCity);
-        LOGGER.debug("OpsPersonService OPS#7 >>> PersonEntity list = {}",
+        LOGGER.debug("OPS#7 >>> PersonEntity list = {}",
                 listPE.toString());
         List<String> eMailList = new ArrayList<>();
         for (PersonEntity p : listPE) {
             eMailList.add(p.getEmail());
         }
-        LOGGER.debug("OpsPersonService OPS#7 >>> eMail list = {}",
+        LOGGER.debug("OPS#7 >>> eMail list = {}",
                 eMailList.toString());
         return eMailList;
     }

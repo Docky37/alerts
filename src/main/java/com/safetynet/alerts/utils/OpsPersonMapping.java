@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.ChildDTO;
 import com.safetynet.alerts.DTO.OpsPersonDTO;
 import com.safetynet.alerts.model.PersonEntity;
@@ -27,7 +26,7 @@ public class OpsPersonMapping {
      * Create a SLF4J/LOG4J LOGGER instance.
      */
     static final Logger LOGGER = LoggerFactory
-            .getLogger(AlertsApplication.class);
+            .getLogger(OpsPersonMapping.class);
 
     /**
      * Date format used to convert String parameter to LocalDate.
@@ -51,7 +50,7 @@ public class OpsPersonMapping {
             coveredPerson = convertToCoveredPerson(pEnt);
             listPersons.add(coveredPerson);
         }
-        LOGGER.debug("OpsPersonMapping OPS#1 >>> OpsPersonDTO list: {}",
+        LOGGER.debug("OPS#1 >>> OpsPersonDTO list: {}",
                 listPersons.toString());
 
         return (listPersons);
@@ -127,10 +126,10 @@ public class OpsPersonMapping {
                         personEntity.getPhone()));
             }
         }
-        LOGGER.debug("OpsPersonMapping OPS#2 >>> Address = {}", address);
-        LOGGER.debug("OpsPersonMapping OPS#2 >>> OpsPersonDTO list = {}",
+        LOGGER.debug("OPS#2 >>> Address = {}", address);
+        LOGGER.debug("OPS#2 >>> OpsPersonDTO list = {}",
                 childList.toString());
-        LOGGER.debug("OpsPersonMapping OPS#2 >>> Adult list = {}", adultList);
+        LOGGER.debug("OPS#2 >>> Adult list = {}", adultList);
 
         childDTO.setAddress(address);
         childDTO.setChildList(childList);
