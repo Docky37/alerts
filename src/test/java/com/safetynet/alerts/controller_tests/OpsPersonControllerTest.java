@@ -135,7 +135,7 @@ public class OpsPersonControllerTest {
                 "Start test: OPS 1 population covered by the given station");
         given(opsPersonService.populationCoveredByStation(anyString()))
                 .willReturn(coveredPopulationDTO);
-        mockMVC.perform(MockMvcRequestBuilders.get("/firestation/stationNumber?stationNumber=3"))
+        mockMVC.perform(MockMvcRequestBuilders.get("/firestation/number?stationNumber=3"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }

@@ -2,8 +2,6 @@ package com.safetynet.alerts.DTO;
 
 import java.util.List;
 
-import com.safetynet.alerts.model.AddressEntity;
-
 /**
  * The HouseholdDTO class is used for OPS4 fire endpoint. It provides a list of
  * the person living at a given address. Its a List<PersonInfoDTO> with
@@ -15,9 +13,9 @@ import com.safetynet.alerts.model.AddressEntity;
 public class HouseholdDTO {
 
     /**
-     * The AddressEntity that corresponds to the given address.
+     * The AddressDTO that corresponds to the given address.
      */
-    private AddressEntity address;
+    private AddressDTO address;
 
     /**
      * The list of person leaving at the given address.
@@ -33,32 +31,32 @@ public class HouseholdDTO {
     /**
      * Class constructor.
      *
-     * @param pAddressEntity
+     * @param pAddressDTO
      * @param pPersonList
      */
-    public HouseholdDTO(final AddressEntity pAddressEntity,
+    public HouseholdDTO(final AddressDTO pAddressDTO,
             final List<PersonInfoDTO> pPersonList) {
-        address = pAddressEntity;
+        address = pAddressDTO;
         personList = pPersonList;
     }
 
     /**
-     * Getter of addressEntity.
+     * Getter of addressDTO.
      *
-     * @return the addressEntity
+     * @return the addressDTO
      */
-    public AddressEntity getAddressEntity() {
+    public AddressDTO getAddressDTO() {
         return address;
     }
 
     /**
-     * Setter of addressEntity.
+     * Setter of addressDTO.
      *
-     * @param pAddressEntity the addressEntity to set
+     * @param pAddressDTO the addressDTO to set
      */
-    public void setAddressEntity(
-            final AddressEntity pAddressEntity) {
-        address = pAddressEntity;
+    public void setAddressDTO(
+            final AddressDTO pAddressDTO) {
+        address = pAddressDTO;
     }
 
     /**
@@ -84,7 +82,7 @@ public class HouseholdDTO {
      */
     @Override
     public String toString() {
-        return "HouseholdDTO [addressEntity="
+        return "HouseholdDTO [addressDTO="
                 + address.toString() + ", personList="
                 + personList.toString() + "]";
     }

@@ -23,6 +23,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonDTO;
@@ -60,8 +61,8 @@ public class OpsMedicalServiceTest {
 
     public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St",
-                "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
+        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St", "Culver",
+                "97451", "841-874-6512", "jaboyd@email.com"));
         personList.add(new PersonDTO("Johnathan", "Barrack", "29 15th St",
                 "Culver", "97451", "841-874-6513", "drk@email.com"));
         personList.add(new PersonDTO("Doc", "Spring",
@@ -79,8 +80,7 @@ public class OpsMedicalServiceTest {
 
     public static List<AddressEntity> addressFireStList = new ArrayList<>();
     static {
-        addressFireStList
-                .add(new AddressEntity(1L, "1509 Culver St", "3"));
+        addressFireStList.add(new AddressEntity(1L, "1509 Culver St", "3"));
         addressFireStList.add(new AddressEntity(2L, "29_15th_St", "2"));
     }
 
@@ -155,10 +155,12 @@ public class OpsMedicalServiceTest {
     }
 
     static {
-        mappedFireAlert.setAddressEntity(addressFireStList.get(0));
+        mappedFireAlert.setAddressDTO(
+                new AddressDTO(addressFireStList.get(0).getAddress(),
+                        addressFireStList.get(0).getStation()));
         mappedFireAlert.setPersonList(myFireList);
     }
-    
+
     static List<String> stationList = new ArrayList<>();
     static {
         stationList.add("3");
@@ -183,17 +185,18 @@ public class OpsMedicalServiceTest {
         String address = "1509 Culver St";
         HouseholdDTO householdDTO = new HouseholdDTO();
         given(personRepository.findByAddressIdAddress(address)).willReturn(p);
-        given(opsMedicalMapping.mapFire(p, address)).willReturn(mappedFireAlert);
+        given(opsMedicalMapping.mapFire(p, address))
+                .willReturn(mappedFireAlert);
         // WHEN
         householdDTO = OpsMedicalService.fireByAddress(address);
         // THEN
-        assertThat(householdDTO.getAddressEntity().toString()).isEqualTo(
-                "FireStations [id=1, address=1509 Culver St, city=Culver, zip code=97451, station=3]");
+        assertThat(householdDTO.getAddressDTO().toString()).isEqualTo(
+                "AddressDTO [address=1509 Culver St, city=Culver, zip code=97451, station=3]");
         assertThat(householdDTO.getPersonList().toString()).isEqualTo(
                 "[PersonInfoDTO [firstName=John, lastName=Boyd, age=36 years old, medications=[aznol:350mg, hydrapermazol:100mg], allergies=[nillacilan], phone=841-874-6512], PersonInfoDTO [firstName=Jacob, lastName=Boyd, age=31 years old, medications=[pharmacol:5000mg, terazine:10mg, noznazol:250mg], allergies=[], phone=841-874-6513], PersonInfoDTO [firstName=Tenley, lastName=Boyd, age=31 years old, medications=[], allergies=[peanut], phone=841-874-6512]]");
     }
 
-    // OPS #5 - FlOOD  ---------------------------------------------------
+    // OPS #5 - FlOOD ---------------------------------------------------
     @Test
     @Tag("Test-Flood")
     @DisplayName("Given a Stion List, when search a list of Persons by address,"
@@ -203,7 +206,8 @@ public class OpsMedicalServiceTest {
         LOGGER.info("Start test: OPS #5 Flood");
         // GIVEN
         List<FloodDTO> floodDTOList = new ArrayList<>();
-        given(personRepository.findAllGroupByAddress(stationList)).willReturn(p);
+        given(personRepository.findAllGroupByAddress(stationList))
+                .willReturn(p);
         given(opsMedicalMapping.mapFlood(p)).willReturn(floodDTOList);
         // WHEN
         floodDTOList = OpsMedicalService.floodByStation(stationList);
@@ -221,13 +225,18 @@ public class OpsMedicalServiceTest {
             throws Exception {
         LOGGER.info("Start test: OPS #6 PersonInfo");
         // GIVEN
-        given(personRepository.findByFirstNameAndLastName(anyString(), anyString())).willReturn(pEnt);
-        LOGGER.info("myPersonInfoDTOList = {}",myPersonInfoDTOList);
-        given(opsMedicalMapping.mapPersonInfoList(Mockito.<PersonEntity>anyList())).willReturn(myPersonInfoDTOList);
+        given(personRepository.findByFirstNameAndLastName(anyString(),
+                anyString())).willReturn(pEnt);
+        LOGGER.info("myPersonInfoDTOList = {}", myPersonInfoDTOList);
+        given(opsMedicalMapping
+                .mapPersonInfoList(Mockito.<PersonEntity>anyList()))
+                        .willReturn(myPersonInfoDTOList);
         // WHEN
-        List<PersonInfoDTO> personInfoDTOList = OpsMedicalService.personInfo("john", "boyd");
+        List<PersonInfoDTO> personInfoDTOList = OpsMedicalService
+                .personInfo("john", "boyd");
         // THEN
-        verify(opsMedicalMapping).mapPersonInfoList(Mockito.<PersonEntity>anyList());
+        verify(opsMedicalMapping)
+                .mapPersonInfoList(Mockito.<PersonEntity>anyList());
         assertThat(personInfoDTOList.toString()).isEqualTo(
                 "[PersonInfoDTO [firstName=John, lastName=Boyd, age=36 years old, medications=[aznol:350mg, hydrapermazol:100mg], allergies=[nillacilan], phone=841-874-6512], PersonInfoDTO [firstName=John, lastName=Boyd, age=19 months old, medications=[tetracyclaz:650mg], allergies=[xilliathal], phone=841-874-6544]]");
     }

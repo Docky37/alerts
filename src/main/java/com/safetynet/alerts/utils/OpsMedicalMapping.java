@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonInfoDTO;
@@ -60,11 +61,14 @@ public class OpsMedicalMapping {
         List<PersonInfoDTO> personList = mapPersonInfoList(pEntList);
         LOGGER.debug("OPS#4 >>> PersonInfoDTO list: {}",
                 personList.toString());
-        householdDTO.setAddressEntity(pEntList.get(0).getAddressFireSt());
+        AddressDTO adressDTO = new AddressDTO(
+                pEntList.get(0).getAddressFireSt().getAddress(),
+                pEntList.get(0).getAddressFireSt().getStation());
+        householdDTO.setAddressDTO(adressDTO);
         householdDTO.setPersonList(personList);
 
         LOGGER.info("OPS#4 >>> HouseholdDTO = {} - {}",
-                householdDTO.getAddressEntity(),
+                adressDTO,
                 householdDTO.getPersonList().toArray());
         return householdDTO;
     }
@@ -93,7 +97,10 @@ public class OpsMedicalMapping {
             }
             if (!p.getAddressFireSt().getAddress()
                     .equals(currentAddress.getAddress())) {
-                householdDTO.setAddressEntity(currentAddress);
+                AddressDTO adressDTO = new AddressDTO(
+                        pEntList.get(0).getAddressFireSt().getAddress(),
+                        pEntList.get(0).getAddressFireSt().getStation());
+                householdDTO.setAddressDTO(adressDTO);
                 householdDTO.setPersonList(personList);
                 personList = new ArrayList<>();
                 householdList.add(householdDTO);
@@ -104,7 +111,6 @@ public class OpsMedicalMapping {
                 floodDTOList.add(new FloodDTO(currentStation, householdList));
                 householdList = new ArrayList<>();
                 currentStation = p.getAddressFireSt().getStation();
-                // currentAddress = p.getAddressFireSt();
             }
             String ageString = ageCalculation(p.getMedRecId().getBirthdate());
             personList.add(new PersonInfoDTO(p.getFirstName(), p.getLastName(),
@@ -113,14 +119,15 @@ public class OpsMedicalMapping {
 
         }
 
-        householdDTO.setAddressEntity(currentAddress);
+        AddressDTO adressDTO = new AddressDTO(
+                currentAddress.getAddress(),
+                currentAddress.getStation());
+        householdDTO.setAddressDTO(adressDTO);
         householdDTO.setPersonList(personList);
         householdList.add(householdDTO);
         floodDTOList.add(new FloodDTO(currentStation, householdList));
 
-        LOGGER.info("OPS#5 >>> FloodAlert = {}",
-                householdDTO.toString());
-        // }
+
         return floodDTOList;
 
     }

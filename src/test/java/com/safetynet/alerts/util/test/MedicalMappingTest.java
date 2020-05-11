@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonDTO;
@@ -103,7 +104,8 @@ public class MedicalMappingTest {
                 p.get(2).getMedRecId().getMedications(),
                 p.get(2).getMedRecId().getAllergies(), p.get(2).getPhone()));
         
-        mappedFireAlert.setAddressEntity(addressFireStList.get(0));
+        mappedFireAlert.setAddressDTO(new AddressDTO(addressFireStList.get(0).getAddress(),
+                addressFireStList.get(0).getStation()));
         mappedFireAlert.setPersonList(myFireList);
     }
 
@@ -117,8 +119,8 @@ public class MedicalMappingTest {
         // WHEN
         HouseholdDTO householdDTO = opsMedicalMapping.mapFire(p, address);
         // THEN
-        assertThat(householdDTO.getAddressEntity()).isEqualTo(
-                mappedFireAlert.getAddressEntity());
+        assertThat(householdDTO.getAddressDTO().toString()).isEqualTo(
+                mappedFireAlert.getAddressDTO().toString());
     }
 
     // OPS #5 - FLOOD ALERT ---------------------------------------------------

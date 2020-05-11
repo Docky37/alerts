@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.DTO.FloodDTO;
 import com.safetynet.alerts.DTO.HouseholdDTO;
 import com.safetynet.alerts.DTO.PersonDTO;
@@ -49,16 +50,15 @@ public class OpsMedicalControllerTest {
 
     public static List<PersonDTO> personList = new ArrayList<>();
     static {
-        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St",
-                "Culver", "97451", "841-874-6512", "jaboyd@email.com"));
+        personList.add(new PersonDTO("John", "Boyd", "1509 Culver St", "Culver",
+                "97451", "841-874-6512", "jaboyd@email.com"));
         personList.add(new PersonDTO("Felicia", "Boyd", "1509 Culver St",
                 "Culver", "97451", "841-874-6544", "jaboyd@email.com"));
     }
 
     public static List<AddressEntity> addressFireStList = new ArrayList<>();
     static {
-        addressFireStList
-                .add(new AddressEntity(1L, "1509 Culver St", "3"));
+        addressFireStList.add(new AddressEntity(1L, "1509 Culver St", "3"));
     }
 
     public static List<MedicalRecordEntity> medicalRecordList = new ArrayList<>();
@@ -93,7 +93,9 @@ public class OpsMedicalControllerTest {
                 p.get(1).getMedRecId().getAllergies(), p.get(1).getPhone()));
     }
     static {
-        mappedFireAlert.setAddressEntity(addressFireStList.get(0));
+        mappedFireAlert.setAddressDTO(
+                new AddressDTO(addressFireStList.get(0).getAddress(),
+                        addressFireStList.get(0).getStation()));
         mappedFireAlert.setPersonList(myFireList);
     }
 
@@ -103,7 +105,8 @@ public class OpsMedicalControllerTest {
         LOGGER.info("Start test: OPS #4 fire by address");
         given(opsMedicalService.fireByAddress(anyString()))
                 .willReturn(mappedFireAlert);
-        mockMVC.perform(MockMvcRequestBuilders.get("/fire?address=1509 Culver St"))
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/fire?address=1509 Culver St"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
@@ -115,7 +118,8 @@ public class OpsMedicalControllerTest {
         List<FloodDTO> floodDTOList = new ArrayList<>();
         given(opsMedicalService.floodByStation(Mockito.<String>anyList()))
                 .willReturn(floodDTOList);
-        mockMVC.perform(MockMvcRequestBuilders.get("/flood/stations?stationList=3"))
+        mockMVC.perform(
+                MockMvcRequestBuilders.get("/flood/stations?stationList=3"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }
@@ -127,7 +131,8 @@ public class OpsMedicalControllerTest {
         List<PersonInfoDTO> personInfoDTOList = new ArrayList<>();
         given(opsMedicalService.personInfo(anyString(), anyString()))
                 .willReturn(personInfoDTOList);
-        mockMVC.perform(MockMvcRequestBuilders.get("/personInfo?firstName=firstName&lastName=lastName"))
+        mockMVC.perform(MockMvcRequestBuilders
+                .get("/personInfo?firstName=firstName&lastName=lastName"))
                 .andExpect(status().isOk()).andExpect(MockMvcResultMatchers
                         .content().contentType("application/json"));
     }

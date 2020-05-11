@@ -79,7 +79,7 @@ public class OpsMedicalService implements IOpsMedicalService {
         HouseholdDTO householdDTO = opsMedicalMapping.mapFire(pEntList,
                 address);
         LOGGER.info("OPS#4 >>> HouseholdDTO: {} - {}",
-                householdDTO.getAddressEntity(), householdDTO.getPersonList());
+                householdDTO.getAddressDTO(), householdDTO.getPersonList());
         return householdDTO;
 
     }
