@@ -152,7 +152,7 @@ public class AdminEndpointsIT {
     public void givenAPersonListToAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        mockMvc.perform(MockMvcRequestBuilders.post("/persons")
+        mockMvc.perform(MockMvcRequestBuilders.post("/person/batch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(personList)))
                 .andExpect(status().isCreated());
@@ -207,7 +207,7 @@ public class AdminEndpointsIT {
     public void givenAMedicalRecordListToAdd_whenPost_thenReturnsIsCreated()
             throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        mockMvc.perform(MockMvcRequestBuilders.post("/medicalRecords")
+        mockMvc.perform(MockMvcRequestBuilders.post("/medicalRecord/batch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(medicalRecordList)))
                 .andExpect(status().isCreated());
