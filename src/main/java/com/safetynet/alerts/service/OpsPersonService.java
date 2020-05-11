@@ -140,7 +140,7 @@ public class OpsPersonService implements IOpsPersonService {
         LOGGER.debug("OPS#3 >>> PersonEntity list = {}",
                 listPE.toString());
         //List<String> phoneList = new ArrayList<>();
-        Set<String> phoneSet =  new HashSet<String>() ;
+        Set<String> phoneSet =  new HashSet<String>();
         for (PersonEntity p : listPE) {
             phoneSet.add(p.getPhone());
         }

@@ -1,0 +1,762 @@
+{
+	"info": {
+		"_postman_id": "a338134b-afb3-4797-898a-57458cf2f72b",
+		"name": "Alerts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OPS request",
+			"item": [
+				{
+					"name": "OPS#1 - http://localhost:8080/firestation/number?stationNumber=<station_number>",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/firestation/number?stationNumber=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"firestation",
+								"number"
+							],
+							"query": [
+								{
+									"key": "stationNumber",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OPS#2 - http://localhost:8080/childAlert?address=<address>",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/childAlert?address=1509 Culver St",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"childAlert"
+							],
+							"query": [
+								{
+									"key": "address",
+									"value": "1509 Culver St"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OPS#3 - http://localhost:8080/phoneAlert?station=<station>",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/phoneAlert?station=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"phoneAlert"
+							],
+							"query": [
+								{
+									"key": "station",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OPS#4 - http://localhost:8080/fire?address=<address>",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/fire?address=1509 Culver St",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"fire"
+							],
+							"query": [
+								{
+									"key": "address",
+									"value": "1509 Culver St"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OPS#5 - http://localhost:8080/flood/3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/flood/stations?stationList=3,2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"flood",
+								"stations"
+							],
+							"query": [
+								{
+									"key": "stationList",
+									"value": "3,2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OPS#6 - http://localhost:8080/personInfo?firstName=<firstname>&lastName=<lastName>",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/personInfo?firstName=John&lastName=Boyd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"personInfo"
+							],
+							"query": [
+								{
+									"key": "firstName",
+									"value": "John"
+								},
+								{
+									"key": "lastName",
+									"value": "Boyd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OPS#7 - http://localhost:8080/communityEmail?city=<city>",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/communityEmail?city=Culver",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"communityEmail"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Culver"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Administrative requests",
+			"item": [
+				{
+					"name": "FireStation",
+					"item": [
+						{
+							"name": "http://localhost:8080/firestation/batch",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n\t{ \"address\":\"1509 Culver St\", \"station\":\"3\" },\r\n    { \"address\":\"29 15th St\", \"station\":\"2\" },\r\n    { \"address\":\"834 Binoc Ave\", \"station\":\"3\" },\r\n    { \"address\":\"644 Gershwin Cir\", \"station\":\"1\" },\r\n    { \"address\":\"748 Townings Dr\", \"station\":\"3\" },\r\n    { \"address\":\"112 Steppes Pl\", \"station\":\"3\" },\r\n    { \"address\":\"489 Manchester St\", \"station\":\"4\" },\r\n    { \"address\":\"892 Downing Ct\", \"station\":\"2\" },\r\n    { \"address\":\"908 73rd St\", \"station\":\"1\" },\r\n    { \"address\":\"112 Steppes Pl\", \"station\":\"4\" },\r\n    { \"address\":\"947 E. Rose Dr\", \"station\":\"1\" },\r\n    { \"address\":\"748 Townings Dr\", \"station\":\"3\" },\r\n    { \"address\":\"951 LoneTree Rd\", \"station\":\"2\" }\r\n]\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/firestation/batch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"firestation",
+										"batch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/firestation",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/firestation",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"firestation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/firestation",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"address\": \"1515 Java St - Beverly Hills\",\r\n        \"city\": \"Los-Angeles\",\r\n        \"zip\": \"90211\",\r\n        \"station\": \"2\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/firestation",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"firestation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/firestation/{address}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/firestation/29 15th St",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"firestation",
+										"29 15th St"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/firestation",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"address\": \"834 Binoc Ave\",\r\n        \"station\": \"2\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/firestation/834 Binoc Ave",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"firestation",
+										"834 Binoc Ave"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/firestation/{address}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/firestation/29 15th St",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"firestation",
+										"29 15th St"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Person",
+					"item": [
+						{
+							"name": "http://localhost:8080/person/batch",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n        { \"firstName\":\"John\", \"lastName\":\"Boyd\", \"address\":\"1509 Culver St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6512\", \"email\":\"jaboyd@email.com\" },\r\n        { \"firstName\":\"Jacob\", \"lastName\":\"Boyd\", \"address\":\"1509 Culver St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6513\", \"email\":\"drk@email.com\" },\r\n        { \"firstName\":\"Tenley\", \"lastName\":\"Boyd\", \"address\":\"1509 Culver St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6512\", \"email\":\"tenz@email.com\" },\r\n        { \"firstName\":\"Roger\", \"lastName\":\"Boyd\", \"address\":\"1509 Culver St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6512\", \"email\":\"jaboyd@email.com\" },\r\n        { \"firstName\":\"Felicia\", \"lastName\":\"Boyd\", \"address\":\"1509 Culver St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6544\", \"email\":\"jaboyd@email.com\" },\r\n        { \"firstName\":\"Jonanathan\", \"lastName\":\"Marrack\", \"address\":\"29 15th St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6513\", \"email\":\"drk@email.com\" },\r\n        { \"firstName\":\"Tessa\", \"lastName\":\"Carman\", \"address\":\"834 Binoc Ave\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6512\", \"email\":\"tenz@email.com\" },\r\n        { \"firstName\":\"Peter\", \"lastName\":\"Duncan\", \"address\":\"644 Gershwin Cir\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6512\", \"email\":\"jaboyd@email.com\" },\r\n        { \"firstName\":\"Foster\", \"lastName\":\"Shepard\", \"address\":\"748 Townings Dr\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6544\", \"email\":\"jaboyd@email.com\" },\r\n        { \"firstName\":\"Tony\", \"lastName\":\"Cooper\", \"address\":\"112 Steppes Pl\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6874\", \"email\":\"tcoop@ymail.com\" },\r\n        { \"firstName\":\"Lily\", \"lastName\":\"Cooper\", \"address\":\"489 Manchester St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-9845\", \"email\":\"lily@email.com\" },\r\n        { \"firstName\":\"Sophia\", \"lastName\":\"Zemicks\", \"address\":\"892 Downing Ct\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-7878\", \"email\":\"soph@email.com\" },\r\n        { \"firstName\":\"Warren\", \"lastName\":\"Zemicks\", \"address\":\"892 Downing Ct\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-7512\", \"email\":\"ward@email.com\" },\r\n        { \"firstName\":\"Zach\", \"lastName\":\"Zemicks\", \"address\":\"892 Downing Ct\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-7512\", \"email\":\"zarc@email.com\" },\r\n        { \"firstName\":\"Reginold\", \"lastName\":\"Walker\", \"address\":\"908 73rd St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-8547\", \"email\":\"reg@email.com\" },\r\n        { \"firstName\":\"Jamie\", \"lastName\":\"Peters\", \"address\":\"908 73rd St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-7462\", \"email\":\"jpeter@email.com\" },\r\n        { \"firstName\":\"Ron\", \"lastName\":\"Peters\", \"address\":\"112 Steppes Pl\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-8888\", \"email\":\"jpeter@email.com\" },\r\n        { \"firstName\":\"Allison\", \"lastName\":\"Boyd\", \"address\":\"112 Steppes Pl\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-9888\", \"email\":\"aly@imail.com\" },\r\n        { \"firstName\":\"Brian\", \"lastName\":\"Stelzer\", \"address\":\"947 E. Rose Dr\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-7784\", \"email\":\"bstel@email.com\" },\r\n        { \"firstName\":\"Shawna\", \"lastName\":\"Stelzer\", \"address\":\"947 E. Rose Dr\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-7784\", \"email\":\"ssanw@email.com\" },\r\n        { \"firstName\":\"Kendrik\", \"lastName\":\"Stelzer\", \"address\":\"947 E. Rose Dr\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-7784\", \"email\":\"bstel@email.com\" },\r\n        { \"firstName\":\"Clive\", \"lastName\":\"Ferguson\", \"address\":\"748 Townings Dr\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6741\", \"email\":\"clivfd@ymail.com\" },\r\n        { \"firstName\":\"Eric\", \"lastName\":\"Cadigan\", \"address\":\"951 LoneTree Rd\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-7458\", \"email\":\"gramps@email.com\" }\r\n\t]\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/person/batch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person",
+										"batch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/person",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/person",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/person",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Jeremy\",\n    \"lastName\": \"Boyd\",\n    \"address\": \"1509 Culver St\",\n    \"city\": \"Culver\",\n    \"zip\": \"97451\",\n    \"phone\": \"\",\n    \"email\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/person",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person"
+									]
+								},
+								"description": "Add a person."
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/person/{lastName}/{firstName}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/person/Boyd/John",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person",
+										"Boyd",
+										"John"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/person/{lastName}/{firstName}",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"firstName\": \"Jeremy\",\r\n        \"lastName\": \"Boyd\",\r\n        \"address\": \"1515 Java St - Beverly Hills\",\r\n        \"city\": \"Los Angeles\",\r\n        \"zip\": \"90211\",\r\n        \"phone\": \"123-456-7890\",\r\n        \"email\": \"jeremy.boyd@email.com\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/person/Boyd/Jeremy",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person",
+										"Boyd",
+										"Jeremy"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/person/{lastName}/{firstName}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/person/Boyd/Jeremy",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"person",
+										"Boyd",
+										"Jeremy"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "MedicalRecord",
+					"item": [
+						{
+							"name": "http://localhost:8080/medicalRecord/batch",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    { \"firstName\":\"John\", \"lastName\":\"Boyd\", \"birthdate\":\"03/06/1984\", \"medications\":[\"aznol:350mg\", \"hydrapermazol:100mg\"], \"allergies\":[\"nillacilan\"] },\r\n    { \"firstName\":\"Jacob\", \"lastName\":\"Boyd\", \"birthdate\":\"03/06/1989\", \"medications\":[\"pharmacol:5000mg\", \"terazine:10mg\", \"noznazol:250mg\"], \"allergies\":[] },\r\n    { \"firstName\":\"Tenley\", \"lastName\":\"Boyd\", \"birthdate\":\"02/18/2012\", \"medications\":[], \"allergies\":[\"peanut\"] },\r\n    { \"firstName\":\"Roger\", \"lastName\":\"Boyd\", \"birthdate\":\"09/06/2017\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Felicia\", \"lastName\":\"Boyd\",\"birthdate\":\"01/08/1986\", \"medications\":[\"tetracyclaz:650mg\"], \"allergies\":[\"xilliathal\"] },\r\n    { \"firstName\":\"Jonanathan\", \"lastName\":\"Marrack\", \"birthdate\":\"01/03/1989\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Tessa\", \"lastName\":\"Carman\", \"birthdate\":\"02/18/2012\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Peter\", \"lastName\":\"Duncan\", \"birthdate\":\"09/06/2000\", \"medications\":[], \"allergies\":[\"shellfish\"] },\r\n    { \"firstName\":\"Foster\", \"lastName\":\"Shepard\", \"birthdate\":\"01/08/1980\", \"medications\":[], \"allergies\":[] },\r\n\t{ \"firstName\":\"Tony\", \"lastName\":\"Cooper\", \"birthdate\":\"03/06/1994\", \"medications\":[\"hydrapermazol:300mg\", \"dodoxadin:30mg\"], \"allergies\":[\"shellfish\"] },\r\n    { \"firstName\":\"Lily\", \"lastName\":\"Cooper\", \"birthdate\":\"03/06/1994\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Sophia\", \"lastName\":\"Zemicks\", \"birthdate\":\"03/06/1988\", \"medications\":[\"aznol:60mg\", \"hydrapermazol:900mg\", \"pharmacol:5000mg\", \"terazine:500mg\"], \"allergies\":[\"peanut\", \"shellfish\", \"aznol\"] },\r\n    { \"firstName\":\"Warren\", \"lastName\":\"Zemicks\", \"birthdate\":\"03/06/1985\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Zach\", \"lastName\":\"Zemicks\", \"birthdate\":\"03/06/2017\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Reginold\", \"lastName\":\"Walker\", \"birthdate\":\"08/30/1979\", \"medications\":[\"thradox:700mg\"], \"allergies\":[\"illisoxian\"] },\r\n    { \"firstName\":\"Jamie\", \"lastName\":\"Peters\", \"birthdate\":\"03/06/1982\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Ron\", \"lastName\":\"Peters\", \"birthdate\":\"04/06/1965\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Allison\", \"lastName\":\"Boyd\", \"birthdate\":\"03/15/1965\", \"medications\":[\"aznol:200mg\"], \"allergies\":[\"nillacilan\"] },\r\n    { \"firstName\":\"Brian\", \"lastName\":\"Stelzer\", \"birthdate\":\"12/06/1975\", \"medications\":[\"ibupurin:200mg\", \"hydrapermazol:400mg\"], \"allergies\":[\"nillacilan\"] },\r\n    { \"firstName\":\"Shawna\", \"lastName\":\"Stelzer\", \"birthdate\":\"07/08/1980\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Kendrik\", \"lastName\":\"Stelzer\", \"birthdate\":\"03/06/2014\", \"medications\":[\"noxidian:100mg\", \"pharmacol:2500mg\"], \"allergies\":[] },\r\n    { \"firstName\":\"Clive\", \"lastName\":\"Ferguson\", \"birthdate\":\"03/06/1994\", \"medications\":[], \"allergies\":[] },\r\n    { \"firstName\":\"Eric\", \"lastName\":\"Cadigan\", \"birthdate\":\"08/06/1945\", \"medications\":[\"tradoxidine:400mg\"], \"allergies\":[] }\r\n] \r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/medicalRecord/batch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"medicalRecord",
+										"batch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/medicalRecord",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/medicalRecord",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"medicalRecord"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/medicalRecord/",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Jeremy\",\n    \"lastName\": \"Boyd\",\n    \"birthdate\": \"03/06/1984\",\n    \"medications\": [\n        \"aznol:350mg\",\n        \"hydrapermazol:100mg\"\n    ],\n    \"allergies\": [\n        \"nillacilan\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/medicalRecord/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"medicalRecord",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/medicalRecord/{lastName}/{firstName}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/medicalRecord/Boyd/Tenley",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"medicalRecord",
+										"Boyd",
+										"Tenley"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/medicalRecord/{lastName}/{firstName}",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 3,\r\n    \"firstName\": \"Tenley\",\r\n    \"lastName\": \"Boyd\",\r\n    \"birthdate\": \"09/11/2011\",\r\n    \"medications\": [],\r\n    \"allergies\": [\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/medicalRecord/Boyd/Tenley",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"medicalRecord",
+										"Boyd",
+										"Tenley"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/medicalRecord/{lastName}/{firstName}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/medicalRecord/Boyd/Tenley",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"medicalRecord",
+										"Boyd",
+										"Tenley"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Alerts supervisor",
+			"item": [
+				{
+					"name": "http://localhost:8080/supervisor/health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/supervisor/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"supervisor",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8080/supervisor/info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/supervisor/info",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"supervisor",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8080/supervisor/metrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/supervisor/metrics",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"supervisor",
+								"metrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:8080/supervisor/httptrace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/supervisor/httptrace",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"supervisor",
+								"httptrace"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

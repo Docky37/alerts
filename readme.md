@@ -1,17 +1,44 @@
-# SafetyNet - Alerts v1.6.2 release
+# SafetyNet - Alerts v2.0 release
 
 ### Infos
 author: 		Thierry 'Docky' SCHREINER   -   DA Java student - Open ClassRooms
 
 mentored by:	Yann 'Monsieur Plus' IRRILO	
 
-release date:	01/05/2020
+release date:	11/05/2020
+
+###Install
+
+- The application 'Safetynet Alerts' works with MySQL 8.0 DataBase that is called **alerts_prod**.
+
+- A second DataBase, called **alerts_tests**, is used for integration tests.
+
+- Both Databases use the same user ("root") and password ("rootroot").
+
+- An SQL script file, named **'alerts.sql'** is available in **src/main/resources**.
+
+- In src/main/resources you can found the **Alerts_postman_collection.json** file that you can import in Postman to use my request collection. Also available online at https://app.getpostman.com/run-collection/a63d09364c2b8fad69c1
+
+ 
 
 ### Content
-This thirteenth release v1.6.2 fix the inactive httptrace actuator bug and adds details in health one.
+This fourteenth release v2.0 comes with a big refactoring of all the application:
 
-The twelfth one v1.6.1 modifies v1.6.2 setter, getter & constructor of PersonInfoDTO & MedicalRecord to avoid the exposition of internal representation by returning reference to mutable object and replaces bad practices (!= comparison in MedicalMapping).
+- split AddressFirestation class in 2 classes, AddressDTO and AddressEntity;
 
+- add a new AddressMapping class;
+
+- rename all AddressFireStation* as Address*;
+
+- fix put requests troubles;
+
+- develop logging;
+
+- work on http responses;
+
+- consolidate tests;
+
+- fix CheckStyle issues... 
 
 Previous releases contains : 
 
@@ -36,16 +63,55 @@ Previous releases contains :
 - the OPS#6 'personInfo/{firstName}/{lastName} endpoints and refactors a great part of project classes.
 OPS#6 **returns a list of PersonInfoDTO** instead of a single PersonInfoDTO, to be able to deal with with namesakes (since v1.5).
 
-- the modification of the seven OPS requests using @RequestParam instead of @PathVariables, and the addition of a slf4j - log4j logger that performs info and debug logs to console & file for each OPS request (since 1.6). 
+- the modification of the seven OPS requests using @RequestParam instead of @PathVariables, and the addition of a slf4j - log4j logger that performs info and debug logs to console & file for each OPS request (since 1.6).
+
+- The twelfth one v1.6.1 modifies v1.6.2 setter, getter & constructor of PersonInfoDTO & MedicalRecord to avoid the exposition of internal representation by returning reference to mutable object and replaces bad practices (!= comparison in MedicalMapping) 
+
+- Release v1.6.2 fix the inactive httptrace actuator bug and adds details in health one.
+
 
 It also contains actuators (health, info & metrics).
 
 The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'rootroot') that contains persons, address and medical_records tables. 
 
 ### The person endpoint
+	
+**POST - http://localhost:8080/person/batch**   >>> add a list of persons in DB persons table. Used to copy all JSON list of person.
+  for example you can add the project 5 given data:
+  
+		[
+		    {
+		        "firstName": "John",
+		        "lastName": "Boyd",
+		        "address": "1509 Culver St",
+		        "city": "Culver",
+		        "zip": "97451",
+		        "phone": "841-874-6512",
+		        "email": "jaboyd@email.com"
+		    },
+		    {
+		        "firstName": "Jacob",
+		        "lastName": "Boyd",
+		        "address": "1509 Culver St",
+		        "city": "Culver",
+		        "zip": "97451",
+		        "phone": "841-874-6513",
+		        "email": "drk@email.com"
+		    },
+		    ...
+		    {
+		        "firstName": "Eric",
+		        "lastName": "Cadigan",
+		        "address": "951 LoneTree Rd",
+		        "city": "Culver",
+		        "zip": "97451",
+		        "phone": "841-874-7458",
+		        "email": "gramps@email.com"
+		    }
+		]
+  
 **GET - http://localhost:8080/person**   >>> returns the list of persons recorded in DataBase.
 	
-	Response: 200 OK - An array of persons (or an empty array if no Person in DataBase)
 		[
 		    {
 		        "id": 1,
@@ -85,7 +151,6 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	Response: 200 A person or 404 Not found
 	for example /Person/Boyd/Tenley returns :
 		{
-		    "id": 3,
 		    "firstName": "Tenley",
 		    "lastName": "Boyd",
 		    "address": "1509 Culver St",
@@ -107,12 +172,10 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		    "phone": "841-874-6512",
 		    "email": "tenz@email.com"
 		}
-		Response 201 Created
 
-**PUT - http://localhost:8080/person**   >>> add the person in DB persons table, if this person is not already recorded in DB.
+**PUT - http://localhost:8080/person**   >>> update the person in DB persons table, if this person is not already recorded in DB.
 
-	Response 201 Created or 404 Not found
-	for example you can update 'Tenley Boyd' data with this JSON raw body (Do not add an id):
+	for example you can update 'Tenley Boyd' data with this JSON raw body:
 		{
 		    "firstName": "Tenley",
 		    "lastName": "Boyd",
@@ -125,114 +188,10 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		
 **DELETE - http://localhost:8080/person/{lastName}/{fistName}**   >>> Delete the person named {firstName} {lastName} if exists in DB.
 
-	Response 200 OK or 404 Not found
-	
-	
--------   Other URI: Persons (with a final s)   -------
-
-**POST - http://localhost:8080/persons**   >>> add a list of persons in DB persons table. Used to copy all JSON list of person.
-  for example you can add the project 5 given data:
-  
-		[
-		    {
-		        "id": 1,
-		        "firstName": "John",
-		        "lastName": "Boyd",
-		        "address": "1509 Culver St",
-		        "city": "Culver",
-		        "zip": "97451",
-		        "phone": "841-874-6512",
-		        "email": "jaboyd@email.com"
-		    },
-		    {
-		        "id": 2,
-		        "firstName": "Jacob",
-		        "lastName": "Boyd",
-		        "address": "1509 Culver St",
-		        "city": "Culver",
-		        "zip": "97451",
-		        "phone": "841-874-6513",
-		        "email": "drk@email.com"
-		    },
-		    ...
-		    {
-		        "id": 23,
-		        "firstName": "Eric",
-		        "lastName": "Cadigan",
-		        "address": "951 LoneTree Rd",
-		        "city": "Culver",
-		        "zip": "97451",
-		        "phone": "841-874-7458",
-		        "email": "gramps@email.com"
-		    }
-		]
-  
   
 ### The firestation endpoint
-  
-**GET - http://localhost:8080/firestation**   >>> returns the list of address - FireStation associations recorded in DataBase.
 
-	Response: 200 OK - An array of address - FireStation associations (or an empty array if table is empty)
-	[
-	    {
-	        "id": 1,
-	        "address": "1509 Culver St",
-	        "station": "3"
-	    },
-	    {
-	        "id": 2,
-	        "address": "29 15th St",
-	        "station": "2"
-	    },
-			...
-			
-	    {
-	        "id": 13,
-	        "address": "951 LoneTree Rd",
-	        "station": "2"
-	    }
-	]
-
-**GET - http://localhost:8080/firestation/{address}**   >>> returns the address - FiresStation association if exists in DB.
-
-	Response: 200 An array of address - FiresStation association or 404 Not found
-	for example /firestation/29 15th St returns :
-	    {
-	        "id": 2,
-	        "address": "29 15th St",
-	        "station": "2"
-	    }  
-
-  
-**POST - http://localhost:8080/firestation**   >>> add the address - FiresStation association, if this person is not already recorded in DB.
-  
-  
-	Response 201 Created
-	for example you can add '29 15th St' address with this JSON raw body (Do not add an id):
-	    {
-	        "address": "29 15th St",
-	        "station": "2"
-	    }
-	      
-
-**PUT - http://localhost:8080/firestation**   >>> update the address - FiresStation association, if this address is recorded in DB.
-
-	Response 201 Created or 404 Not found
-	for example you can update '29 15th St' address  with this JSON raw body (Do not add an id):
-		{
-	        "address": "29 15th St",
-	        "station": "3"
-	    }
-		
-		
-**DELETE - http://localhost:8080/firestation/{address}**   >>> Delete the address - FiresStation association if exists in DB.
-
-	Response 200 OK or 404 Not found
-	
-	
--------   Other URI: firestations (with a final s)   -------
-
-**POST - http://localhost:8080/firestations**   >>> add a list of address - FiresStation association in DB. Used to copy all JSON list of person. for example you can add the project 5 given data:  
+**POST - http://localhost:8080/firestation/batch**   >>> add a list of address - FiresStation association in DB. Used to copy all JSON list of person. for example you can add the project 5 given data:  
 	
 	[
 		{ "address":"1509 Culver St", "station":"3" },
@@ -244,23 +203,83 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    { "address":"489 Manchester St", "station":"4" },
 	    { "address":"892 Downing Ct", "station":"2" },
 	    { "address":"908 73rd St", "station":"1" },
-	    { "address":"112 Steppes Pl", "station":"4" },
 	    { "address":"947 E. Rose Dr", "station":"1" },
-	    { "address":"748 Townings Dr", "station":"3" },
 	    { "address":"951 LoneTree Rd", "station":"2" }
 	]
+  
+**GET - http://localhost:8080/firestation**   >>> returns the list of address - FireStation associations recorded in DataBase.
+
+	[
+	    {
+	        "address": "1509 Culver St",
+	        "city": "Culver",
+	        "zip": "97451",
+	        "station": "3"
+	    },
+	    {
+	        "address": "29 15th St",
+	        "city": "Culver",
+	        "zip": "97451",
+	        "station": "2"
+	    },
+			...
+			
+	    {
+	        "id": 13,
+	        "address": "951 LoneTree Rd",
+	        "city": "Culver",
+	        "zip": "97451",
+	        "station": "2"
+	    }
+	]
+
+**GET - http://localhost:8080/firestation/{address}**   >>> returns the AddressDTO if exists in DB.
+
+	for example /firestation/29 15th St returns :
+	    {
+	       "address": "29 15th St",
+			"city" 
+	        "city": "Culver",
+	        "zip": "97451",
+	       "station": "2"
+	    }  
+
+  
+**POST - http://localhost:8080/firestation**   >>> add the address - FiresStation association, if this person is not already recorded in DB.
+  
+  
+	for example you can add '29 15th St' address with this JSON raw body (Do not add an id):
+	    {
+	        "address": "29 15th St",
+	        "station": "2"
+	    }
+	      
+
+**PUT - http://localhost:8080/firestation**   >>> update the address - FiresStation association, if this address is recorded in DB.
+
+	for example you can update '29 15th St' address  with this JSON raw body :
+		{
+	        "address": "29 15th St",
+	        "station": "3"
+	    }
+		
+		
+**DELETE - http://localhost:8080/firestation/{address}**   >>> Delete the address - FiresStation association if exists in DB.
+
+	
 
 ### The medicalRecord endpoint
   
-**GET - http://localhost:8080/medicalRecord**   >>> returns the list of MedicalRecord in DataBase.
+**POST - http://localhost:8080/medicalRecord/batch**   >>> add a list of medical record in DB.  It uses a for each loop and the add one MedicalRecord to add and join each medical record.
+  
 
-	Response: 200 OK - An array of MedicalRecord (or an empty array if no MedicalRecords exists)
+ **GET - http://localhost:8080/medicalRecord**   >>> returns the list of MedicalRecord in DataBase.
+
 	[
 	    {
-	        "id": 1,
 	        "firstName": "John",
 	        "lastName": "Boyd",
-	        "birthDate": "03/06/1984",
+	        "birthdate": "03/06/1984",
 	        "medications": [
 	            "aznol:350mg",
 	            "hydrapermazol:100mg"
@@ -270,10 +289,9 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	        ]
 	    },
 	    {
-	        "id": 2,
 	        "firstName": "Jacob",
 	        "lastName": "Boyd",
-	        "birthDate": "03/06/1989",
+	        "birthate": "03/06/1989",
 	        "medications": [
 	            "pharmacol:5000mg",
 	            "terazine:10mg",
@@ -283,10 +301,9 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    },
 		...
 	    {
-	        "id": 23,
 	        "firstName": "Eric",
 	        "lastName": "Cadigan",
-	        "birthDate": "08/06/1945",
+	        "birthdate": "08/06/1945",
 	        "medications": [
 	            "tradoxidine:400mg"
 	        ],
@@ -296,10 +313,8 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 
 **GET - http://localhost:8080/medicalRecord/{lastName}/{firstName}**   >>> returns the medical record if exists in DB.
 
-	Response: 200 An array of MedicalRecord or 404 Not found
 	for example /firestation/29 15th St returns :
 	    {
-	        "id": 2,
 	        "firstName": "Jacob",
 	        "lastName": "Boyd",
 	        "birthDate": "03/06/1989",
@@ -311,7 +326,6 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	        "allergies": []
 	    }
 
-**POST - http://localhost:8080/medicalRecord**   >>> add a list of MedicalRecord. Used to copy all JSON list of medical records. for example you can add the project 5 given data.  
 
 **PUT - http://localhost:8080/medicalRecord/{lastName}/{firstName}**   >>> update a medical record, if it exists in DB.
 
@@ -331,18 +345,10 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 
 **DELETE - http://localhost:8080/medicalRecord/{lastName}/{firstName}**  >>> Delete the medical record if exists in DB.
 
-	Response 200 OK or 404 Not found
-	
-	
--------   Other URI: medicalRecords (with a final s)   -------
-
-**POST - http://localhost:8080/medicalRecords**   >>> add a list of medical record in DB.  It uses a for each loop and the add one MedicalRecord to add and join each medical record.  
-	
-		
-  
+ 
 ### OPS endpoints
 
-**OPS#1: GET - http://localhost:8080/firestation/stationNumber?stationNumber=<stationNumber>**   >>> returns the list of persons covered by the given fire station number.  Use the same OpsPersonDTO class that is used in OPS#2.
+**OPS#1: GET - http://localhost:8080/firestation/number?stationNumber=<stationNumber>**   >>> returns the list of persons covered by the given fire station number.  Use the same OpsPersonDTO class that is used in OPS#2.
 
 	{
 	    "adultCount": 8,
@@ -424,127 +430,137 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 **OPS#4: GET - http://localhost:8080/fire?address=<address>**   >>> returns the household list of persons for a given address and the covering fire station number. Use the same OpsPersonInfoDTO class that is used in OPS#5 & #6.
 
 	{
-	    "addressFireStation": {
-	        "id": 1,
-	        "address": "1509 Culver St",
+	    "personList": [
+	        {
+	            "firstName": "Foster",
+	            "lastName": "Shepard",
+	            "age": "40 years old",
+	            "medications": [],
+	            "allergies": [],
+	            "phone": "841-874-6544"
+	        },
+	        {
+	            "firstName": "Clive",
+	            "lastName": "Ferguson",
+	            "age": "26 years old",
+	            "medications": [],
+	            "allergies": [],
+	            "phone": "841-874-6741"
+	        }
+	    ],
+	    "addressDTO": {
+	        "address": "748 Townings Dr",
 	        "city": "Culver",
 	        "zip": "97451",
 	        "station": "3"
-	    },
-	    "personList": [
-	        {
-	            "firstName": "John",
-	            "lastName": "Boyd",
-	            "age": "36 years old",
-	            "medications": [
-	                "aznol:350mg",
-	                "hydrapermazol:100mg"
-	            ],
-	            "allergies": [
-	                "nillacilan"
-	            ],
-	            "phone": "841-874-6512"
-	        },
-				 ...
-	        {
-	            "firstName": "Felicia",
-	            "lastName": "Boyd",
-	            "age": "34 years old",
-	            "medications": [
-	                "tetracyclaz:650mg"
-	            ],
-	            "allergies": [
-	                "xilliathal"
-	            ],
-	            "phone": "841-874-6544"
-	        }
-	    ]
+	    }
 	}
+
 
 **OPS#5: GET - http://localhost:8080/flood?stations=<stationList>**   >>> returns the list of household covered by the given list of fire station number. Use the same OpsPersonInfoDTO class that is used in OPS#4 & #6.
 
 	[
-	    {
-	        "station": "1",
-	        "householdList": [
-	            {
-	                "addressFireStation": {
-	                    "id": 4,
-	                    "address": "644 Gershwin Cir",
-	                    "city": "Culver",
-	                    "zip": "97451",
-	                    "station": "1"
-	                },
-	                "personList": [
-	                    {
-	                        "firstName": "Peter",
-	                        "lastName": "Duncan",
-	                        "age": "19 years old",
-	                        "medications": [],
-	                        "allergies": [
-	                            "shellfish"
-	                        ],
-	                        "phone": "841-874-6512"
-	                    }
-	                ]
-	            },
-	            {
-	                "addressFireStation": {
-	                    "id": 9,
-	                    "address": "908 73rd St",
-	                    "city": "Culver",
-	                    "zip": "97451",
-	                    "station": "1"
-	                },
-	                "personList": [
-	                    {
-	                        "firstName": "Reginold",
-	                        "lastName": "Walker",
-	                        "age": "40 years old",
-	                        "medications": [
-	                            "thradox:700mg"
-	                        ],
-	                        "allergies": [
-	                            "illisoxian"
-	                        ],
-	                        "phone": "841-874-8547"
-	                    },
-	                    {
-	                        "firstName": "Jamie",
-	                        "lastName": "Peters",
-	                        "age": "38 years old",
-	                        "medications": [],
-	                        "allergies": [],
-	                        "phone": "841-874-7462"
-	                    }
-	                ]
-	            },
-            ...
-	    {
-	        "station": "4",
-	        "householdList": [
-	            {
-	                "addressFireStation": {
-	                    "id": 7,
-	                    "address": "489 Manchester St",
-	                    "city": "Culver",
-	                    "zip": "97451",
-	                    "station": "4"
-	                },
-	                "personList": [
-	                    {
-	                        "firstName": "Lily",
-	                        "lastName": "Cooper",
-	                        "age": "26 years old",
-	                        "medications": [],
-	                        "allergies": [],
-	                        "phone": "841-874-9845"
-	                    }
-	                ]
-	            }
-	        ]
-	    }
-	]
+    {
+        "station": "1",
+        "householdList": [
+            {
+                "personList": [
+                    {
+                        "firstName": "Peter",
+                        "lastName": "Duncan",
+                        "age": "19 years old",
+                        "medications": [],
+                        "allergies": [
+                            "shellfish"
+                        ],
+                        "phone": "841-874-6512"
+                    }
+                ],
+                "addressDTO": {
+                    "address": "644 Gershwin Cir",
+                    "city": "Culver",
+                    "zip": "97451",
+                    "station": "1"
+                }
+            },
+            {
+                "personList": [
+                    {
+                        "firstName": "Reginold",
+                        "lastName": "Walker",
+                        "age": "40 years old",
+                        "medications": [
+                            "thradox:700mg"
+                        ],
+                        "allergies": [
+                            "illisoxian"
+                        ],
+                        "phone": "841-874-8547"
+                    },
+                    {
+                        "firstName": "Jamie",
+                        "lastName": "Peters",
+                        "age": "38 years old",
+                        "medications": [],
+                        "allergies": [],
+                        "phone": "841-874-7462"
+                    }
+                ],
+                "addressDTO": {
+                    "address": "644 Gershwin Cir",
+                    "city": "Culver",
+                    "zip": "97451",
+                    "station": "1"
+                }
+            },
+				...
+            {
+                "personList": [
+                    {
+                        "firstName": "Foster",
+                        "lastName": "Shepard",
+                        "age": "40 years old",
+                        "medications": [],
+                        "allergies": [],
+                        "phone": "841-874-6544"
+                    },
+                    {
+                        "firstName": "Clive",
+                        "lastName": "Ferguson",
+                        "age": "26 years old",
+                        "medications": [],
+                        "allergies": [],
+                        "phone": "841-874-6741"
+                    }
+                ],
+                "addressDTO": {
+                    "address": "644 Gershwin Cir",
+                    "city": "Culver",
+                    "zip": "97451",
+                    "station": "1"
+                }
+            },
+            {
+                "personList": [
+                    {
+                        "firstName": "Tessa",
+                        "lastName": "Carman",
+                        "age": "8 years old",
+                        "medications": [],
+                        "allergies": [],
+                        "phone": "841-874-6512"
+                    }
+                ],
+                "addressDTO": {
+                    "address": "834 Binoc Ave",
+                    "city": "Culver",
+                    "zip": "97451",
+                    "station": "3"
+                }
+            }
+        ]
+    }
+]
 
 **OPS#6: GET - http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>**   >>> returns the PersonInfoDTO list of person(s) that have this firstName and lastName (a list to be able to deal with with namesake, more than a single PersonInfoDTO). 
 
@@ -562,14 +578,6 @@ This example show the response if John Boyd'son is first named John like his fat
 	        "allergies": [
 	            "nillacilan"
 	        ],
-	        "phone": "841-874-6512"
-	    },
-	    {
-	        "firstName": "John",
-	        "lastName": "Boyd",
-	        "age": "19 months old",
-	        "medications": [],
-	        "allergies": [],
 	        "phone": "841-874-6512"
 	    }
 	]
