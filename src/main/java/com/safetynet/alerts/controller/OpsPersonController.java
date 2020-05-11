@@ -1,6 +1,7 @@
 package com.safetynet.alerts.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +84,7 @@ public class OpsPersonController {
      * @return a List of persons in DB covered by this station
      */
     @GetMapping(value = "/phoneAlert")
-    public List<String> getPhoneListByStation(
+    public Set<String> getPhoneListByStation(
             @RequestParam final String station) {
         LOGGER.info("NEW HTML REQUEST OPS#3 phoneAlert");
         LOGGER.info("OPS#3 >>> RequestParam: station= {}",

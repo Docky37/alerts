@@ -6,7 +6,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -90,7 +92,7 @@ public class OpsPersonControllerTest {
 
     public static CoveredPopulationDTO coveredPopulationDTO = new CoveredPopulationDTO(8, 3, 11, coveredPersonList);
 
-    public static List<String> phoneList = new ArrayList<>();
+    public static Set<String> phoneList = new HashSet<String>();
     static {
         for (PersonDTO person : personList) {
             if (person.getCity() == "Culver") {

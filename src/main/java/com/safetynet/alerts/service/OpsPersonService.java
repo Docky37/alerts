@@ -3,7 +3,9 @@ package com.safetynet.alerts.service;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,19 +134,20 @@ public class OpsPersonService implements IOpsPersonService {
      * @return a List<String> of phone numbers.
      */
     @Override
-    public List<String> findAllPhoneListByStation(final String pStation) {
+    public Set<String> findAllPhoneListByStation(final String pStation) {
         List<PersonEntity> listPE = (List<PersonEntity>) personRepository
                 .findByAddressIdStationOrderByAddressIdStation(pStation);
         LOGGER.debug("OPS#3 >>> PersonEntity list = {}",
                 listPE.toString());
-        List<String> phoneList = new ArrayList<>();
+        //List<String> phoneList = new ArrayList<>();
+        Set<String> phoneSet =  new HashSet<String>() ;
         for (PersonEntity p : listPE) {
-            phoneList.add(p.getPhone());
+            phoneSet.add(p.getPhone());
         }
-        LOGGER.debug("OPS#3 >>> Phone list = {}",
-                phoneList.toString());
+        LOGGER.info("OPS#3 >>> Phone list = {}",
+                phoneSet.toString());
 
-        return phoneList;
+        return phoneSet;
     }
 
     // OPS #7 ENDPOINT -------------------------------------------------------

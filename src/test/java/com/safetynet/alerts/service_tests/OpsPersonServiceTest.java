@@ -8,7 +8,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -148,7 +150,7 @@ public class OpsPersonServiceTest {
                         "841-874-6512", "jaboyd@email.com", null));
         pEnt2List.add(
                 new PersonEntity(4L, "Tenley", "Boyd", addressFireStList.get(0),
-                        "841-874-6515", "tenz@email.com", null));
+                        "841-874-6512", "tenz@email.com", null));
     }
 
     public static List<OpsPersonDTO> coveredPersonList = new ArrayList<>();
@@ -246,16 +248,14 @@ public class OpsPersonServiceTest {
         LOGGER.info("Start test: OPS #3 phoneAlert by station");
         // GIVEN
         String station = "3";
-        List<String> phoneList = new ArrayList<>();
+        Set<String> phoneList = new HashSet<String>();
         given(personRepository
                 .findByAddressIdStationOrderByAddressIdStation(station))
                         .willReturn(pEnt2List);
         // WHEN
         phoneList = opsPersonService.findAllPhoneListByStation(station);
         // THEN
-        assertThat(phoneList.size()).isEqualTo(2);
-        assertThat(phoneList.get(0)).isEqualTo(personList.get(0).getPhone());
-        assertThat(phoneList.get(1)).isEqualTo(personList.get(3).getPhone());
+        assertThat(phoneList.size()).isEqualTo(1);
     }
 
     // OPS#7 - GET ("/communityEmail/{city}")>> Find all person eMails by city

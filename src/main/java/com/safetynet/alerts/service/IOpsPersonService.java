@@ -1,6 +1,7 @@
 package com.safetynet.alerts.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.safetynet.alerts.DTO.ChildDTO;
 import com.safetynet.alerts.DTO.CoveredPopulationDTO;
@@ -33,9 +34,9 @@ public interface IOpsPersonService {
      *
      * @param pStation - the fire station that we want phone numbers of all
      *                 covered inhabitants
-     * @return a List<String> of phone numbers.
+     * @return a Set<String> of phone numbers.
      */
-    List<String> findAllPhoneListByStation(String pStation);
+    Set<String> findAllPhoneListByStation(String pStation);
 
     // OPS #7 ENDPOINT -------------------------------------------------------
     /**
