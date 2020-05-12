@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.MedicalRecordDTO;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
 import com.safetynet.alerts.model.MedicalRecordEntity;
@@ -30,7 +29,7 @@ public class MedicalRecordService implements IMedicalRecordService {
      * Create a SLF4J/LOG4J LOGGER instance.
      */
     static final Logger LOGGER = LoggerFactory
-            .getLogger(AlertsApplication.class);
+            .getLogger(MedicalRecordService.class);
 
     /**
      * The balanceSheet is a report of the batch import of person list.

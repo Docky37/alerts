@@ -12,7 +12,6 @@ import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.repositery.AddressRepository;
 import com.safetynet.alerts.utils.AddressMapping;
 
-import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.controller.AddressNotFoundException;
 
@@ -29,7 +28,7 @@ public class AddressService implements IAddressService {
      * Create a SLF4J/LOG4J LOGGER instance.
      */
     static final Logger LOGGER = LoggerFactory
-            .getLogger(AlertsApplication.class);
+            .getLogger(AddressService.class);
 
     /**
      * The balanceSheet is a report of the batch import of address list.

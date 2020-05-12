@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.safetynet.alerts.AlertsApplication;
 import com.safetynet.alerts.DTO.AddressDTO;
 import com.safetynet.alerts.service.IAddressService;
 
@@ -36,7 +35,7 @@ public class AddressController {
      * Create a SLF4J/LOG4J LOGGER instance.
      */
     static final Logger LOGGER = LoggerFactory
-            .getLogger(AlertsApplication.class);
+            .getLogger(AddressController.class);
 
     /**
      * The service class used to manage address - fire station association CRUD
