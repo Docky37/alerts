@@ -1,11 +1,11 @@
-# SafetyNet - Alerts v2.0 release
+# SafetyNet - Alerts v2.0.1 release
 
 ### Infos
 author: 		Thierry 'Docky' SCHREINER   -   DA Java student - Open ClassRooms
 
 mentored by:	Yann 'Monsieur Plus' IRRILO	
 
-release date:	11/05/2020
+release date:	12/05/2020
 
 ###Install
 
@@ -19,26 +19,15 @@ release date:	11/05/2020
 
 - In src/main/resources you can found the **Alerts_postman_collection.json** file that you can import in Postman to use my request collection. Also available online at https://app.getpostman.com/run-collection/a63d09364c2b8fad69c1
 
- 
+- The **JSON data importation is made using administrative endpoints**. The Postman collection provide **3 batch POST requests**, that must be executed in this **order : firestation/batch, person/batch and finally medicalRecord/batch** (logical and mandatory to link data). 
 
 ### Content
-This fourteenth release v2.0 comes with a big refactoring of all the application:
+This fifteenth release v2.0.1 fixes some problems:
 
-- split AddressFirestation class in 2 classes, AddressDTO and AddressEntity;
+- moving MedicalRecordDTO from model package to DTO package,
 
-- add a new AddressMapping class;
+- replacing AlertsApplication.class by ClassName.class in the LoggerFactory.getLogger method of each Class  where it has been forgot. 
 
-- rename all AddressFireStation* as Address*;
-
-- fix put requests troubles;
-
-- develop logging;
-
-- work on http responses;
-
-- consolidate tests;
-
-- fix CheckStyle issues... 
 
 Previous releases contains : 
 
@@ -69,10 +58,26 @@ OPS#6 **returns a list of PersonInfoDTO** instead of a single PersonInfoDTO, to 
 
 - Release v1.6.2 fix the inactive httptrace actuator bug and adds details in health one.
 
+The fourteenth release v2.0 comes with a big refactoring of all the application: 
 
-It also contains actuators (health, info & metrics).
+	- split AddressFirestation class in 2 classes, AddressDTO and AddressEntity;
 
-The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'rootroot') that contains persons, address and medical_records tables. 
+	- add a new AddressMapping class;
+
+	- rename all AddressFireStation* as Address*;
+
+	- fix put requests troubles;
+
+	- develop logging;
+
+	- work on http responses;
+
+	- consolidate tests;
+
+	- fix CheckStyle issues... 
+
+Application also contains actuators (health, info, metrics & httptrace).
+
 
 ### The person endpoint
 	
@@ -114,7 +119,6 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	
 		[
 		    {
-		        "id": 1,
 		        "firstName": "John",
 		        "lastName": "Boyd",
 		        "address": "1509 Culver St",
@@ -124,7 +128,6 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		        "email": "jaboyd@email.com"
 		    },
 		    {
-		        "id": 2,
 		        "firstName": "Jacob",
 		        "lastName": "Boyd",
 		        "address": "1509 Culver St",
@@ -135,7 +138,6 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		    },
 		    ...
 		    {
-		        "id": 23,
 		        "firstName": "Eric",
 		        "lastName": "Cadigan",
 		        "address": "951 LoneTree Rd",
@@ -148,7 +150,6 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		
 **GET - http://localhost:8080/person/{lastName}/{fistName}**   >>> returns the person named {firstName} {lastName} if exists in DB.
 
-	Response: 200 A person or 404 Not found
 	for example /Person/Boyd/Tenley returns :
 		{
 		    "firstName": "Tenley",
@@ -161,7 +162,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		}
   
 **POST - http://localhost:8080/person**   >>> add the person in DB persons table, if this person is not already recorded in DB.
-  for example you can add 'Tenley Boyd' with this JSON raw body (Do not add an id):
+  for example you can add 'Tenley Boyd' with this JSON raw body:
   
 		{
 		    "firstName": "Tenley",
@@ -173,7 +174,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 		    "email": "tenz@email.com"
 		}
 
-**PUT - http://localhost:8080/person**   >>> update the person in DB persons table, if this person is not already recorded in DB.
+**PUT - http://localhost:8080/person/{firstName}/{lastName}**   >>> update the person in DB persons table, if this person is not already recorded in DB.
 
 	for example you can update 'Tenley Boyd' data with this JSON raw body:
 		{
@@ -225,7 +226,6 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 			...
 			
 	    {
-	        "id": 13,
 	        "address": "951 LoneTree Rd",
 	        "city": "Culver",
 	        "zip": "97451",
@@ -255,7 +255,7 @@ The data are saved in alerts_prod DB or alerts_tests DB (user 'root' / mdp 'root
 	    }
 	      
 
-**PUT - http://localhost:8080/firestation**   >>> update the address - FiresStation association, if this address is recorded in DB.
+**PUT - http://localhost:8080/firestation/{address}**   >>> update the address - FiresStation association, if this address is recorded in DB.
 
 	for example you can update '29 15th St' address  with this JSON raw body :
 		{
