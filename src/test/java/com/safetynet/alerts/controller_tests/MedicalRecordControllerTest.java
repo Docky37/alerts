@@ -27,9 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.MedicalRecordDTO;
 import com.safetynet.alerts.controller.MedicalRecordController;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
-import com.safetynet.alerts.model.MedicalRecordDTO;
 import com.safetynet.alerts.service.IMedicalRecordService;
 
 @RunWith(SpringRunner.class)

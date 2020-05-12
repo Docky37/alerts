@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.safetynet.alerts.AlertsApplication;
-import com.safetynet.alerts.model.MedicalRecordDTO;
+import com.safetynet.alerts.DTO.MedicalRecordDTO;
 import com.safetynet.alerts.model.MedicalRecordEntity;
 import com.safetynet.alerts.utils.MedicalRecordMapping;
 

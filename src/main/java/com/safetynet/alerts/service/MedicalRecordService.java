@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.safetynet.alerts.AlertsApplication;
+import com.safetynet.alerts.DTO.MedicalRecordDTO;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
-import com.safetynet.alerts.model.MedicalRecordDTO;
 import com.safetynet.alerts.model.MedicalRecordEntity;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.MedicalRecordRepository;

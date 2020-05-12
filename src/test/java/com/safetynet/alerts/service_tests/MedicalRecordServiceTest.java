@@ -24,10 +24,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import com.safetynet.alerts.DTO.MedicalRecordDTO;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
 import com.safetynet.alerts.model.AddressEntity;
 import com.safetynet.alerts.model.MedicalRecordEntity;
-import com.safetynet.alerts.model.MedicalRecordDTO;
 import com.safetynet.alerts.model.PersonEntity;
 import com.safetynet.alerts.repositery.MedicalRecordRepository;
 import com.safetynet.alerts.repositery.PersonRepository;

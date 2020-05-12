@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.safetynet.alerts.model.MedicalRecordDTO;
+import com.safetynet.alerts.DTO.MedicalRecordDTO;
 import com.safetynet.alerts.model.MedicalRecordEntity;
 
 /**

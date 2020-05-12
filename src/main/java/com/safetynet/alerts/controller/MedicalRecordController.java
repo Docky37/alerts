@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.safetynet.alerts.AlertsApplication;
-import com.safetynet.alerts.model.MedicalRecordDTO;
+import com.safetynet.alerts.DTO.MedicalRecordDTO;
 import com.safetynet.alerts.service.IMedicalRecordService;
 
 /**

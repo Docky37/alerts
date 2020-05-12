@@ -2,8 +2,8 @@ package com.safetynet.alerts.service;
 
 import java.util.List;
 
+import com.safetynet.alerts.DTO.MedicalRecordDTO;
 import com.safetynet.alerts.controller.MedicalRecordNotFoundException;
-import com.safetynet.alerts.model.MedicalRecordDTO;
 
 public interface IMedicalRecordService {
 
